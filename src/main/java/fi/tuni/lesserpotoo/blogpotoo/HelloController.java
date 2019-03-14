@@ -1,11 +1,11 @@
 package fi.tuni.lesserpotoo.blogpotoo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
+import java.util.Optional;
 
 @RestController
 public class HelloController {
@@ -20,6 +20,16 @@ public class HelloController {
                 "Possibly its most well known characteristic is its unique moaning growl that the Great Potoo vocalizes throughout the night, creating an unsettling atmosphere in the Neotropics with its nocturnal sounds."));
 
         blogPostRepository.save(new BlogPost("General Potoo", "Potoo > Owl", "its just true"));
+    }
+
+    @RequestMapping(value = "/blogposts", method = RequestMethod.GET)
+    public Iterable<BlogPost> getAllBlogPosts() {
+        return blogPostRepository.findAll();
+    }
+
+    @RequestMapping(value = "/blogposts/{blogPostId}", method = RequestMethod.GET)
+    public Optional<BlogPost> getBlogPostById(@PathVariable int blogPostId) {
+        return blogPostRepository.findById(blogPostId);
     }
 
     @GetMapping("/api/hello")
