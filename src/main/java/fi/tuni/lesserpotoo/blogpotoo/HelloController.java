@@ -22,6 +22,12 @@ public class HelloController {
         blogPostRepository.save(new BlogPost("General Potoo", "Potoo > Owl", "its just true"));
     }
 
+    @RequestMapping(value="/blogposts", method=RequestMethod.POST)
+    public void saveCustomer(@RequestBody BlogPost blogPost) {
+        System.out.println(blogPost);
+        blogPostRepository.save(blogPost);
+    }
+
     @RequestMapping(value = "/blogposts", method = RequestMethod.GET)
     public Iterable<BlogPost> getAllBlogPosts() {
         return blogPostRepository.findAll();
