@@ -1,16 +1,27 @@
 package fi.tuni.lesserpotoo.blogpotoo;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 public class BlogPost {
+
+    @Id
+    @GeneratedValue(generator = "blogpost_seq")
+    @SequenceGenerator(name = "blogpost_seq", sequenceName = "BLOGPOST_SEQ", allocationSize = 1)
     int id;
+
+    @Column(nullable = false)
     String author;
+    @Column(nullable = false)
     String title;
+    @Column(length=15000)
     String content;
+
+    @Column(nullable = false)
     LocalDateTime timeOfCreation;
     LocalDateTime timeOfEdit;
+
     int likes;
 
     public BlogPost() {
