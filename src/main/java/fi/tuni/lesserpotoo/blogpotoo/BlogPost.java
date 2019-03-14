@@ -81,4 +81,17 @@ public class BlogPost {
     public void setLikes(int likes) {
         this.likes = likes;
     }
+
+    @Override
+    public String toString() {
+        return "BlogPost{" +
+                "id=" + id +
+                ", author='" + author + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", timeOfCreation=" + timeOfCreation +
+                ", timeOfEdit=" + timeOfEdit +
+                ", likes=" + likes +
+                '}';
+    }
 }
