@@ -25,6 +25,7 @@ public class BlogPost {
     int likes;
 
     public BlogPost() {
+        this.timeOfCreation = LocalDateTime.now();
     }
 
     public BlogPost(String author, String title, String content) {
