@@ -20,20 +20,22 @@ public class HelloController {
                 "Possibly its most well known characteristic is its unique moaning growl that the Great Potoo vocalizes throughout the night, creating an unsettling atmosphere in the Neotropics with its nocturnal sounds."));
 
         blogPostRepository.save(new BlogPost("General Potoo", "Potoo > Owl", "its just true"));
+
+        blogPostRepository.save(new BlogPost("Baby Potoo", "Father feed me", "I'm hungry"));
     }
 
-    @PostMapping(value="/blogposts")
+    @PostMapping(value = "/api/blogposts")
     public void saveCustomer(@RequestBody BlogPost blogPost) {
         System.out.println(blogPost);
         blogPostRepository.save(blogPost);
     }
 
-    @GetMapping(value = "/blogposts")
+    @GetMapping(value = "/api/blogposts")
     public Iterable<BlogPost> getAllBlogPosts() {
         return blogPostRepository.findAll();
     }
 
-    @GetMapping(value = "/blogposts/{blogPostId}")
+    @GetMapping(value = "/api/blogposts/{blogPostId}")
     public Optional<BlogPost> getBlogPostById(@PathVariable int blogPostId) {
         return blogPostRepository.findById(blogPostId);
     }
