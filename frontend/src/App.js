@@ -17,12 +17,10 @@ function App() {
                     </nav>
 
                     <Route path="/" exact component={Index} />
-                    <BlogPost />
-                    <BlogPost />
-                    <BlogPost />
-                    <BlogPost />
-                    <BlogPost />
-                    <BlogPost />
+                    <BlogPost id ={1} />
+                    <BlogPost id ={1}/>
+                    <BlogPost id ={1}/>
+                    <BlogPost id ={1}/>
                     <div className="footer"><span>Blog Potoo, the blog of the future (2019)</span></div>
                 </div>
             </Router>
