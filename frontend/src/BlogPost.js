@@ -14,7 +14,7 @@ class BlogPost extends Component {
     }
 
     componentDidMount() {
-        fetch('/blogposts/' + this.props.id).then(httpResp => httpResp.json())
+        fetch('/api/blogposts/' + this.props.id).then(httpResp => httpResp.json())
             .then(blogpost => {
                 this.setState({'author': blogpost.author
                                 , 'title': blogpost.title
@@ -27,7 +27,9 @@ class BlogPost extends Component {
         return (
             <div className = "blogpost">
                 <h1>{this.state.author}</h1>
+                <h3>{this.state.title} </h3>
                 <p>Posted: {this.state.postDate}</p>
+                <p>Content: {this.state.content}</p>
             </div>
         );
     }
