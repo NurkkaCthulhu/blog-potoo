@@ -22,18 +22,18 @@ public class HelloController {
         blogPostRepository.save(new BlogPost("General Potoo", "Potoo > Owl", "its just true"));
     }
 
-    @RequestMapping(value="/blogposts", method=RequestMethod.POST)
+    @PostMapping(value="/blogposts")
     public void saveCustomer(@RequestBody BlogPost blogPost) {
         System.out.println(blogPost);
         blogPostRepository.save(blogPost);
     }
 
-    @RequestMapping(value = "/blogposts", method = RequestMethod.GET)
+    @GetMapping(value = "/blogposts")
     public Iterable<BlogPost> getAllBlogPosts() {
         return blogPostRepository.findAll();
     }
 
-    @RequestMapping(value = "/blogposts/{blogPostId}", method = RequestMethod.GET)
+    @GetMapping(value = "/blogposts/{blogPostId}")
     public Optional<BlogPost> getBlogPostById(@PathVariable int blogPostId) {
         return blogPostRepository.findById(blogPostId);
     }
