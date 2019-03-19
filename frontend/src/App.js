@@ -4,7 +4,7 @@ import './frontpage_style.css';
 import BlogPost from './BlogPost';
 
 function Index() {
-    return <h1>Etusivu</h1>;
+    return <h1></h1>;
 }
 
 function App() {
