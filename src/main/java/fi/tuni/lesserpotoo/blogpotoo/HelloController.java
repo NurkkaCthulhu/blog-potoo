@@ -30,14 +30,19 @@ public class HelloController {
         blogPostRepository.save(blogPost);
     }
 
-    @GetMapping(value = "/api/blogposts")
+    @GetMapping("/api/blogposts")
     public Iterable<BlogPost> getAllBlogPosts() {
         return blogPostRepository.findAll();
     }
 
-    @GetMapping(value = "/api/blogposts/{blogPostId}")
+    @GetMapping("/api/blogposts/{blogPostId}")
     public Optional<BlogPost> getBlogPostById(@PathVariable int blogPostId) {
         return blogPostRepository.findById(blogPostId);
+    }
+
+    @GetMapping("/api/blogposts/author={authorName}")
+    public Iterable<BlogPost> getBlogPostsByAuthor(@PathVariable String authorName) {
+        return blogPostRepository.findByAuthor(authorName);
     }
 
     @GetMapping("/api/hello")
