@@ -1,19 +1,34 @@
 import React, {Component} from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './frontpage_style.css';
 
 class BlogPost extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            author: ''
+            , title: ''
+            , content: ''
+            , postDate : ''
+        }
+    }
+
     componentDidMount() {
-        fetch('/blogposts').then(httpResp => httpResp.json())
-            .then(blogposts => {
-               console.log(blogposts);
+        fetch('/blogposts/' + this.props.id).then(httpResp => httpResp.json())
+            .then(blogpost => {
+                this.setState({'author': blogpost.author
+                                , 'title': blogpost.title
+                                , 'content' : blogpost.content
+                                , 'postDate' : blogpost.timeOfCreation});
             });
     }
 
     render() {
         return (
-            <h1>Blogipostaus</h1>
+            <div className = "blogpost">
+                <h1>{this.state.author}</h1>
+                <p>Posted: {this.state.postDate}</p>
+            </div>
         );
     }
 }
