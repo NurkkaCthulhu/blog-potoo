@@ -1,78 +1,27 @@
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import './frontpage_style.css';
+
+function Index() {
+    return <h1>Etusivu</h1>;
+}
 
 function App() {
 
-    return (
-        <Router>
-            <div>
-                <Header />
-
-                <Route exact path="/" component={Home} />
-                <Route path="/about" component={About} />
-                <Route path="/login" component={Login} />
-            </div>
-        </Router>
-    );
-}
-
-function Home() {
-    return <h2>Home</h2>;
-}
-
-function About() {
-    return <h2>About</h2>;
-}
-
-
-class Login extends Component {
-    state = {};
-
-    constructor() {
-        super();
-        this.hello = this.hello.bind(this);
-    }
-
-    componentDidMount() {
-        this.hello();
-    }
-
-    componentWillUnmount() {
-    }
-
-    hello = () => {
-        fetch('/api/hello')
-            .then(response => response.text())
-            .then(message => {
-                this.setState({message: message});
-            });
-    };
-
-    render() {
         return (
-            <div className="App">
-                <header className="App-header">
-                    <h1 className="App-title">{this.state.message}</h1>
-                </header>
-            </div>
+            <Router>
+                <div>
+                    <nav className="header">
+                        <Link to="/">Sivun logo</Link>
+                    </nav>
+
+                    <Route path="/" exact component={Index} />
+
+                    <div className="footer"><span>Blog Potoo, the blog of the future (2019)</span></div>
+                </div>
+            </Router>
         );
     }
-}
 
-function Header() {
-    return (
-        <ul>
-            <li>
-                <Link to="/">Home</Link>
-            </li>
-            <li>
-                <Link to="/about">About</Link>
-            </li>
-            <li>
-                <Link to="/login">Login</Link>
-            </li>
-        </ul>
-    );
-}
 
 export default App;
