@@ -29,7 +29,7 @@ class BlogPost extends Component {
                 <h1>{this.state.title} </h1>
                 <h3>{this.state.author}</h3>
                 <p>Posted: {this.state.postDate}</p>
-                <p>Content: {this.state.content}</p>
+                <p>{this.state.content}</p>
             </div>
         );
     }
