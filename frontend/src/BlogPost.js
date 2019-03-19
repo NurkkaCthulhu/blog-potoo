@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import './frontpage_style.css';
+import './BlogPost_style.css';
 
 class BlogPost extends Component {
 
@@ -25,7 +25,7 @@ class BlogPost extends Component {
 
     render() {
         return (
-            <div className = "blogpost">
+            <div className = "container">
                 <h1>{this.state.title} </h1>
                 <h3>{this.state.author}</h3>
                 <p>Posted: {this.state.postDate}</p>
