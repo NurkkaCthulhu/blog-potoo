@@ -25,7 +25,7 @@ public class HelloController {
     }
 
     @PostMapping(value = "/api/blogposts")
-    public void saveCustomer(@RequestBody BlogPost blogPost) {
+    public void saveBlogPost(@RequestBody BlogPost blogPost) {
         System.out.println(blogPost);
         blogPostRepository.save(blogPost);
     }
