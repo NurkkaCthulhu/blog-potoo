@@ -26,8 +26,8 @@ class BlogPost extends Component {
     render() {
         return (
             <div className = "blogpost">
-                <h1>{this.state.author}</h1>
-                <h3>{this.state.title} </h3>
+                <h1>{this.state.title} </h1>
+                <h3>{this.state.author}</h3>
                 <p>Posted: {this.state.postDate}</p>
                 <p>Content: {this.state.content}</p>
             </div>
