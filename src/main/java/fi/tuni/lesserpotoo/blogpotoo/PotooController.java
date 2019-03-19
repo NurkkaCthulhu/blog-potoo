@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @RestController
-public class HelloController {
+public class PotooController {
 
     @Autowired
     BlogPostRepository blogPostRepository;
