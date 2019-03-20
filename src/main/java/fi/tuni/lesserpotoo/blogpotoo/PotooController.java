@@ -4,10 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 
@@ -44,18 +40,10 @@ public class PotooController {
         return blogPostRepository.findById(blogPostId);
     }
 
-    @GetMapping("/api/blogposts/author/{authorName}")
+    @GetMapping("/api/blogposts/author={authorName}")
     public Iterable<BlogPost> getBlogPostsByAuthor(@PathVariable String authorName) {
         return blogPostRepository.findByAuthor(authorName);
     }
-
-    /**
-    @GetMapping("/api/blogposts/date/{date:[0-9]{4}-[0-9]{2}-[0-9]{2}}")
-    public Iterable<BlogPost> getBlogPostsByDateAsc(@PathVariable String date) {
-        LocalDateTime localDateTime = LocalDateTime.of(LocalDate.parse(date), LocalTime.of(0,0));
-        System.out.println(localDateTime);
-        return null;
-    }*/
 
     @GetMapping("/api/hello")
     public String hello() {
