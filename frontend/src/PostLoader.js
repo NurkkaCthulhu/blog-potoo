@@ -23,7 +23,7 @@ class PostLoader extends Component {
         let helperArray = [];
 
         for (let obj of jsonObject) {
-            helperArray.push(<BlogPost id={obj.id} sendData={this.updatePosts}/>);
+            helperArray.push(<BlogPost key={obj.id} id={obj.id} sendData={this.updatePosts}/>);
         }
 
         this.setState({arrayOfBlogPosts: helperArray});
