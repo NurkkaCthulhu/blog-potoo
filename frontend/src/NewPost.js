@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import './BlogPost_style.css';
+import './NewPost_style.css';
 
 class NewPost extends Component {
 
@@ -15,7 +15,7 @@ class NewPost extends Component {
     render() {
         return (
             <div className = "container">
-                <button onClick={this.makeNewPost}>New Post</button>
+                <button className="newPost" onClick={this.makeNewPost}>New Post</button>
             </div>
         );
     }
