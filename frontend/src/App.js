@@ -20,7 +20,6 @@ function App() {
 
                 <Route path="/" exact component={Index} />
                 <PostLoader />
-                <NewPost />
                 <div className="footer"><span>Blog Potoo, the blog of the future (2019)</span></div>
             </div>
         </Router>

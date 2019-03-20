@@ -29,6 +29,7 @@ class NewPost extends Component {
             body: JSON.stringify(item),
         }).then(() => {
             console.log('This should be posted.');
+            this.props.sendData();
         });
     }
 

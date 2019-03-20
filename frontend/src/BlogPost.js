@@ -6,6 +6,7 @@ class BlogPost extends Component {
     constructor(props) {
         super(props);
         this.deletePost = this.deletePost.bind(this);
+        console.log(this.props.id)
         this.state = {
             author: ''
             , title: ''
@@ -21,10 +22,13 @@ class BlogPost extends Component {
                                 , 'title': blogpost.title
                                 , 'content' : blogpost.content
                                 , 'postDate' : blogpost.timeOfCreation});
+                this.props.sendData();
             });
     }
 
     async deletePost() {
+        console.log(this.props.id);
+
         await fetch('/api/blogposts/' + this.props.id, {
             method: 'DELETE',
             headers: {
@@ -33,6 +37,7 @@ class BlogPost extends Component {
             }
         }).then(() => {
             console.log('This should be deleted.');
+            this.props.sendData();
         });
     }
 
