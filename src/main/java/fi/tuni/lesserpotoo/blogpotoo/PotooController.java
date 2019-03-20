@@ -26,6 +26,8 @@ public class PotooController {
         blogPostRepository.save(new BlogPost("General Potoo", "Potoo > Owl", "its just true"));
 
         blogPostRepository.save(new BlogPost("Baby Potoo", "Father feed me", "I'm hungry"));
+
+        blogPostRepository.save(new BlogPost("Potoo mom", "Days of Potooing", "It is good to be a potoo. I recommend. I feel despair but it is completely ok."));
     }
 
     @PostMapping(value = "/api/blogposts")
