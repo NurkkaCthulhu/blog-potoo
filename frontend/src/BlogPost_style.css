@@ -7,3 +7,9 @@ h1 {
     background-color: #b4a344;
     color: #FFFFFF;
 }
+
+.deletebutton {
+    float: right;
+    background-color: red;
+    border: none;
+}

@@ -5,6 +5,7 @@ class BlogPost extends Component {
 
     constructor(props) {
         super(props);
+        this.deletePost = this.deletePost.bind(this);
         this.state = {
             author: ''
             , title: ''
@@ -23,10 +24,23 @@ class BlogPost extends Component {
             });
     }
 
+    async deletePost() {
+        await fetch('/api/blogposts/' + this.props.id, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            console.log('This should be deleted.');
+        });
+    }
+
     render() {
         return (
             <div className = "container">
-                <h1>{this.state.title} </h1>
+
+                <h1>{this.state.title} <button className="deletebutton" onClick={this.deletePost}>X</button> </h1>
                 <h3>{this.state.author}</h3>
                 <p>Posted: {this.state.postDate}</p>
                 <p>{this.state.content}</p>
@@ -34,6 +48,5 @@ class BlogPost extends Component {
         );
     }
 }
-
 
 export default BlogPost;
