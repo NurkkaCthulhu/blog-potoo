@@ -9,23 +9,23 @@ function Index() {
 
 function App() {
 
-        return (
-            <Router>
-                <div>
-                    <nav className="header">
-                        <Link to="/">Sivun logo</Link>
-                    </nav>
+    return (
+        <Router>
+            <div>
+                <nav className="header">
+                    <Link to="/">Sivun logo</Link>
+                </nav>
 
-                    <Route path="/" exact component={Index} />
-                    <BlogPost id ={1} />
-                    <BlogPost id ={2}/>
-                    <BlogPost id ={3}/>
-                    <BlogPost id ={1}/>
-                    <div className="footer"><span>Blog Potoo, the blog of the future (2019)</span></div>
-                </div>
-            </Router>
-        );
-    }
+                <Route path="/" exact component={Index} />
+                <BlogPost id ={1} />
+                <BlogPost id ={2}/>
+                <BlogPost id ={3}/>
+                <BlogPost id ={1}/>
+                <div className="footer"><span>Blog Potoo, the blog of the future (2019)</span></div>
+            </div>
+        </Router>
+    );
+}
 
 
 export default App;
