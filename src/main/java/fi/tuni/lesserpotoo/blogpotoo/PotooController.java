@@ -30,8 +30,12 @@ public class PotooController {
 
     @PostMapping(value = "/api/blogposts")
     public void saveBlogPost(@RequestBody BlogPost blogPost) {
-        System.out.println(blogPost);
         blogPostRepository.save(blogPost);
+    }
+
+    @DeleteMapping("/api/blogposts/{blogPostId}")
+    public void deleteBlogPost(@PathVariable int blogPostId) {
+        blogPostRepository.deleteById(blogPostId);
     }
 
     @GetMapping("/api/blogposts")
