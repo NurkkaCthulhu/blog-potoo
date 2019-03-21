@@ -1,7 +1,9 @@
 package fi.tuni.lesserpotoo.blogpotoo;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 public class BlogPost {
@@ -19,20 +21,23 @@ public class BlogPost {
     String content;
 
     @Column(nullable = false)
-    LocalDateTime timeOfCreation;
+    LocalDate dateOfCreation;
+    LocalTime timeOfCreation;
     LocalDateTime timeOfEdit;
 
     int likes;
 
     public BlogPost() {
-        this.timeOfCreation = LocalDateTime.now();
+        this.dateOfCreation = LocalDate.now();
+        this.timeOfCreation = LocalTime.now();
     }
 
     public BlogPost(String author, String title, String content) {
         this.author = author;
         this.title = title;
         this.content = content;
-        this.timeOfCreation = LocalDateTime.now();
+        this.dateOfCreation = LocalDate.now();
+        this.timeOfCreation = LocalTime.now();
     }
 
     public int getId() {
@@ -63,7 +68,11 @@ public class BlogPost {
         this.content = content;
     }
 
-    public LocalDateTime getTimeOfCreation() {
+    public LocalDate getDateOfCreation() {
+        return dateOfCreation;
+    }
+
+    public LocalTime getTimeOfCreation() {
         return timeOfCreation;
     }
 
