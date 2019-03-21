@@ -45,3 +45,8 @@ span {
 h1 {
     text-align: center;
 }
+
+.newpostlink {
+    float: right;
+    margin-right: 5%;
+}
