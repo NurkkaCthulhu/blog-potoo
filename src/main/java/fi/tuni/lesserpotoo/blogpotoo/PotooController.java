@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -62,8 +63,13 @@ public class PotooController {
 
     @GetMapping("/api/blogposts/date/{date:[0-9]{4}-[0-9]{2}-[0-9]{2}}")
     public Iterable<BlogPost> getBlogPostsByDateAsc(@PathVariable String date) {
-        LocalDate localDate = LocalDate.parse(date);
-        return blogPostRepository.findByDateOfCreation(localDate);
+        try {
+            LocalDate localDate = LocalDate.parse(date);
+            return blogPostRepository.findByDateOfCreation(localDate);
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @GetMapping("/api/hello")
