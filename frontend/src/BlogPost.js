@@ -6,7 +6,6 @@ class BlogPost extends Component {
     constructor(props) {
         super(props);
         this.deletePost = this.deletePost.bind(this);
-        console.log(this.props.id)
         this.state = {
             author: ''
             , title: ''
@@ -16,27 +15,21 @@ class BlogPost extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/blogposts/' + this.props.id).then(httpResp => httpResp.json())
-            .then(blogpost => {
-                this.setState({'author': blogpost.author
-                                , 'title': blogpost.title
-                                , 'content' : blogpost.content
-                                , 'postDate' : blogpost.timeOfCreation});
-                this.props.sendData();
-            });
+        this.setState({'author': this.props.id.author
+            , 'title': this.props.id.title
+            , 'content' : this.props.id.content
+            , 'postDate' : this.props.id.timeOfCreation});
     }
 
     async deletePost() {
-        console.log(this.props.id);
 
-        await fetch('/api/blogposts/' + this.props.id, {
+        await fetch('/api/blogposts/' + this.props.id.id, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         }).then(() => {
-            console.log('This should be deleted.');
             this.props.sendData();
         });
     }
