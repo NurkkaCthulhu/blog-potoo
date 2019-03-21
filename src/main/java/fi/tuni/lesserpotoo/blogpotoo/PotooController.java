@@ -60,13 +60,11 @@ public class PotooController {
         return blogPostRepository.findByTitleContainingIgnoreCase(containingWord);
     }
 
-    /**
     @GetMapping("/api/blogposts/date/{date:[0-9]{4}-[0-9]{2}-[0-9]{2}}")
     public Iterable<BlogPost> getBlogPostsByDateAsc(@PathVariable String date) {
-        LocalDateTime localDateTime = LocalDateTime.of(LocalDate.parse(date), LocalTime.of(0,0));
-        System.out.println(localDateTime);
-        return null;
-    }*/
+        LocalDate localDate = LocalDate.parse(date);
+        return blogPostRepository.findByDateOfCreation(localDate);
+    }
 
     @GetMapping("/api/hello")
     public String hello() {
