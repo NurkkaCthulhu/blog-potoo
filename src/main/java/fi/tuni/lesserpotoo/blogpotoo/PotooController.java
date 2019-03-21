@@ -55,6 +55,11 @@ public class PotooController {
         return blogPostRepository.findByAuthor(authorName);
     }
 
+    @GetMapping("/api/blogposts/title/{containingWord}")
+    public Iterable<BlogPost> getBlogPostsByTitleContaining(@PathVariable String containingWord) {
+        return blogPostRepository.findByTitleContainingIgnoreCase(containingWord);
+    }
+
     /**
     @GetMapping("/api/blogposts/date/{date:[0-9]{4}-[0-9]{2}-[0-9]{2}}")
     public Iterable<BlogPost> getBlogPostsByDateAsc(@PathVariable String date) {
