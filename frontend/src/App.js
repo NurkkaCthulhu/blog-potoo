@@ -1,12 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './frontpage_style.css';
-import BlogPost from './BlogPost';
-import NewPost from './NewPost';
 import PostLoader from './PostLoader';
+import NewPostForm from './NewPostForm';
 
 function Index() {
-    return <h1></h1>;
+    return <PostLoader />;
+}
+
+function NewPost() {
+    return <NewPostForm/>
 }
 
 function App() {
@@ -16,10 +19,12 @@ function App() {
             <div>
                 <nav className="header">
                     <Link to="/">Sivun logo</Link>
+                    <Link to="/newpost" className="newpostlink">Add blog post...</Link>
                 </nav>
 
                 <Route path="/" exact component={Index} />
-                <PostLoader />
+                <Route path="/newpost" exact component={NewPost} />
+
                 <div className="footer"><span>Blog Potoo, the blog of the future (2019)</span></div>
             </div>
         </Router>
