@@ -1,9 +1,13 @@
 package fi.tuni.lesserpotoo.blogpotoo;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 public class BlogPost {
@@ -27,9 +31,18 @@ public class BlogPost {
 
     int likes;
 
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    @JoinTable(
+            name = "blogpost_tag",
+            joinColumns = @JoinColumn(name = "blogpost_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    )
+    Set<Tag> tags;
+
     public BlogPost() {
         this.dateOfCreation = LocalDate.now();
         this.timeOfCreation = LocalTime.now();
+        this.tags = new LinkedHashSet<>();
     }
 
     public BlogPost(String author, String title, String content) {
@@ -38,6 +51,7 @@ public class BlogPost {
         this.content = content;
         this.dateOfCreation = LocalDate.now();
         this.timeOfCreation = LocalTime.now();
+        this.tags = new LinkedHashSet<>();
     }
 
     public int getId() {
@@ -90,6 +104,14 @@ public class BlogPost {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override
