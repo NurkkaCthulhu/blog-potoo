@@ -1,13 +1,8 @@
 import React, {Component} from "react";
+import {withRouter} from "react-router-dom";
 import './css/NewPostForm_style.css';
 
 class NewPostForm extends Component {
-
-    newPost = {
-        author: 'Potoo mom',
-        title: '',
-        content: '',
-    };
 
     constructor(props) {
         super(props);
@@ -17,21 +12,33 @@ class NewPostForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
-            item: this.newPost
+            author: 'Potoo mom'
+            , title: ''
+            , content: ''
         };
     }
 
     handleChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
 
+        this.setState({
+            [name]: value
+        });
     }
 
     handleSubmit(event) {
-        alert('An essay was submitted: ' + this.state.content + ' Title: ' + this.state.title);
+        this.makeNewPost();
         event.preventDefault();
     }
 
     async makeNewPost() {
-        const {item} = this.state;
+        const newPost = {
+            author: this.state.author,
+            title: this.state.title,
+            content: this.state.content,
+        };
 
         await fetch('/api/blogposts/', {
             method: 'POST',
@@ -39,11 +46,10 @@ class NewPostForm extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(item),
+            body: JSON.stringify(newPost),
         }).then(() => {
-            console.log('This should be posted.');
-            this.props.sendData();
-        });
+            this.props.history.push("/")
+        })
     }
 
     render() {
@@ -70,4 +76,4 @@ class NewPostForm extends Component {
     }
 }
 
-export default NewPostForm;
+export default withRouter(NewPostForm);
