@@ -18,17 +18,38 @@ public class PotooController {
     @Autowired
     BlogPostRepository blogPostRepository;
 
+    @Autowired
+    TagRepository tagRepository;
+
     @PostConstruct
     public void init() {
-        blogPostRepository.save(new BlogPost("General Potoo", "What is potoo?", "The great potoo (Nyctibius grandis) is a near passerine bird, both the largest potoo species and the largest member of the order Caprimulgiformes (nightjars and allies). They are also one of seven species in one genus, Nyctibius, located in tropical America.\n" +
+
+        Tag potooTag = new Tag("potoo");
+        Tag firstTag = new Tag("first");
+        Tag lastTag = new Tag("last");
+
+        tagRepository.save(potooTag);
+        tagRepository.save(firstTag);
+        tagRepository.save(lastTag);
+
+        BlogPost post1= new BlogPost("General Potoo", "What is potoo?", "The great potoo (Nyctibius grandis) is a near passerine bird, both the largest potoo species and the largest member of the order Caprimulgiformes (nightjars and allies). They are also one of seven species in one genus, Nyctibius, located in tropical America.\n" +
                 "Much like owls, this species is nocturnal. They prey on large insects and small vertebrates, which they capture in sallies from high perches.\n" +
-                "Possibly its most well known characteristic is its unique moaning growl that the Great Potoo vocalizes throughout the night, creating an unsettling atmosphere in the Neotropics with its nocturnal sounds."));
+                "Possibly its most well known characteristic is its unique moaning growl that the Great Potoo vocalizes throughout the night, creating an unsettling atmosphere in the Neotropics with its nocturnal sounds.");
+        BlogPost post2 = new BlogPost("General Potoo", "Potoo > Owl", "its just true");
+        BlogPost post3 = new BlogPost("Baby Potoo", "Father feed me", "I'm hungry");
+        BlogPost post4 = new BlogPost("Potoo mom", "Days of Potooing", "It is good to be a potoo. I recommend. I feel despair but it is completely ok.");
 
-        blogPostRepository.save(new BlogPost("General Potoo", "Potoo > Owl", "its just true"));
+        post1.getTags().add(potooTag);
+        post1.getTags().add(firstTag);
+        post2.getTags().add(potooTag);
+        post3.getTags().add(potooTag);
+        post4.getTags().add(potooTag);
+        post4.getTags().add(lastTag);
 
-        blogPostRepository.save(new BlogPost("Baby Potoo", "Father feed me", "I'm hungry"));
-
-        blogPostRepository.save(new BlogPost("Potoo mom", "Days of Potooing", "It is good to be a potoo. I recommend. I feel despair but it is completely ok."));
+        blogPostRepository.save(post1);
+        blogPostRepository.save(post2);
+        blogPostRepository.save(post3);
+        blogPostRepository.save(post4);
     }
 
     @PostMapping(value = "/api/blogposts")
