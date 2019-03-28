@@ -30,7 +30,7 @@ nav.header a {
     width: 100%;
     text-align: center;
     display: block;
-    position: relative;
+    position: fixed;
     bottom: 0;
     background-color: #b41b23;
     color: #FFFFFF;

@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import './frontpage_style.css';
+import './css/frontpage_style.css';
 import PostLoader from './PostLoader';
 import NewPostForm from './NewPostForm';
 

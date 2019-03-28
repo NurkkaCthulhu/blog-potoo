@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import './BlogPost_style.css';
+import './css/BlogPost_style.css';
 
 class BlogPost extends Component {
 

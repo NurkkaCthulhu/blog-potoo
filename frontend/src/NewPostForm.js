@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import './NewPostForm_style.css';
+import './css/NewPostForm_style.css';
 
 class NewPostForm extends Component {
 
