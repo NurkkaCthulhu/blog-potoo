@@ -21,10 +21,10 @@ function App() {
                     <Link to="/">Sivun logo</Link>
                     <Link to="/newpost" className="newpostlink">Add blog post...</Link>
                 </nav>
-
-                <Route path="/" exact component={Index} />
-                <Route path="/newpost" exact component={NewPost} />
-
+                <div className="blog-posts">
+                    <Route path="/" exact component={Index} />
+                    <Route path="/newpost" exact component={NewPost} />
+                </div>
                 <div className="footer"><span>Blog Potoo, the blog of the future (2019)</span></div>
             </div>
         </Router>
