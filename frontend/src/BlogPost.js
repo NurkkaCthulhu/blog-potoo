@@ -38,7 +38,8 @@ class BlogPost extends Component {
         return (
             <div className = "container">
 
-                <h1>{this.state.title} <button className="deletebutton" onClick={this.deletePost}>X</button> </h1>
+                <h1>{this.state.title} <button className="deletebutton" onClick={this.deletePost}>X</button>
+                    <i className='far fa-eye'></i> </h1>
                 <h3>{this.state.author}</h3>
                 <p>Posted: {this.state.postDate}</p>
                 <p>{this.state.content}</p>
