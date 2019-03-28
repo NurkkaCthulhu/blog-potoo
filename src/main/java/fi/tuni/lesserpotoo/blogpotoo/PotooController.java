@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Optional;
 
 @RestController
@@ -59,6 +60,15 @@ public class PotooController {
 
     @DeleteMapping("/api/blogposts/{blogPostId}")
     public void deleteBlogPost(@PathVariable int blogPostId) {
+        BlogPost blogPost = blogPostRepository.findById(blogPostId).get();
+        LinkedList<Tag> removeTags = new LinkedList<>();
+
+        for (Tag t : blogPost.getTags()) {
+            if (t.getBlogPosts().size() > 1) {
+                t.getBlogPosts().remove(blogPost);
+            }
+        }
+
         blogPostRepository.deleteById(blogPostId);
     }
 
