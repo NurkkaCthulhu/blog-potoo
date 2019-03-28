@@ -21,6 +21,9 @@ function App() {
                     <Link to="/">Sivun logo</Link>
                     <Link to="/newpost" className="newpostlink">Add blog post...</Link>
                 </nav>
+                <div className="right-float">
+                    <p>Archives</p>
+                </div>
                 <div className="blog-posts">
                     <Route path="/" exact component={Index} />
                     <Route path="/newpost" exact component={NewPost} />

@@ -54,3 +54,10 @@ h1 {
 .blog-posts {
     margin-bottom: 60px;
 }
+
+.right-float {
+    margin-right: 5%;
+    width: 20%;
+    float: right;
+    background: #61dafb;
+}

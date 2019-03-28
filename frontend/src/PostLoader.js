@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import BlogPost from './BlogPost';
-import NewPost from './NewPost';
 
 class PostLoader extends Component {
 
