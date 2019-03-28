@@ -31,7 +31,7 @@ public class BlogPost {
 
     int likes;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "blogpost_tag",
             joinColumns = @JoinColumn(name = "blogpost_id", referencedColumnName = "id"),
