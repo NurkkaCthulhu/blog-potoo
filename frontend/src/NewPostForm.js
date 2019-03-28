@@ -29,7 +29,14 @@ class NewPostForm extends Component {
     }
 
     handleSubmit(event) {
-        this.makeNewPost();
+        const author = this.state.author;
+        const title = this.state.title;
+        if (author.length <= 0 || title.length <= 0) {
+            alert('You must give author and title. Please try again.');
+        } else {
+            this.makeNewPost();
+        }
+
         event.preventDefault();
     }
 
