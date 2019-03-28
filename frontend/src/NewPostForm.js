@@ -5,21 +5,66 @@ class NewPostForm extends Component {
 
     newPost = {
         author: 'Potoo mom',
-        title: 'Days of Potooing',
-        content: 'It is good to be a potoo. I recommend. I feel despair but it is completely ok.',
+        title: '',
+        content: '',
     };
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
+        this.makeNewPost = this.makeNewPost.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+
         this.state = {
             item: this.newPost
         };
+    }
+
+    handleChange(event) {
+
+    }
+
+    handleSubmit(event) {
+        alert('An essay was submitted: ' + this.state.content + ' Title: ' + this.state.title);
+        event.preventDefault();
+    }
+
+    async makeNewPost() {
+        const {item} = this.state;
+
+        await fetch('/api/blogposts/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(item),
+        }).then(() => {
+            console.log('This should be posted.');
+            this.props.sendData();
+        });
     }
 
     render() {
         return (
             <div className = "container">
                 <h1>Make a new post</h1>
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Title
+                        <br />
+                        <input type="text" value={this.state.title} onChange={this.handleChange} name="title"/>
+                    </label>
+                    <br />
+                    <label>
+                        Content
+                        <br />
+                        <textarea value={this.state.content} onChange={this.handleChange} name="content"/>
+                    </label>
+                    <br />
+                    <input type="submit" value="Submit" />
+                </form>
             </div>
         );
     }
