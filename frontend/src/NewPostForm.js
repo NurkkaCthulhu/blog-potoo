@@ -57,18 +57,26 @@ class NewPostForm extends Component {
             <div className = "container">
                 <h1>Make a new post</h1>
                 <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Author
-                        <br />
-                        <input type="text" value={this.state.author} onChange={this.handleChange} name="author"/>
-                    </label>
+                    <div className="required">
+                        <label>
+                            Author
+                            <br />
+                            <input type="text" value={this.state.author} onChange={this.handleChange} name="author"/>
+                        </label>
+                    </div>
+
                     <br />
-                    <label>
-                        Title
-                        <br />
-                        <input type="text" value={this.state.title} onChange={this.handleChange} name="title"/>
-                    </label>
+
+                    <div className="required">
+                        <label>
+                            Title
+                            <br />
+                            <input type="text" value={this.state.title} onChange={this.handleChange} name="title"/>
+                        </label>
+                    </div>
+
                     <br />
+
                     <label>
                         Content
                         <br />
