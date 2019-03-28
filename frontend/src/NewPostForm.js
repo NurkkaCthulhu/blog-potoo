@@ -1,28 +1,100 @@
 import React, {Component} from "react";
-import './NewPostForm_style.css';
+import {withRouter} from "react-router-dom";
+import './css/NewPostForm_style.css';
 
 class NewPostForm extends Component {
 
-    newPost = {
-        author: 'Potoo mom',
-        title: 'Days of Potooing',
-        content: 'It is good to be a potoo. I recommend. I feel despair but it is completely ok.',
-    };
+    constructor(props) {
+        super(props);
 
-    constructor() {
-        super();
+        this.makeNewPost = this.makeNewPost.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+
         this.state = {
-            item: this.newPost
+            author: ''
+            , title: ''
+            , content: ''
         };
+    }
+
+    handleChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handleSubmit(event) {
+        const author = this.state.author;
+        const title = this.state.title;
+        if (author.length <= 0 || title.length <= 0) {
+            alert('You must give author and title. Please try again.');
+        } else {
+            this.makeNewPost();
+        }
+
+        event.preventDefault();
+    }
+
+    async makeNewPost() {
+        const newPost = {
+            author: this.state.author,
+            title: this.state.title,
+            content: this.state.content,
+        };
+
+        await fetch('/api/blogposts/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newPost),
+        }).then(() => {
+            this.props.history.push("/")
+        })
     }
 
     render() {
         return (
             <div className = "container">
                 <h1>Make a new post</h1>
+                <form onSubmit={this.handleSubmit}>
+                    <div className="required">
+                        <label>
+                            Author
+                            <br />
+                            <input type="text" value={this.state.author} onChange={this.handleChange} name="author"/>
+                        </label>
+                    </div>
+
+                    <br />
+
+                    <div className="required">
+                        <label>
+                            Title
+                            <br />
+                            <input type="text" value={this.state.title} onChange={this.handleChange} name="title"/>
+                        </label>
+                    </div>
+
+                    <br />
+
+                    <label>
+                        Content
+                        <br />
+                        <textarea value={this.state.content} onChange={this.handleChange} name="content"/>
+                    </label>
+                    <br />
+                    <input type="submit" value="Submit" />
+                </form>
             </div>
         );
     }
 }
 
-export default NewPostForm;
+export default withRouter(NewPostForm);
