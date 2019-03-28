@@ -1,5 +1,7 @@
 package fi.tuni.lesserpotoo.blogpotoo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -13,6 +15,7 @@ public class Tag {
     String tagName;
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
+    @JsonIgnore
     Set<BlogPost> blogPosts;
 
     public Tag() {}
