@@ -12,7 +12,7 @@ class NewPostForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
-            author: 'Potoo mom'
+            author: ''
             , title: ''
             , content: ''
         };
@@ -57,6 +57,12 @@ class NewPostForm extends Component {
             <div className = "container">
                 <h1>Make a new post</h1>
                 <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Author
+                        <br />
+                        <input type="text" value={this.state.author} onChange={this.handleChange} name="author"/>
+                    </label>
+                    <br />
                     <label>
                         Title
                         <br />
