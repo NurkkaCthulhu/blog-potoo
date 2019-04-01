@@ -153,4 +153,15 @@ public class PotooController {
             blogPostRepository.save(blogPostOpt.get());
         }
     }
+
+    @PutMapping("/api/blogposts/{blogPostId}/content")
+    public void updateBlogPostContent(@PathVariable int blogPostId, @RequestBody String content) {
+        Optional<BlogPost> blogPostOpt = blogPostRepository.findById(blogPostId);
+
+        if (blogPostOpt.isPresent()) {
+            blogPostOpt.get().setTimeOfEdit(LocalDateTime.now());
+            blogPostOpt.get().setContent(content);
+            blogPostRepository.save(blogPostOpt.get());
+        }
+    }
 }
