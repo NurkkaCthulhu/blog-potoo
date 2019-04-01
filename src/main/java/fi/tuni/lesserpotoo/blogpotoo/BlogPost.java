@@ -121,6 +121,7 @@ public class BlogPost {
                 ", author='" + author + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", dateOfCreation='" + dateOfCreation + '\'' +
                 ", timeOfCreation=" + timeOfCreation +
                 ", timeOfEdit=" + timeOfEdit +
                 ", likes=" + likes +
