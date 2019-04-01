@@ -17,14 +17,6 @@ class BlogPost extends Component {
         }
     }
 
-    componentDidMount() {
-        this.setState({'author': this.props.blogpost.author
-            , 'title': this.props.blogpost.title
-            , 'content' : this.props.blogpost.content
-            , 'postDate' : this.props.blogpost.timeOfCreation});
-        this.props.showThisPost();
-    }
-
     async deletePost() {
 
         await fetch('/api/blogposts/' + this.props.blogpost.id, {
@@ -39,15 +31,15 @@ class BlogPost extends Component {
     }
 
     render() {
-        console.log('BlogPost: ' + this.props.blogpost);
+        console.log('BlogPost: ' + this.props.blogpost.id);
         return (
                 <div className = "container">
 
-                    <h1><Link to={this.state.postUrl}>{this.state.title} </Link> <button className="deletebutton" onClick={this.deletePost}>X</button>
+                    <h1><Link to={this.state.postUrl}>{this.props.blogpost.title} </Link> <button className="deletebutton" onClick={this.deletePost}>X</button>
                     <i className='far fa-eye'></i> </h1>
-                <h3>{this.state.author}</h3>
-                <p>Posted: {this.state.postDate}</p>
-                <p>{this.state.content}</p>
+                <h3>{this.props.blogpost.author}</h3>
+                <p>Posted: {this.props.blogpost.postDate}</p>
+                <p>{this.props.blogpost.content}</p>
             </div>
         );
     }
