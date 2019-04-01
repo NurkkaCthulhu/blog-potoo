@@ -8,8 +8,9 @@ class PostLoader extends Component {
         super();
         this.listAllBlogPosts = this.listAllBlogPosts.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
-        this.showOneBlogPost = this.showOneBlogPost.bind(this);
-        this.state = {arrayOfBlogPosts: [], route: '/blogposts/'};
+        this.state = {arrayOfBlogPosts: []
+                        , route: '/blogposts/'
+                        , isFetching: true};
     }
 
     componentDidMount() {
@@ -25,20 +26,20 @@ class PostLoader extends Component {
 
         for (let obj of jsonObject) {
             helperArray.push(<BlogPost key={obj.id} blogpost={obj} route={this.state.route}
-                                       updateLoader={this.updatePosts} showThisPost={this.showOneBlogPost}/>);
+                                       updateLoader={this.updatePosts} />);
         }
 
-        this.setState({arrayOfBlogPosts: helperArray});
+        this.setState({arrayOfBlogPosts: helperArray, isFetching: false});
 
         console.log('List all: ' + this.state.arrayOfBlogPosts);
     }
 
-    showOneBlogPost() {
-        console.log('This is one post method');
-    }
-
     render() {
-
+        const {isFetching} = this.state;
+        console.log('Fetsaaminen: ' + isFetching)
+        if(this.state.isFetching) {
+            return <p>Loading.....</p>;
+        }
         return (
             <div>
                 {this.state.arrayOfBlogPosts}
