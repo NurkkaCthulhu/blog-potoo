@@ -9,8 +9,7 @@ class PostLoader extends Component {
         this.listAllBlogPosts = this.listAllBlogPosts.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
         this.state = {arrayOfBlogPosts: []
-                        , route: '/blogposts/'
-                        , isFetching: true};
+                        , route: '/blogposts/'};
     }
 
     componentDidMount() {
@@ -18,6 +17,7 @@ class PostLoader extends Component {
     }
 
     updatePosts() {
+        this.setState({isFetching: true});
         fetch('/api/blogposts/').then((httpResponse) => httpResponse.json()).then(this.listAllBlogPosts);
     }
 
@@ -36,8 +36,8 @@ class PostLoader extends Component {
 
     render() {
         const {isFetching} = this.state;
-        console.log('Fetsaaminen: ' + isFetching)
-        if(this.state.isFetching) {
+        console.log('Fetsaaminen: ' + isFetching);
+        if(isFetching || isFetching === undefined) {
             return <p>Loading.....</p>;
         }
         return (
