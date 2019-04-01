@@ -7,6 +7,7 @@ class PostLoader extends Component {
         super();
         this.listAllBlogPosts = this.listAllBlogPosts.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
+        this.showOneBlogPost = this.showOneBlogPost.bind(this);
         this.state = {arrayOfBlogPosts: []}
     }
 
@@ -22,12 +23,16 @@ class PostLoader extends Component {
         let helperArray = [];
 
         for (let obj of jsonObject) {
-            helperArray.push(<BlogPost key={obj.id} id={obj} updateLoader={this.updatePosts}/>);
+            helperArray.push(<BlogPost key={obj.id} blogpost={obj} updateLoader={this.updatePosts}/>);
         }
 
         this.setState({arrayOfBlogPosts: helperArray});
 
         console.log(this.state.arrayOfBlogPosts);
+    }
+
+    showOneBlogPost(obj) {
+        let helperArray = [];
     }
 
     render() {

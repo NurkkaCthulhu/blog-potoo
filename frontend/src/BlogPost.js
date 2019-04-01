@@ -15,15 +15,15 @@ class BlogPost extends Component {
     }
 
     componentDidMount() {
-        this.setState({'author': this.props.id.author
-            , 'title': this.props.id.title
-            , 'content' : this.props.id.content
-            , 'postDate' : this.props.id.timeOfCreation});
+        this.setState({'author': this.props.blogpost.author
+            , 'title': this.props.blogpost.title
+            , 'content' : this.props.blogpost.content
+            , 'postDate' : this.props.blogpost.timeOfCreation});
     }
 
     async deletePost() {
 
-        await fetch('/api/blogposts/' + this.props.id.id, {
+        await fetch('/api/blogposts/' + this.props.blogpost.id, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
