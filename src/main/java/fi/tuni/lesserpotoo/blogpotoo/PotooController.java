@@ -92,6 +92,17 @@ public class PotooController {
         return blogPostRepository.findByTitleContainingIgnoreCase(containingWord);
     }
 
+    @GetMapping("/api/blogposts/tag/{tagName}")
+    public Iterable<BlogPost> getBlogPostsByTag(@PathVariable String tagName) {
+        Optional<Tag> tag = tagRepository.findTagByTagNameIgnoreCase(tagName);
+
+        if (tag.isPresent()) {
+            return tag.get().getBlogPosts();
+        } else {
+            return new LinkedList<BlogPost>();
+        }
+    }
+
     @GetMapping("/api/blogposts/date/{date:[0-9]{4}-[0-9]{2}-[0-9]{2}}")
     public Iterable<BlogPost> getBlogPostsByDateAsc(@PathVariable String date) {
         try {
