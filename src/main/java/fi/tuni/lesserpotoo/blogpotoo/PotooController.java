@@ -164,4 +164,28 @@ public class PotooController {
             blogPostRepository.save(blogPostOpt.get());
         }
     }
+
+    @PutMapping("/api/blogposts/{blogPostId}/tags")
+    public void updateBlogPostTags(@PathVariable int blogPostId, @RequestBody List<String> tags) {
+        Optional<BlogPost> blogPostOpt = blogPostRepository.findById(blogPostId);
+
+        if (blogPostOpt.isPresent()) {
+            BlogPost blogPost = blogPostOpt.get();
+            LinkedList<Tag> removeTags = new LinkedList<>();
+
+            for (Tag tag : blogPost.getTags()) {
+                if (tag.getBlogPosts().size() == 1) {
+                    removeTags.add(tag);
+                }
+            }
+
+            blogPost.getTags().clear();
+            tagRepository.deleteAll(removeTags);
+
+            blogPostOpt.get().setTimeOfEdit(LocalDateTime.now());
+            blogPostRepository.save(blogPostOpt.get());
+
+            addTagsToBlogPost(blogPostId, tags);
+        }
+    }
 }
