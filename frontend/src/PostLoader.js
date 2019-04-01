@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import BlogPost from './BlogPost';
 
 class PostLoader extends Component {
@@ -8,7 +9,7 @@ class PostLoader extends Component {
         this.listAllBlogPosts = this.listAllBlogPosts.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
         this.showOneBlogPost = this.showOneBlogPost.bind(this);
-        this.state = {arrayOfBlogPosts: []}
+        this.state = {arrayOfBlogPosts: [], route: '/blogposts/'};
     }
 
     componentDidMount() {
@@ -23,16 +24,17 @@ class PostLoader extends Component {
         let helperArray = [];
 
         for (let obj of jsonObject) {
-            helperArray.push(<BlogPost key={obj.id} blogpost={obj} updateLoader={this.updatePosts}/>);
+            helperArray.push(<BlogPost key={obj.id} blogpost={obj} route={this.state.route}
+                                       updateLoader={this.updatePosts} showThisPost={this.showOneBlogPost}/>);
         }
 
         this.setState({arrayOfBlogPosts: helperArray});
 
-        console.log(this.state.arrayOfBlogPosts);
+        console.log('List all: ' + this.state.arrayOfBlogPosts);
     }
 
-    showOneBlogPost(obj) {
-        let helperArray = [];
+    showOneBlogPost() {
+        console.log('This is one post method');
     }
 
     render() {
