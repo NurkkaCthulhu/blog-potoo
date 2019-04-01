@@ -1,5 +1,7 @@
 package fi.tuni.lesserpotoo.blogpotoo;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -139,5 +141,16 @@ public class PotooController {
     @GetMapping("/api/hello")
     public String hello() {
         return "" + blogPostRepository.findAll();
+    }
+
+    @PutMapping("/api/blogposts/{blogPostId}/title")
+    public void updateBlogPostTitle(@PathVariable int blogPostId, @RequestBody String title) {
+        Optional<BlogPost> blogPostOpt = blogPostRepository.findById(blogPostId);
+
+        if (blogPostOpt.isPresent()) {
+            blogPostOpt.get().setTimeOfEdit(LocalDateTime.now());
+            blogPostOpt.get().setTitle(title);
+            blogPostRepository.save(blogPostOpt.get());
+        }
     }
 }
