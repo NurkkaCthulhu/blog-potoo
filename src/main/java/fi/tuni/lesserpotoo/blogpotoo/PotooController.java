@@ -9,9 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class PotooController {
@@ -55,7 +53,31 @@ public class PotooController {
 
     @PostMapping(value = "/api/blogposts")
     public void saveBlogPost(@RequestBody BlogPost blogPost) {
+        blogPost.getTags().clear();
         blogPostRepository.save(blogPost);
+    }
+
+    @PostMapping("/api/blogposts/{blogPostId}/tag")
+    public void addTagsToBlogPost(@PathVariable int blogPostId, @RequestBody List<String> tagNames) {
+        Optional<BlogPost> blogPostO = blogPostRepository.findById(blogPostId);
+
+        if (blogPostO.isPresent()) {
+            BlogPost blogPost = blogPostO.get();
+
+            for (String tagName : tagNames) {
+                Optional<Tag> tag = tagRepository.findTagByTagNameIgnoreCase(tagName);
+
+                if (tag.isPresent()) {
+                    blogPost.getTags().add(tag.get());
+                } else {
+                    Tag newTag = new Tag(tagName.toLowerCase());
+                    tagRepository.save(newTag);
+                    blogPost.getTags().add(newTag);
+                }
+            }
+
+            blogPostRepository.save(blogPost);
+        }
     }
 
     @DeleteMapping("/api/blogposts/{blogPostId}")
