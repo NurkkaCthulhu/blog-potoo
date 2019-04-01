@@ -143,6 +143,21 @@ public class PotooController {
         return "" + blogPostRepository.findAll();
     }
 
+    @PutMapping("/api/blogposts/{blogPostId}")
+    public void updateBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode updateJson) {
+        updateBlogPostTitle(blogPostId, updateJson.get("title").asText());
+        updateBlogPostContent(blogPostId, updateJson.get("content").asText());
+
+        ArrayNode tagArray = (ArrayNode) updateJson.get("tags");
+        LinkedList<String> tags = new LinkedList<>();
+
+        for (int i = 0; i < tagArray.size(); i++) {
+            tags.add(tagArray.get(i).asText());
+        }
+
+        updateBlogPostTags(blogPostId, tags);
+    }
+
     @PutMapping("/api/blogposts/{blogPostId}/title")
     public void updateBlogPostTitle(@PathVariable int blogPostId, @RequestBody String title) {
         Optional<BlogPost> blogPostOpt = blogPostRepository.findById(blogPostId);
