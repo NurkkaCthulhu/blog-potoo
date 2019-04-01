@@ -30,7 +30,7 @@ class BlogPost extends Component {
                 'Content-Type': 'application/json'
             }
         }).then(() => {
-            this.props.sendData();
+            this.props.updateLoader();
         });
     }
 
