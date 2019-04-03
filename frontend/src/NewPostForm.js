@@ -10,6 +10,7 @@ class NewPostForm extends Component {
         this.makeNewPost = this.makeNewPost.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.onRouteChanged = this.onRouteChanged.bind(this);
 
         this.state = {
             author: ''
@@ -40,6 +41,21 @@ class NewPostForm extends Component {
         }
 
         event.preventDefault();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.location !== prevProps.location) {
+            this.onRouteChanged();
+        }
+    }
+
+    onRouteChanged() {
+        this.setState({
+            author: ''
+            , title: ''
+            , content: ''
+            , tags: ''
+            , modifying: false});
     }
 
     componentDidMount() {
