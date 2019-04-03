@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -130,7 +131,7 @@ public class PotooController {
         if (tag.isPresent()) {
             return getIdsOfThesePosts(tag.get().getBlogPosts());
         } else {
-            return null;
+            return new LinkedList<Integer>();
         }
     }
 
