@@ -3,9 +3,15 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './css/frontpage_style.css';
 import PostLoader from './PostLoader';
 import NewPostForm from './NewPostForm';
+import BlogPost from './BlogPost';
+
 
 function Index() {
     return <PostLoader />;
+}
+
+function SinglePost() {
+    return <BlogPost />
 }
 
 function NewPost() {
@@ -26,7 +32,8 @@ function App() {
                 </div>
                 <div className="blog-posts">
                     <Route path="/" exact component={Index} />
-                    <Route path="/newpost" exact component={NewPost} />
+                    <Route path="/newpost" component={NewPost} />
+                    <Route path={"/blogposts/:id"} component={BlogPost}/>
                 </div>
                 <div className="footer"><span>Blog Potoo, the blog of the future (2019)</span></div>
             </div>

@@ -78,3 +78,7 @@ i {
 .tagsOfPosts {
     color: #ddca61;
 }
+
+.loading {
+    text-align: center;
+}

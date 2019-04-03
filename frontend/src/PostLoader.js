@@ -8,8 +8,7 @@ class PostLoader extends Component {
         super();
         this.listAllBlogPosts = this.listAllBlogPosts.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
-        this.state = {arrayOfBlogPosts: []
-                        , route: '/blogposts/'};
+        this.state = {arrayOfBlogPosts: []};
     }
 
     componentDidMount() {
@@ -18,15 +17,16 @@ class PostLoader extends Component {
 
     updatePosts() {
         this.setState({isFetching: true});
-        fetch('/api/blogposts/').then((httpResponse) => httpResponse.json()).then(this.listAllBlogPosts);
+        this.listAllBlogPosts();
+        //fetch('/api/blogposts/').then((httpResponse) => httpResponse.json()).then(this.listAllBlogPosts);
     }
 
-    listAllBlogPosts(jsonObject) {
+    listAllBlogPosts() {
         let helperArray = [];
 
-        for (let obj of jsonObject) {
-            helperArray.push(<BlogPost key={obj.id} blogpost={obj} route={this.state.route}
-                                       updateLoader={this.updatePosts} />);
+        for (let i = 0; i < 3; i++) {
+            let keyId = i + 1;
+            helperArray.push(<BlogPost key={keyId} id={keyId} />);
         }
 
         this.setState({arrayOfBlogPosts: helperArray, isFetching: false});
