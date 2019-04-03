@@ -42,6 +42,27 @@ class NewPostForm extends Component {
         event.preventDefault();
     }
 
+    componentDidMount() {
+        if (this.props.match.params.id === 'new') {
+            console.log('new post :3')
+        } else {
+            fetch('/api/blogposts/' + this.props.match.params.id)
+                .then((httpResponse) => httpResponse.json())
+                .then((post) => {
+                    let tags = [];
+                    for (let t of post.tags) {
+                        tags.push(t.tagName);
+                    }
+                    this.setState({
+                        author: post.author
+                        , title: post.title
+                        , content: post.content
+                        , tags: tags
+                    });
+            });
+        }
+    }
+
     async makeNewPost() {
         var tagArray = this.state.tags.split(',');
 
