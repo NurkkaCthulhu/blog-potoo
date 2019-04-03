@@ -54,9 +54,10 @@ public class PotooController {
     }
 
     @PostMapping(value = "/api/blogposts")
-    public void saveBlogPost(@RequestBody BlogPost blogPost) {
+    public int saveBlogPost(@RequestBody BlogPost blogPost) {
         blogPost.getTags().clear();
         blogPostRepository.save(blogPost);
+        return blogPost.getId();
     }
 
     @PostMapping("/api/blogposts/{blogPostId}/tag")
