@@ -74,6 +74,12 @@ class NewPostForm extends Component {
             tagArray[i] = tag.trim();
         }
 
+        let filtered = tagArray.filter(function (el) {
+            return el != '';
+        });
+
+        tagArray = filtered;
+
         if(this.state.modifying){
             const newPost = {
                 title: this.state.title,
