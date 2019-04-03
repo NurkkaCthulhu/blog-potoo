@@ -15,6 +15,7 @@ class NewPostForm extends Component {
             author: ''
             , title: ''
             , content: ''
+            , tags: ''
         };
     }
 
@@ -22,6 +23,7 @@ class NewPostForm extends Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
+        const tags = target.tags;
 
         this.setState({
             [name]: value
@@ -41,6 +43,13 @@ class NewPostForm extends Component {
     }
 
     async makeNewPost() {
+        var tagArray = this.state.tags.split(',');
+
+        for (let i in tagArray) {
+            let tag = tagArray[i];
+            tagArray[i] = tag.trim();
+        }
+
         const newPost = {
             author: this.state.author,
             title: this.state.title,
@@ -54,9 +63,25 @@ class NewPostForm extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(newPost),
-        }).then(() => {
-            this.props.history.push("/")
-        })
+        }).then((response) => {
+            return response.json()
+        }).then((value) => {
+            console.log(value);
+
+            if (tagArray.length > 0) {
+                fetch('/api/blogposts/' + value + '/tag', {
+                   method: 'POST',
+                   headers: {
+                       'Accept': 'application/json',
+                       'Content-Type': 'application/json'
+                   },
+                   body: JSON.stringify(tagArray),
+               }).then(() => {
+                    console.log("tags added to " + value)
+               })
+            }
+        }).finally(() => {
+            this.props.history.push("/")})
     }
 
     render() {
@@ -89,7 +114,13 @@ class NewPostForm extends Component {
                         <br />
                         <textarea value={this.state.content} onChange={this.handleChange} name="content"/>
                     </label>
-                    <br />
+
+                    <p><label>
+                       Tags
+                       <br />
+                       <input type="text" value={this.state.tags} onChange={this.handleChange} name="tags"/>
+                    </label></p>
+
                     <input type="submit" value="Submit" />
                 </form>
             </div>
