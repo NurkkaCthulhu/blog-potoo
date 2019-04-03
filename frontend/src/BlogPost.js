@@ -6,27 +6,47 @@ class BlogPost extends Component {
 
     constructor(props) {
         super(props);
-        let postUrl = this.props.route + this.props.blogpost.id;
-        let modifyUrl = 'modifyPost/' + this.props.blogpost.id;
+        console.log(props);
+        const  id  = 1;
+        let modifyUrl = 'modifyPost/' + id;
         this.deletePost = this.deletePost.bind(this);
         this.listOfTags = this.listOfTags.bind(this);
 
         this.state = {
-            author: ''
+            id: id
+            , author: ''
             , title: ''
             , content: ''
             , postDate: ''
             , postTime: ''
             , tags: []
-            , postUrl: postUrl
+            , postUrl: ''
             , modifyUrl: modifyUrl
         }
+    }
+
+    componentDidMount() {
+        fetch('/api/blogposts/' + this.state.id).then((httpResponse) => httpResponse.json())
+            .then((blogpost) => {
+                let postUrl = '/blogposts/' + this.state.id;
+                this.setState({
+                    author: blogpost.author
+                    , title: blogpost.title
+                    , content: blogpost.content
+                    , postDate: blogpost.dateOfCreation
+                    , postTime: blogpost.timeOfCreation
+                    , tags: blogpost.tags
+                    , postUrl: postUrl
+                });
+                //this.setState({blogpost: blogObject});
+            }
+        );
     }
 
     listOfTags() {
         let tagString = '';
 
-        for (let tagObj of this.props.blogpost.tags) {
+        for (let tagObj of this.state.tags) {
             console.log(tagObj);
             tagString = tagString + '#' + tagObj.tagName + ' ';
         }
@@ -36,32 +56,34 @@ class BlogPost extends Component {
 
     async deletePost() {
 
-        await fetch('/api/blogposts/' + this.props.blogpost.id, {
+        await fetch('/api/blogposts/' + this.state.id, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         }).then(() => {
-            this.props.updateLoader();
+            //this.props.updateLoader();
         });
     }
 
     render() {
-        console.log('BlogPost: ' + this.props.blogpost.id);
+        console.log('BlogPost: ' + this.state.id);
+        console.log('STATE: ');
+        console.log(this.state);
         return (
                 <div className = "container">
 
-                    <h1><Link to={this.state.postUrl}>{this.props.blogpost.title} </Link>
+                    <h1><Link to={this.state.postUrl}>{this.state.title} </Link>
                     </h1>
                     <div className="postIcons">
                         <button className="deletebutton" onClick={this.deletePost}>X</button>
                         <Link to={this.state.modifyUrl}><button className="modifybutton"><i className='fas fa-pen'></i></button></Link>
                         <i className='far fa-eye-slash'></i>
                     </div>
-                <h3>{this.props.blogpost.author}</h3>
-                <p>Posted: {this.props.blogpost.dateOfCreation} at {this.props.blogpost.timeOfCreation.substring(0,5)}</p>
-                <p>{this.props.blogpost.content}</p>
+                <h3>{this.state.author}</h3>
+                <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0,5)}</p>
+                <p>{this.state.content}</p>
                 <p className = "tagsOfPosts">{this.listOfTags()}</p>
             </div>
         );
