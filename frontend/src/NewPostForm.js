@@ -54,6 +54,7 @@ class NewPostForm extends Component {
                         tags += t.tagName;
                         tags += ',';
                     }
+                    tags = tags.slice(0, -1);
                     this.setState({
                         author: post.author
                         , title: post.title
