@@ -43,3 +43,7 @@ i {
 .tagsOfPosts {
     color: DarkGrey;
 }
+
+.loading {
+    text-align: center;
+}
