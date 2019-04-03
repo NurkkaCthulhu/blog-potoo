@@ -139,6 +139,35 @@ public class PotooController {
         }
     }
 
+    @GetMapping("/api/blogposts/search_all/{keyWord}")
+    public Iterable<BlogPost> getBlogPostsByKeyWord(@PathVariable String keyWord) {
+        HashSet<BlogPost> blogPosts = new HashSet<>();
+
+        for (BlogPost blogPost : getBlogPostsByAuthor(keyWord)) {
+            blogPosts.add(blogPost);
+        }
+
+        for (BlogPost blogPost : getBlogPostsByTag(keyWord)) {
+            blogPosts.add(blogPost);
+        }
+
+        for (BlogPost blogPost : getBlogPostsByTitleContaining(keyWord)) {
+            blogPosts.add(blogPost);
+        }
+
+        return blogPosts;
+    }
+
+    @GetMapping("/api/blogposts/id/all")
+    public Iterable<Integer> getAllBlogPostIds() {
+        Iterable<BlogPost> allBlogPosts = getAllBlogPosts();
+        LinkedList<Integer> allIds = new LinkedList<>();
+
+        allBlogPosts.forEach(x -> allIds.add(x.getId()));
+
+        return allIds;
+    }
+
     @GetMapping("/api/hello")
     public String hello() {
         return "" + blogPostRepository.findAll();
