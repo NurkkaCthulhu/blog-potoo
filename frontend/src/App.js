@@ -33,7 +33,7 @@ function App() {
                 <div className="blog-posts">
                     <Route path="/" exact component={Index} />
                     <Route path="/newpost" component={NewPost} />
-                    <Route path="/blogposts/:id" component={SinglePost}/>
+                    <Route path={"/blogposts/:id"} component={BlogPost}/>
                 </div>
                 <div className="footer"><span>Blog Potoo, the blog of the future (2019)</span></div>
             </div>

@@ -6,8 +6,14 @@ class BlogPost extends Component {
 
     constructor(props) {
         super(props);
-        console.log(props);
-        const  id  = 1;
+        console.log('Propsit postis ')
+        console.log(props)
+        var id = this.props.id;
+        if (this.props.match === undefined) {
+            id  = props.id;
+        } else {
+            id  = this.props.match.params.id;
+        }
         let modifyUrl = 'modifyPost/' + id;
         this.deletePost = this.deletePost.bind(this);
         this.listOfTags = this.listOfTags.bind(this);
@@ -17,8 +23,8 @@ class BlogPost extends Component {
             , author: ''
             , title: ''
             , content: ''
-            , postDate: ''
-            , postTime: ''
+            , postDate: '0000-01-01'
+            , postTime: '00:00:00'
             , tags: []
             , postUrl: ''
             , modifyUrl: modifyUrl
@@ -26,6 +32,8 @@ class BlogPost extends Component {
     }
 
     componentDidMount() {
+        console.log('Console mount ' + this.state);
+        console.log(this.state);
         fetch('/api/blogposts/' + this.state.id).then((httpResponse) => httpResponse.json())
             .then((blogpost) => {
                 let postUrl = '/blogposts/' + this.state.id;

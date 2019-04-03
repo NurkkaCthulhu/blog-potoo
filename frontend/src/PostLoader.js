@@ -26,7 +26,7 @@ class PostLoader extends Component {
 
         for (let i = 0; i < 3; i++) {
             let keyId = i + 1;
-            helperArray.push(<BlogPost key={keyId} />);
+            helperArray.push(<BlogPost key={keyId} id={keyId} />);
         }
 
         this.setState({arrayOfBlogPosts: helperArray, isFetching: false});
