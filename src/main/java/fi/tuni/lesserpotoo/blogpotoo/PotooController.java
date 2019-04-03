@@ -114,31 +114,31 @@ public class PotooController {
     }
 
     @GetMapping("/api/blogposts/author/{authorName}")
-    public Iterable<BlogPost> getBlogPostsByAuthor(@PathVariable String authorName) {
-        return blogPostRepository.findByAuthor(authorName);
+    public Iterable<Integer> getBlogPostsByAuthor(@PathVariable String authorName) {
+        return getIdsOfThesePosts(blogPostRepository.findByAuthor(authorName));
     }
 
     @GetMapping("/api/blogposts/title/{containingWord}")
-    public Iterable<BlogPost> getBlogPostsByTitleContaining(@PathVariable String containingWord) {
-        return blogPostRepository.findByTitleContainingIgnoreCase(containingWord);
+    public Iterable<Integer> getBlogPostsByTitleContaining(@PathVariable String containingWord) {
+        return getIdsOfThesePosts(blogPostRepository.findByTitleContainingIgnoreCase(containingWord));
     }
 
     @GetMapping("/api/blogposts/tag/{tagName}")
-    public Iterable<BlogPost> getBlogPostsByTag(@PathVariable String tagName) {
+    public Iterable<Integer> getBlogPostsByTag(@PathVariable String tagName) {
         Optional<Tag> tag = tagRepository.findTagByTagNameIgnoreCase(tagName);
 
         if (tag.isPresent()) {
-            return tag.get().getBlogPosts();
+            return getIdsOfThesePosts(tag.get().getBlogPosts());
         } else {
-            return new LinkedList<BlogPost>();
+            return null;
         }
     }
 
     @GetMapping("/api/blogposts/date/{date:[0-9]{4}-[0-9]{2}-[0-9]{2}}")
-    public Iterable<BlogPost> getBlogPostsByDateAsc(@PathVariable String date) {
+    public Iterable<Integer> getBlogPostsByDateAsc(@PathVariable String date) {
         try {
             LocalDate localDate = LocalDate.parse(date);
-            return blogPostRepository.findByDateOfCreation(localDate);
+            return getIdsOfThesePosts(blogPostRepository.findByDateOfCreation(localDate));
         } catch (DateTimeParseException e) {
             e.printStackTrace();
             return null;
@@ -146,22 +146,22 @@ public class PotooController {
     }
 
     @GetMapping("/api/blogposts/search_all/{keyWord}")
-    public Iterable<BlogPost> getBlogPostsByKeyWord(@PathVariable String keyWord) {
-        HashSet<BlogPost> blogPosts = new HashSet<>();
+    public Iterable<Integer> getBlogPostsByKeyWord(@PathVariable String keyWord) {
+        HashSet<Integer> blogPostIds = new HashSet<>();
 
-        for (BlogPost blogPost : getBlogPostsByAuthor(keyWord)) {
-            blogPosts.add(blogPost);
+        for (Integer blogPostId : getBlogPostsByAuthor(keyWord)) {
+            blogPostIds.add(blogPostId);
         }
 
-        for (BlogPost blogPost : getBlogPostsByTag(keyWord)) {
-            blogPosts.add(blogPost);
+        for (Integer blogPostId : getBlogPostsByTag(keyWord)) {
+            blogPostIds.add(blogPostId);
         }
 
-        for (BlogPost blogPost : getBlogPostsByTitleContaining(keyWord)) {
-            blogPosts.add(blogPost);
+        for (Integer blogPostId : getBlogPostsByTitleContaining(keyWord)) {
+            blogPostIds.add(blogPostId);
         }
 
-        return blogPosts;
+        return blogPostIds;
     }
 
     @GetMapping("/api/hello")
