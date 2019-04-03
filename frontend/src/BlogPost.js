@@ -27,7 +27,6 @@ class BlogPost extends Component {
         let tagString = '';
 
         for (let tagObj of this.props.blogpost.tags) {
-            console.log(tagObj);
             tagString = tagString + '#' + tagObj.tagName + ' ';
         }
 
