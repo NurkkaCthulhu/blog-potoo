@@ -28,6 +28,7 @@ function App() {
                 </div>
                 <div className="blog-posts">
                     <Route path="/" exact component={Index} />
+                    <Route path="/search/:search" component={PostLoader} />
                     <Route path="/modifypost/:id" component={NewPostForm} />
                     <Route path={"/blogposts/:id"} component={BlogPost}/>
                 </div>
