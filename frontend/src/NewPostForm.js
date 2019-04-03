@@ -157,7 +157,9 @@ class NewPostForm extends Component {
                         <label>
                             Author
                             <br />
-                            <input type="text" value={this.state.author} onChange={this.handleChange} name="author"/>
+                            {this.state.modifying ? <input type="text" value={this.state.author} onChange={this.handleChange} name="author" readOnly={true}/> :
+                                <input type="text" value={this.state.author} onChange={this.handleChange} name="author"/>}
+
                         </label>
                     </div>
 
