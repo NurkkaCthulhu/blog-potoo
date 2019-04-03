@@ -23,9 +23,6 @@ function App() {
                     <Link to="/"><i className='fab fa-earlybirds'></i>Blog Potoo</Link>
                     <Link to="/modifypost/new" className="newpostlink">Add blog post...</Link>
                 </nav>
-                <div className="right-float">
-                    <p>Archives</p>
-                </div>
                 <div className="blog-posts">
                     <Route path="/" exact component={Index} />
                     <Route path="/search/:search" component={PostLoader} />
