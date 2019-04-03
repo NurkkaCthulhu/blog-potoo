@@ -51,10 +51,10 @@ class BlogPost extends Component {
         return (
                 <div className = "container">
 
-                    <h1><Link to={this.state.postUrl}>{this.props.blogpost.title} </Link>
-                    </h1>
+                    <div className="postheader"><Link to={this.state.postUrl}><h1>{this.props.blogpost.title} </h1></Link>
+                    </div>
                     <div className="postIcons">
-                        <button className="deletebutton" onClick={this.deletePost}>X</button>
+                        <button className="deletebutton" onClick={this.deletePost}><i className='fas fa-times'></i></button>
                         <Link to={this.state.modifyUrl}><button className="modifybutton"><i className='fas fa-pen'></i></button></Link>
                         <i className='far fa-eye-slash'></i>
                     </div>

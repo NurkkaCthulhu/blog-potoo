@@ -87,7 +87,7 @@ class NewPostForm extends Component {
     render() {
         return (
             <div className = "container">
-                <h1>Make a new post</h1>
+                <div className="newpostheader"><h1>Make a new post</h1></div>
                 <form onSubmit={this.handleSubmit}>
                     <div className="required">
                         <label>
