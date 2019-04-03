@@ -18,7 +18,7 @@ function App() {
         <Router>
             <div>
                 <nav className="header">
-                    <Link to="/">Sivun logo</Link>
+                    <Link to="/"><i className='fab fa-earlybirds'></i>Blog Potoo</Link>
                     <Link to="/newpost" className="newpostlink">Add blog post...</Link>
                 </nav>
                 <div className="right-float">

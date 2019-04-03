@@ -12,3 +12,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.fa-earlybirds {
+    font-size: 45px;
+    margin-top: -12px;
+    margin-right: 10px;
+    float: left;
+}
