@@ -44,20 +44,22 @@ class NewPostForm extends Component {
 
     componentDidMount() {
         if (this.props.match.params.id === 'new') {
-            console.log('new post :3')
+            this.setState({modifying: false})
         } else {
             fetch('/api/blogposts/' + this.props.match.params.id)
                 .then((httpResponse) => httpResponse.json())
                 .then((post) => {
-                    let tags = [];
+                    let tags = '';
                     for (let t of post.tags) {
-                        tags.push(t.tagName);
+                        tags += t.tagName;
+                        tags += ',';
                     }
                     this.setState({
                         author: post.author
                         , title: post.title
                         , content: post.content
                         , tags: tags
+                        , modifying: true
                     });
             });
         }
@@ -71,38 +73,56 @@ class NewPostForm extends Component {
             tagArray[i] = tag.trim();
         }
 
-        const newPost = {
-            author: this.state.author,
-            title: this.state.title,
-            content: this.state.content,
-        };
+        if(this.state.modifying){
+            const newPost = {
+                title: this.state.title,
+                content: this.state.content,
+                tags: tagArray
+            };
+            await fetch('/api/blogposts/' + this.props.match.params.id, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newPost),
+            }).finally(() => {
+                this.props.history.push("/")
+            })
+        } else {
+            const newPost = {
+                author: this.state.author,
+                title: this.state.title,
+                content: this.state.content,
+            };
+            await fetch('/api/blogposts/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newPost),
+            }).then((response) => {
+                return response.json()
+            }).then((value) => {
+                console.log(value);
 
-        await fetch('/api/blogposts/', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newPost),
-        }).then((response) => {
-            return response.json()
-        }).then((value) => {
-            console.log(value);
-
-            if (tagArray.length > 0) {
-                fetch('/api/blogposts/' + value + '/tag', {
-                   method: 'POST',
-                   headers: {
-                       'Accept': 'application/json',
-                       'Content-Type': 'application/json'
-                   },
-                   body: JSON.stringify(tagArray),
-               }).then(() => {
-                    console.log("tags added to " + value)
-               })
-            }
-        }).finally(() => {
-            this.props.history.push("/")})
+                if (tagArray.length > 0) {
+                    fetch('/api/blogposts/' + value + '/tag', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(tagArray),
+                    }).then(() => {
+                        console.log("tags added to " + value)
+                    })
+                }
+            }).finally(() => {
+                this.props.history.push("/")
+            })
+        }
     }
 
     render() {
