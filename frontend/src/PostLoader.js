@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import BlogPost from './BlogPost';
 
 class PostLoader extends Component {
@@ -16,7 +15,6 @@ class PostLoader extends Component {
     }
 
     updatePosts() {
-        this.setState({isFetching: true});
         this.listAllBlogPosts();
         //fetch('/api/blogposts/').then((httpResponse) => httpResponse.json()).then(this.listAllBlogPosts);
     }
@@ -29,17 +27,12 @@ class PostLoader extends Component {
             helperArray.push(<BlogPost key={keyId} id={keyId} />);
         }
 
-        this.setState({arrayOfBlogPosts: helperArray, isFetching: false});
+        this.setState({arrayOfBlogPosts: helperArray});
 
         console.log('List all: ' + this.state.arrayOfBlogPosts);
     }
 
     render() {
-        const {isFetching} = this.state;
-        console.log('Fetsaaminen: ' + isFetching);
-        if(isFetching || isFetching === undefined) {
-            return <p>Loading.....</p>;
-        }
         return (
             <div>
                 {this.state.arrayOfBlogPosts}
