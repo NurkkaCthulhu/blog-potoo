@@ -158,6 +158,7 @@ class NewPostForm extends Component {
                             Author
                             <br />
                             <input type="text" value={this.state.author} onChange={this.handleChange} name="author" readOnly={this.state.modifying}/>
+                            <small hidden={!this.state.modifying}>Post author cannot be modified.</small>
                         </label>
                     </div>
 
