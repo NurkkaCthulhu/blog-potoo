@@ -21,7 +21,7 @@ function App() {
             <div>
                 <nav className="header">
                     <Link to="/"><i className='fab fa-earlybirds'></i>Blog Potoo</Link>
-                    <Link to="/blogposts/modifypost/new" className="newpostlink" exact={true}>Add blog post...</Link>
+                    <Link to="/blogposts/modifypost/new" className="newpostlink">Add blog post...</Link>
                 </nav>
                 <div className="right-float">
                     <p>Archives</p>
