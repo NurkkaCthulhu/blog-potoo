@@ -10,10 +10,6 @@ function Index() {
     return <PostLoader />;
 }
 
-function SinglePost() {
-    return <BlogPost />
-}
-
 function NewPost() {
     return <NewPostForm/>
 }
@@ -25,14 +21,14 @@ function App() {
             <div>
                 <nav className="header">
                     <Link to="/"><i className='fab fa-earlybirds'></i>Blog Potoo</Link>
-                    <Link to="/newpost" className="newpostlink">Add blog post...</Link>
+                    <Link to="/modifypost/new" className="newpostlink">Add blog post...</Link>
                 </nav>
                 <div className="right-float">
                     <p>Archives</p>
                 </div>
                 <div className="blog-posts">
                     <Route path="/" exact component={Index} />
-                    <Route path="/newpost" component={NewPost} />
+                    <Route path="/modifypost/:id" component={NewPostForm} />
                     <Route path={"/blogposts/:id"} component={BlogPost}/>
                 </div>
                 <div className="footer"><span>Blog Potoo, the blog of the future (2019)</span></div>
