@@ -8,9 +8,35 @@ h1 {
     color: #FFFFFF;
 }
 
-.deletebutton {
+button {
     float: right;
-    background-color: red;
     border: none;
     color: white;
+    cursor: pointer;
+}
+
+.deletebutton {
+    background-color: red;
+}
+
+.modifybutton {
+    background-color: blue;
+}
+
+i {
+    float: right;
+}
+
+.fa-pen {
+    font-size: 16px;
+    margin-right: 0px;
+}
+
+.fa-eye {
+    font-size: 22px;
+    margin-right: 5px;
+}
+
+.postIcons {
+    float: right;
 }
