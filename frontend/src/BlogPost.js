@@ -1,13 +1,12 @@
 import React, {Component} from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import './css/BlogPost_style.css';
 
 class BlogPost extends Component {
 
     constructor(props) {
         super(props);
-        console.log('Propsit postis ')
-        console.log(props)
+
         var id = this.props.id;
         if (this.props.match === undefined) {
             id  = props.id;
@@ -32,8 +31,7 @@ class BlogPost extends Component {
     }
 
     componentDidMount() {
-        console.log('Console mount ' + this.state);
-        console.log(this.state);
+        this.setState({isFetching: true});
         fetch('/api/blogposts/' + this.state.id).then((httpResponse) => httpResponse.json())
             .then((blogpost) => {
                 let postUrl = '/blogposts/' + this.state.id;
@@ -45,6 +43,7 @@ class BlogPost extends Component {
                     , postTime: blogpost.timeOfCreation
                     , tags: blogpost.tags
                     , postUrl: postUrl
+                    , isFetching: false
                 });
                 //this.setState({blogpost: blogObject});
             }
@@ -76,9 +75,9 @@ class BlogPost extends Component {
     }
 
     render() {
-        console.log('BlogPost: ' + this.state.id);
-        console.log('STATE: ');
-        console.log(this.state);
+        if(this.state.isFetching || this.state.isFetching === undefined) {
+            return <p className="loading">Loading post.....</p>;
+        }
         return (
                 <div className = "container">
 
