@@ -57,7 +57,7 @@ class BlogPost extends Component {
                     <div className="postIcons">
                         <button className="deletebutton" onClick={this.deletePost}>X</button>
                         <Link to={this.state.modifyUrl}><button className="modifybutton"><i className='fas fa-pen'></i></button></Link>
-                        <i className='far fa-eye'></i>
+                        <i className='far fa-eye-slash'></i>
                     </div>
                 <h3>{this.props.blogpost.author}</h3>
                 <p>Posted: {this.props.blogpost.dateOfCreation} at {this.props.blogpost.timeOfCreation.substring(0,5)}</p>
