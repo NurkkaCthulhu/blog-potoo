@@ -7,8 +7,10 @@ class BlogPost extends Component {
     constructor(props) {
         super(props);
         let postUrl = this.props.route + this.props.blogpost.id;
+        let modifyUrl = 'modifyPost/' + this.props.blogpost.id;
         this.deletePost = this.deletePost.bind(this);
         this.listOfTags = this.listOfTags.bind(this);
+
         this.state = {
             author: ''
             , title: ''
@@ -17,6 +19,7 @@ class BlogPost extends Component {
             , postTime: ''
             , tags: []
             , postUrl: postUrl
+            , modifyUrl: modifyUrl
         }
     }
 
@@ -49,8 +52,13 @@ class BlogPost extends Component {
         return (
                 <div className = "container">
 
-                    <h1><Link to={this.state.postUrl}>{this.props.blogpost.title} </Link> <button className="deletebutton" onClick={this.deletePost}>X</button>
-                    <i className='far fa-eye'></i> </h1>
+                    <h1><Link to={this.state.postUrl}>{this.props.blogpost.title} </Link>
+                    </h1>
+                    <div className="postIcons">
+                        <button className="deletebutton" onClick={this.deletePost}>X</button>
+                        <Link to={this.state.modifyUrl}><button className="modifybutton"><i className='fas fa-pen'></i></button></Link>
+                        <i className='far fa-eye'></i>
+                    </div>
                 <h3>{this.props.blogpost.author}</h3>
                 <p>Posted: {this.props.blogpost.dateOfCreation} at {this.props.blogpost.timeOfCreation.substring(0,5)}</p>
                 <p>{this.props.blogpost.content}</p>
