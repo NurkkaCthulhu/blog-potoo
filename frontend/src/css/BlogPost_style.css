@@ -14,3 +14,7 @@ h1 {
     border: none;
     color: white;
 }
+
+.tagsOfPosts {
+    color: LightGrey;
+}
