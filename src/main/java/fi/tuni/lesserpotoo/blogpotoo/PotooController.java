@@ -158,6 +158,16 @@ public class PotooController {
         return blogPosts;
     }
 
+    @GetMapping("/api/blogposts/id/all")
+    public Iterable<Integer> getAllBlogPostIds() {
+        Iterable<BlogPost> allBlogPosts = getAllBlogPosts();
+        LinkedList<Integer> allIds = new LinkedList<>();
+
+        allBlogPosts.forEach(x -> allIds.add(x.getId()));
+
+        return allIds;
+    }
+
     @GetMapping("/api/hello")
     public String hello() {
         return "" + blogPostRepository.findAll();
