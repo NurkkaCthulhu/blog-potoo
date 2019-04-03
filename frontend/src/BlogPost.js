@@ -13,7 +13,7 @@ class BlogPost extends Component {
         } else {
             id  = this.props.match.params.id;
         }
-        let modifyUrl = 'modifypost/' + id;
+        let modifyUrl = '/blogposts/modifypost/' + id;
         this.deletePost = this.deletePost.bind(this);
         this.listOfTags = this.listOfTags.bind(this);
         this.makeSeen = this.makeSeen.bind(this);

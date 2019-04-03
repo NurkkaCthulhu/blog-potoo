@@ -54,6 +54,7 @@ class NewPostForm extends Component {
                         tags += t.tagName;
                         tags += ',';
                     }
+                    tags = tags.slice(0, -1);
                     this.setState({
                         author: post.author
                         , title: post.title
@@ -72,6 +73,12 @@ class NewPostForm extends Component {
             let tag = tagArray[i];
             tagArray[i] = tag.trim();
         }
+
+        let filtered = tagArray.filter(function (el) {
+            return el != '';
+        });
+
+        tagArray = filtered;
 
         if(this.state.modifying){
             const newPost = {

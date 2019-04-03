@@ -22,14 +22,14 @@ function App() {
             <div>
                 <nav className="header">
                     <Link to="/"><i className='fab fa-earlybirds'></i>Blog Potoo</Link>
-                    <Link to="/modifypost/new" className="newpostlink">Add blog post...</Link>
+                    <Link to="/blogposts/modifypost/new" className="newpostlink" exact={true}>Add blog post...</Link>
                 </nav>
                 <div className="blog-posts">
                     <SearchBar />
                     <Route path="/" exact component={Index} />
                     <Route path="/search/:search" component={PostLoader} />
-                    <Route path="/modifypost/:id" component={NewPostForm} />
-                    <Route path={"/blogposts/:id"} component={BlogPost}/>
+                    <Route path="/blogposts/modifypost/:id" component={NewPostForm} />
+                    <Route exact path={"/blogposts/:id"} component={BlogPost}/>
                 </div>
                 <div className="footer"><span>Blog Potoo, the blog of the future (2019)</span></div>
             </div>
