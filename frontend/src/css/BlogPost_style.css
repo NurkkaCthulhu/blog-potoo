@@ -40,3 +40,6 @@ i {
 .postIcons {
     float: right;
 }
+.tagsOfPosts {
+    color: DarkGrey;
+}
