@@ -97,9 +97,15 @@ public class PotooController {
         blogPostRepository.deleteById(blogPostId);
     }
 
+    private Iterable<Integer> getIdsOfThesePosts(Iterable<BlogPost> blogPosts) {
+        LinkedList<Integer> allIds = new LinkedList<>();
+        blogPosts.forEach(x -> allIds.add(x.getId()));
+        return allIds;
+    }
+
     @GetMapping("/api/blogposts")
-    public Iterable<BlogPost> getAllBlogPosts() {
-        return blogPostRepository.findAll();
+    public Iterable<Integer> getAllBlogPosts() {
+        return getIdsOfThesePosts(blogPostRepository.findAll());
     }
 
     @GetMapping("/api/blogposts/{blogPostId}")
@@ -156,16 +162,6 @@ public class PotooController {
         }
 
         return blogPosts;
-    }
-
-    @GetMapping("/api/blogposts/id/all")
-    public Iterable<Integer> getAllBlogPostIds() {
-        Iterable<BlogPost> allBlogPosts = getAllBlogPosts();
-        LinkedList<Integer> allIds = new LinkedList<>();
-
-        allBlogPosts.forEach(x -> allIds.add(x.getId()));
-
-        return allIds;
     }
 
     @GetMapping("/api/hello")
