@@ -16,3 +16,10 @@ textarea {
     height: 300px;
     resize: none;
 }
+
+.newpostheader h1 {
+    background-color: #b4a344;
+    color: #ffffff;
+    font-family: 'Gloria Hallelujah', cursive;
+    padding: 3px;
+}

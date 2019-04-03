@@ -3,9 +3,23 @@
     margin-right: 30%;
 }
 
-h1 {
+.postheader h1 {
     background-color: #b4a344;
+    font-family: 'Gloria Hallelujah', cursive;
+    padding: 3px;
+}
+
+.postheader h1:hover {
+    background-color: #967f2b;
+}
+
+.postheader a {
     color: #FFFFFF;
+    text-decoration: none;
+}
+
+.postheader a:hover {
+    color: #ddca61;
 }
 
 button {
@@ -16,11 +30,27 @@ button {
 }
 
 .deletebutton {
-    background-color: red;
+    background-color: #ed2121;
+    height: 30px;
+    width: 30px;
+    margin: 1px;
+    border-radius: 10px;
+}
+
+.deletebutton:hover {
+    background-color: #d60e0e;
 }
 
 .modifybutton {
-    background-color: blue;
+    background-color: #4f8dea;
+    height: 30px;
+    width: 30px;
+    margin: 1px;
+    border-radius: 10px;
+}
+
+.modifybutton:hover {
+    background-color: #3071d3;
 }
 
 i {
@@ -28,18 +58,23 @@ i {
 }
 
 .fa-pen {
+     font-size: 16px;
+     margin-right: 0px;
+}
+
+.fa-times {
     font-size: 16px;
-    margin-right: 0px;
+    margin-right: 3px;
 }
 
 .fa-eye-slash {
     font-size: 16px;
-    margin-right: 5px;
+    margin: 7px;
 }
 
 .postIcons {
     float: right;
 }
 .tagsOfPosts {
-    color: DarkGrey;
+    color: #ddca61;
 }
