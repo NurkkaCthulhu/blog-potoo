@@ -2,16 +2,24 @@ import React, {Component} from "react";
 import BlogPost from './BlogPost';
 
 class PostLoader extends Component {
+    constructor(props) {
+        super(props);
+        var search = '';
+        if (this.props.match === undefined) {
+            search = '/';
+        } else {
+            console.log("help")
+            search = '/search_all/' + this.props.match.params.search;
+        }
 
-    constructor() {
-        super();
         this.listAllBlogPosts = this.listAllBlogPosts.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
-        this.state = {arrayOfBlogPosts: []};
+        this.state = {search: search, arrayOfBlogPosts: [], blogPostIds: []};
     }
 
     componentDidMount() {
-        this.updatePosts();
+        let fetchURL = '/api/blogposts' + this.state.search;
+        fetch(fetchURL).then((httpResponse) => httpResponse.json()).then((json) => this.setState({blogPostIds: json})).then(() => this.updatePosts());
     }
 
     updatePosts() {
@@ -22,9 +30,10 @@ class PostLoader extends Component {
     listAllBlogPosts() {
         let helperArray = [];
 
-        for (let i = 0; i < 3; i++) {
-            let keyId = i + 1;
-            helperArray.push(<BlogPost key={keyId} id={keyId} />);
+        console.log(this.state.blogPostIds);
+
+        for (let id of this.state.blogPostIds) {
+            helperArray.push(<BlogPost key={id} id={id} />);
         }
 
         this.setState({arrayOfBlogPosts: helperArray});
