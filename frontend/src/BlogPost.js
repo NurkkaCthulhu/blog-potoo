@@ -16,6 +16,10 @@ class BlogPost extends Component {
         let modifyUrl = 'modifypost/' + id;
         this.deletePost = this.deletePost.bind(this);
         this.listOfTags = this.listOfTags.bind(this);
+        this.makeSeen = this.makeSeen.bind(this);
+
+        let seenID = 'seen' + id;
+        let seen = localStorage.getItem(seenID);
 
         this.state = {
             id: id
@@ -27,6 +31,8 @@ class BlogPost extends Component {
             , tags: []
             , postUrl: ''
             , modifyUrl: modifyUrl
+            , seen: seen
+            , seenID: seenID
         }
     }
 
@@ -48,6 +54,17 @@ class BlogPost extends Component {
                 //this.setState({blogpost: blogObject});
             }
         );
+    }
+
+    makeSeen() {
+        if(localStorage.getItem(this.state.seenID) === 'true') {
+            localStorage.setItem(this.state.seenID, 'false');
+        } else {
+            localStorage.setItem(this.state.seenID, 'true');
+        }
+
+        let seed = localStorage.getItem(this.state.seenID);
+        this.setState({seen: seed});
     }
 
     listOfTags() {
@@ -75,6 +92,10 @@ class BlogPost extends Component {
     }
 
     render() {
+        let seenBool = false;
+        if(localStorage.getItem(this.state.seenID) === 'true') {
+            seenBool = true;
+        }
         if(this.state.isFetching || this.state.isFetching === undefined) {
             return <p className="loading">Loading post.....</p>;
         }
@@ -86,7 +107,9 @@ class BlogPost extends Component {
                     <div className="postIcons">
                         <button className="deletebutton" onClick={this.deletePost}><i className='fas fa-times'></i></button>
                         <Link to={this.state.modifyUrl}><button className="modifybutton"><i className='fas fa-pen'></i></button></Link>
-                        <i className='far fa-eye-slash'></i>
+                        {seenBool ? <i className='far fa-eye'  onClick={this.makeSeen}></i> :
+                            <i className='far fa-eye-slash'  onClick={this.makeSeen}></i>}
+
                     </div>
                 <h3>{this.state.author}</h3>
                 <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0,5)}</p>
