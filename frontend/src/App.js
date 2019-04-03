@@ -4,6 +4,7 @@ import './css/frontpage_style.css';
 import PostLoader from './PostLoader';
 import NewPostForm from './NewPostForm';
 import BlogPost from './BlogPost';
+import SearchBar from './SearchBar';
 
 
 function Index() {
@@ -24,6 +25,7 @@ function App() {
                     <Link to="/modifypost/new" className="newpostlink">Add blog post...</Link>
                 </nav>
                 <div className="blog-posts">
+                    <SearchBar />
                     <Route path="/" exact component={Index} />
                     <Route path="/search/:search" component={PostLoader} />
                     <Route path="/modifypost/:id" component={NewPostForm} />
