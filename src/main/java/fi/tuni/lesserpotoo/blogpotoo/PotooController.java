@@ -76,6 +76,12 @@ public class PotooController {
         return blogPost.getId();
     }
 
+    @PostMapping(value = "/api/users")
+    public int saveUser(@RequestBody User user) {
+        userRepository.save(user);
+        return user.getId();
+    }
+
     @PostMapping("/api/blogposts/{blogPostId}/tag")
     public void addTagsToBlogPost(@PathVariable int blogPostId, @RequestBody List<String> tagNames) {
         Optional<BlogPost> blogPostO = blogPostRepository.findById(blogPostId);
