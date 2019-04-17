@@ -29,18 +29,6 @@ button {
     cursor: pointer;
 }
 
-.deletebutton {
-    background-color: #ed2121;
-    height: 30px;
-    width: 30px;
-    margin: 1px;
-    border-radius: 10px;
-}
-
-.deletebutton:hover {
-    background-color: #d60e0e;
-}
-
 .modifybutton {
     background-color: #4f8dea;
     height: 30px;
