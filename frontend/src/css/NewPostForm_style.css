@@ -32,3 +32,45 @@ small {
     font-weight: normal;
     color: dimgrey;
 }
+
+.container {
+    margin-bottom: 70px;
+}
+
+.app-button{
+    float:none;
+    color: white;
+    width: 100px;
+    height: 50px;
+    margin: 2px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.delete-button {
+    background-color: red;
+}
+
+.delete-button:hover{
+    background-color: darkred;
+}
+
+.submit-button {
+    background-color: #4f8dea;
+}
+
+.submit-button:hover {
+    background-color: darkblue;
+}
+
+.cancel-button {
+    background-color: #444444;
+}
+.cancel-button:hover {
+    background-color: #111111;
+}
+
+.row{
+    text-align:center;
+}

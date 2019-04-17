@@ -14,7 +14,6 @@ class BlogPost extends Component {
             id  = this.props.match.params.id;
         }
         let modifyUrl = '/blogposts/modifypost/' + id;
-        this.deletePost = this.deletePost.bind(this);
         this.listOfTags = this.listOfTags.bind(this);
         this.makeSeen = this.makeSeen.bind(this);
 
@@ -78,37 +77,24 @@ class BlogPost extends Component {
         return tagString;
     }
 
-    async deletePost() {
-
-        await fetch('/api/blogposts/' + this.state.id, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(() => {
-            //this.props.updateLoader();
-        });
-    }
-
     render() {
         let seenBool = false;
         if(localStorage.getItem(this.state.seenID) === 'true') {
             seenBool = true;
         }
+
         if(this.state.isFetching || this.state.isFetching === undefined) {
             return <p className="loading">Loading post.....</p>;
         }
+
         return (
                 <div className = "container">
 
                     <div className="postheader"><Link to={this.state.postUrl}><h1>{this.state.title} </h1></Link>
                     </div>
                     <div className="postIcons">
-                        <button className="deletebutton" onClick={this.deletePost}><i className='fas fa-times'></i></button>
                         <Link to={this.state.modifyUrl}><button className="modifybutton"><i className='fas fa-pen'></i></button></Link>
                         <i className={seenBool ? 'far fa-eye' : 'far fa-eye-slash'}  onClick={this.makeSeen}></i>
-
                     </div>
                 <h3>{this.state.author}</h3>
                 <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0,5)}</p>

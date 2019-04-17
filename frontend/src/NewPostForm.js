@@ -8,6 +8,7 @@ class NewPostForm extends Component {
         super(props);
 
         this.makeNewPost = this.makeNewPost.bind(this);
+        this.deletePost = this.deletePost.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onRouteChanged = this.onRouteChanged.bind(this);
@@ -148,6 +149,18 @@ class NewPostForm extends Component {
         }
     }
 
+    async deletePost() {
+        await fetch('/api/blogposts/' + this.props.match.params.id, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            this.props.history.push('/');
+        });
+    }
+
     render() {
         return (
             <div className = "container">
@@ -185,8 +198,13 @@ class NewPostForm extends Component {
                        <br />
                        <input type="text" value={this.state.tags} onChange={this.handleChange} name="tags"/>
                     </label></p>
-
-                    <input type="submit" value="Submit" />
+                    <div className={"row"}>
+                        <input type="submit" value="Submit" className="submit-button app-button" />
+                        <button className="cancel-button app-button" onClick={() => this.props.history.push('/')}>Cancel</button>
+                        {this.state.modifying &&
+                            <button className="delete-button app-button" onClick={this.deletePost}>Delete post</button>
+                        }
+                    </div>
                 </form>
             </div>
         );
