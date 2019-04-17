@@ -1,0 +1,29 @@
+.search {
+    margin-top:20px;
+    margin-left: 30%;
+    margin-right: 30%;
+    box-sizing: border-box;
+}
+
+input[type=text] {
+    padding: 6px;
+    font-size: 17px;
+    height:30px;
+    width:90%;
+    box-sizing: border-box;
+}
+
+button {
+    float: right;
+    padding: 6px;
+    background: #ddca61;
+    font-size: 17px;
+    height:30px;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+button:hover {
+    background: #967f2b;
+}

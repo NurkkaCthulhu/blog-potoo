@@ -23,6 +23,9 @@ public class PotooController {
     @Autowired
     TagRepository tagRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @PostConstruct
     public void init() {
 
@@ -33,6 +36,14 @@ public class PotooController {
         tagRepository.save(potooTag);
         tagRepository.save(firstTag);
         tagRepository.save(lastTag);
+
+        User user1 = new User("General Potoo", "password", UserType.ADMIN);
+        User user2 = new User("Some owl", "guest", UserType.DELETED);
+        User user3 = new User("Mom Potoo", "pain", UserType.VISITOR);
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+        userRepository.save(user3);
 
         BlogPost post1= new BlogPost("General Potoo", "What is potoo?", "The great potoo (Nyctibius grandis) is a near passerine bird, both the largest potoo species and the largest member of the order Caprimulgiformes (nightjars and allies). They are also one of seven species in one genus, Nyctibius, located in tropical America.\n" +
                 "Much like owls, this species is nocturnal. They prey on large insects and small vertebrates, which they capture in sallies from high perches.\n" +
@@ -54,11 +65,21 @@ public class PotooController {
         blogPostRepository.save(post4);
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------   POST MAPPINGS   -----------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
     @PostMapping(value = "/api/blogposts")
     public int saveBlogPost(@RequestBody BlogPost blogPost) {
         blogPost.getTags().clear();
         blogPostRepository.save(blogPost);
         return blogPost.getId();
+    }
+
+    @PostMapping(value = "/api/users")
+    public int saveUser(@RequestBody User user) {
+        userRepository.save(user);
+        return user.getId();
     }
 
     @PostMapping("/api/blogposts/{blogPostId}/tag")
@@ -84,19 +105,55 @@ public class PotooController {
         }
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------   DELETE MAPPINGS   ----------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
     @DeleteMapping("/api/blogposts/{blogPostId}")
     public void deleteBlogPost(@PathVariable int blogPostId) {
-        BlogPost blogPost = blogPostRepository.findById(blogPostId).get();
-        LinkedList<Tag> removeTags = new LinkedList<>();
+        Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
+        if (blogPostOptional.isPresent()) {
+            BlogPost blogPost = blogPostOptional.get();
+            LinkedList<Tag> tagsToBeRemoved = new LinkedList<>();
 
-        for (Tag t : blogPost.getTags()) {
-            if (t.getBlogPosts().size() > 1) {
-                t.getBlogPosts().remove(blogPost);
+            for (Tag t : blogPost.getTags()) {
+                if (t.getBlogPosts().size() > 1) {
+                    t.getBlogPosts().remove(blogPost);
+                } else {
+                    tagsToBeRemoved.add(t);
+                }
             }
-        }
 
-        blogPostRepository.deleteById(blogPostId);
+            if (tagsToBeRemoved.size() > 0) {
+                for (Tag t : tagsToBeRemoved) {
+                    blogPost.getTags().remove(t);
+                }
+
+                tagRepository.deleteAll(tagsToBeRemoved);
+            }
+
+            blogPostRepository.deleteById(blogPostId);
+        }
     }
+
+    @DeleteMapping("/api/users/{userId}")
+    public void makeUserTypeDeletedById(@PathVariable int userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isPresent()) {
+            userOptional.get().setUserType(UserType.DELETED);
+            userRepository.save(userOptional.get());
+        }
+    }
+
+    @DeleteMapping("/api/users/finaldelete/{userId}")
+    public void removeUserById(@PathVariable int userId) {
+        userRepository.deleteById(userId);
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------   GET MAPPINGS   ------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
 
     private Iterable<Integer> getIdsOfThesePosts(Iterable<BlogPost> blogPosts) {
         LinkedList<Integer> allIds = new LinkedList<>();
@@ -170,6 +227,10 @@ public class PotooController {
         return "" + blogPostRepository.findAll();
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------   PUT MAPPINGS   ------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
     @PutMapping("/api/blogposts/{blogPostId}")
     public void updateBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode updateJson) {
         updateBlogPostTitle(blogPostId, updateJson.get("title").asText());
@@ -184,6 +245,7 @@ public class PotooController {
 
         updateBlogPostTags(blogPostId, tags);
     }
+
 
     @PutMapping("/api/blogposts/{blogPostId}/title")
     public void updateBlogPostTitle(@PathVariable int blogPostId, @RequestBody String title) {
