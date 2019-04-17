@@ -23,3 +23,12 @@ textarea {
     font-family: 'Gloria Hallelujah', cursive;
     padding: 3px;
 }
+
+input[readOnly] {
+    color: grey;
+}
+
+small {
+    font-weight: normal;
+    color: dimgrey;
+}

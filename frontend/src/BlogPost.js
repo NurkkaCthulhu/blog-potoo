@@ -107,8 +107,7 @@ class BlogPost extends Component {
                     <div className="postIcons">
                         <button className="deletebutton" onClick={this.deletePost}><i className='fas fa-times'></i></button>
                         <Link to={this.state.modifyUrl}><button className="modifybutton"><i className='fas fa-pen'></i></button></Link>
-                        {seenBool ? <i className='far fa-eye'  onClick={this.makeSeen}></i> :
-                            <i className='far fa-eye-slash'  onClick={this.makeSeen}></i>}
+                        <i className={seenBool ? 'far fa-eye' : 'far fa-eye-slash'}  onClick={this.makeSeen}></i>
 
                     </div>
                 <h3>{this.state.author}</h3>
