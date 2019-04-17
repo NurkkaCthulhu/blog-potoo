@@ -17,4 +17,13 @@ public class User {
 
     @Column(nullable = false)
     UserType userType;
+
+    public User() {
+    }
+
+    public User(String userName, String password, UserType userType) {
+        this.userName = userName;
+        this.password = password;
+        this.userType = userType;
+    }
 }
