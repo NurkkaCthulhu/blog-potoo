@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import BlogPost from './BlogPost';
+import nopostimg from './img/noposts.png';
 
 class PostLoader extends Component {
     constructor(props) {
@@ -44,7 +45,14 @@ class PostLoader extends Component {
     render() {
         return (
             <div>
-                {this.state.arrayOfBlogPosts}
+                {this.state.arrayOfBlogPosts.length <= 0 ?
+                    <div>
+                        <h1>No blog posts :'(</h1>
+                        <img className={"nopostsimg"} src={nopostimg} alt={"Crying potoo"}></img>
+                    </div>
+                    :
+                    this.state.arrayOfBlogPosts
+                }
             </div>
         );
     }
