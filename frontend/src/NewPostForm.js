@@ -1,6 +1,10 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 import './css/NewPostForm_style.css';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { EditorState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import draftToHtml from 'draftjs-to-html';
 
 class NewPostForm extends Component {
 
@@ -18,6 +22,7 @@ class NewPostForm extends Component {
             , title: ''
             , content: ''
             , tags: ''
+            , editorState: EditorState.createEmpty()
         };
     }
 
@@ -31,6 +36,12 @@ class NewPostForm extends Component {
             [name]: value
         });
     }
+
+    onEditorStateChange = (editorState) => {
+        this.setState({
+            editorState,
+        });
+    };
 
     handleSubmit(event) {
         const author = this.state.author;
@@ -72,6 +83,8 @@ class NewPostForm extends Component {
                         tags += ',';
                     }
                     tags = tags.slice(0, -1);
+
+                    console.log('postinfo: ', post)
                     this.setState({
                         author: post.author
                         , title: post.title
@@ -84,6 +97,8 @@ class NewPostForm extends Component {
     }
 
     async makeNewPost() {
+        let htmlContent = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
+
         var tagArray = this.state.tags.split(',');
 
         for (let i in tagArray) {
@@ -100,7 +115,7 @@ class NewPostForm extends Component {
         if(this.state.modifying){
             const newPost = {
                 title: this.state.title,
-                content: this.state.content,
+                content: htmlContent,
                 tags: tagArray
             };
             await fetch('/api/blogposts/' + this.props.match.params.id, {
@@ -117,7 +132,7 @@ class NewPostForm extends Component {
             const newPost = {
                 author: this.state.author,
                 title: this.state.title,
-                content: this.state.content,
+                content: htmlContent,
             };
             await fetch('/api/blogposts/', {
                 method: 'POST',
@@ -162,6 +177,7 @@ class NewPostForm extends Component {
     }
 
     render() {
+        const { editorState } = this.state;
         return (
             <div className = "container">
                 <div className="newpostheader"><h1>Make a new post</h1></div>
@@ -190,7 +206,15 @@ class NewPostForm extends Component {
                     <label>
                         Content
                         <br />
-                        <textarea value={this.state.content} onChange={this.handleChange} name="content"/>
+                        <div>
+                            <Editor
+                                editorState={editorState}
+                                toolbarClassName="toolbarClassName"
+                                wrapperClassName="wrapperClassName"
+                                editorClassName="editorClassName"
+                                onEditorStateChange={this.onEditorStateChange}
+                            />
+                        </div>
                     </label>
 
                     <p><label>
