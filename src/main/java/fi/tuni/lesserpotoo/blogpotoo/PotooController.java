@@ -165,20 +165,6 @@ public class PotooController {
         return userRepository.findById(userId);
     }
 
-    @GetMapping("/api/users/login")
-    public int userExists(@RequestBody ObjectNode loginInformation) {
-        String username = loginInformation.get("username").asText();
-        String password = loginInformation.get("password").asText();
-
-        Optional<User> userOptional = userRepository.findByUserNameAndPasswordIn(username, password);
-
-        if (userOptional.isPresent()) {
-            return userOptional.get().getId();
-        } else {
-            return -1;
-        }
-    }
-
     private Iterable<Integer> getIdsOfThesePosts(Iterable<BlogPost> blogPosts) {
         LinkedList<Integer> allIds = new LinkedList<>();
         blogPosts.forEach(x -> allIds.add(x.getId()));
@@ -254,6 +240,20 @@ public class PotooController {
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------   PUT MAPPINGS   ------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
+
+    @PutMapping("/api/users/login")
+    public int userExists(@RequestBody ObjectNode loginInformation) {
+        String username = loginInformation.get("username").asText();
+        String password = loginInformation.get("password").asText();
+
+        Optional<User> userOptional = userRepository.findByUserNameAndPasswordIn(username, password);
+
+        if (userOptional.isPresent()) {
+            return userOptional.get().getId();
+        } else {
+            return -1;
+        }
+    }
 
     @PutMapping("/api/blogposts/{blogPostId}")
     public void updateBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode updateJson) {
