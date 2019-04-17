@@ -136,6 +136,21 @@ public class PotooController {
         }
     }
 
+    @DeleteMapping("/api/users/{userId}")
+    public void makeUserTypeDeletedById(@PathVariable int userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isPresent()) {
+            userOptional.get().setUserType(UserType.DELETED);
+            userRepository.save(userOptional.get());
+        }
+    }
+
+    @DeleteMapping("/api/users/finaldelete/{userId}")
+    public void removeUserById(@PathVariable int userId) {
+        userRepository.deleteById(userId);
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------   GET MAPPINGS   ------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
