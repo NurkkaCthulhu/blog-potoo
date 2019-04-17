@@ -39,6 +39,7 @@ class BlogPost extends Component {
         this.setState({isFetching: true});
         fetch('/api/blogposts/' + this.state.id).then((httpResponse) => httpResponse.json())
             .then((blogpost) => {
+                console.log('Tässä blogpost ', blogpost);
                 let postUrl = '/blogposts/' + this.state.id;
                 this.setState({
                     author: blogpost.author
@@ -98,7 +99,7 @@ class BlogPost extends Component {
                     </div>
                 <h3>{this.state.author}</h3>
                 <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0,5)}</p>
-                <p>{this.state.content}</p>
+                <div dangerouslySetInnerHTML={{ __html: this.state.content }}></div>
                 <p className = "tagsOfPosts">{this.listOfTags()}</p>
             </div>
         );
