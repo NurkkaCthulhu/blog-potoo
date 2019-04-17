@@ -2,9 +2,10 @@ import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 import './css/NewPostForm_style.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 
 class NewPostForm extends Component {
 
@@ -84,11 +85,15 @@ class NewPostForm extends Component {
                     }
                     tags = tags.slice(0, -1);
 
+                    const blocksFromHtml = htmlToDraft(post.content);
+                    const { contentBlocks, entityMap } = blocksFromHtml;
+                    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+                    const editorState = EditorState.createWithContent(contentState);
                     console.log('postinfo: ', post)
                     this.setState({
                         author: post.author
                         , title: post.title
-                        , content: post.content
+                        , editorState: editorState
                         , tags: tags
                         , modifying: true
                     });
