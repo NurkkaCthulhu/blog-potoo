@@ -5,6 +5,8 @@ import PostLoader from './PostLoader';
 import NewPostForm from './NewPostForm';
 import BlogPost from './BlogPost';
 import ErrorPage from "./ErrorPage";
+import Login from "./Login";
+import Register from "./Register";
 
 
 function Index() {
@@ -15,6 +17,14 @@ function Error() {
     return <ErrorPage message={'Invalid url 404'}/>
 }
 
+function LoginUser() {
+    return <Login />
+}
+
+function RegisterUser() {
+    return <Register />
+}
+
 function App() {
 
     return (
@@ -22,6 +32,8 @@ function App() {
             <div>
                 <nav className="header">
                     <Link to="/"><i className='fab fa-earlybirds'></i>Blog Potoo</Link>
+                    <Link to="/register" className="registerlink">Register</Link>
+                    <Link to="/login" className="loginlink">LogIn</Link>
                     <Link to="/blogposts/modifypost/new" className="newpostlink">Add blog post...</Link>
                 </nav>
                 <div className="right-float">
@@ -33,6 +45,8 @@ function App() {
                         <Route exact path="/search/:search" component={PostLoader} />
                         <Route exact path="/blogposts/modifypost/:id" component={NewPostForm} />
                         <Route exact path={"/blogposts/:id"} component={BlogPost}/>
+                        <Route exact path="/login" component={LoginUser}/>
+                        <Route exact path="/register" component={RegisterUser}/>
                         <Route component={Error}/>
                     </Switch>
                 </div>
