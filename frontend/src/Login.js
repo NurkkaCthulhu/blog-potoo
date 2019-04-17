@@ -25,8 +25,17 @@ class Login extends Component {
     }
 
     logUserIn() {
-        this.setState({errorMessage: <div className="loginErrorMessage">Username or password is incorrect.</div>});
-        console.log(this.state);
+        //this.setState({errorMessage: <div className="loginErrorMessage">Username or password is incorrect.</div>});
+        let userInformation = {username: this.state.username, password: this.state.password};
+
+        fetch('/api/users/login', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userInformation)
+        }).then((response) => response.json()).then((id) => console.log(id))
     }
 
     render() {
@@ -38,7 +47,7 @@ class Login extends Component {
 
             {this.state.errorMessage}
 
-            <p>No user? Register <a href="/register">here</a>!</p>
+            <p>Not a user? Register <a href="/register">here</a>!</p>
         </div>);
     }
 }
