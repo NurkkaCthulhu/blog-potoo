@@ -155,6 +155,16 @@ public class PotooController {
     // -----------------------------------------------   GET MAPPINGS   ------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
 
+    @GetMapping("/api/users")
+    public Iterable<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @GetMapping("/api/users/{userId}")
+    public Optional<User> getAllUserById(@PathVariable int userId) {
+        return userRepository.findById(userId);
+    }
+
     private Iterable<Integer> getIdsOfThesePosts(Iterable<BlogPost> blogPosts) {
         LinkedList<Integer> allIds = new LinkedList<>();
         blogPosts.forEach(x -> allIds.add(x.getId()));
