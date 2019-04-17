@@ -1,17 +1,18 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import './css/frontpage_style.css';
 import PostLoader from './PostLoader';
 import NewPostForm from './NewPostForm';
 import BlogPost from './BlogPost';
+import ErrorPage from "./ErrorPage";
 
 
 function Index() {
     return <PostLoader />;
 }
 
-function NewPost() {
-    return <NewPostForm/>
+function Error() {
+    return <ErrorPage message={'Invalid url 404'}/>
 }
 
 function App() {
@@ -27,10 +28,13 @@ function App() {
                     <p>Archives</p>
                 </div>
                 <div className="blog-posts">
-                    <Route path="/" exact component={Index} />
-                    <Route path="/search/:search" component={PostLoader} />
-                    <Route path="/blogposts/modifypost/:id" component={NewPostForm} />
-                    <Route exact path={"/blogposts/:id"} component={BlogPost}/>
+                    <Switch>
+                        <Route exact path="/" exact component={Index} />
+                        <Route exact path="/search/:search" component={PostLoader} />
+                        <Route exact path="/blogposts/modifypost/:id" component={NewPostForm} />
+                        <Route exact path={"/blogposts/:id"} component={BlogPost}/>
+                        <Route component={Error}/>
+                    </Switch>
                 </div>
                 <div className="footer"><span>Blog Potoo, the blog of the future (2019)</span></div>
             </div>
