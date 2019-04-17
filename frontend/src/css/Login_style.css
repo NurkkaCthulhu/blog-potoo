@@ -1,0 +1,27 @@
+.loginContainer {
+    margin: 20px 37.5% 0px 37.5%;
+    padding: 10pt;
+    width: 25%;
+    background-color: #fff4ba;
+    font-size:12pt;
+    text-align: right;
+}
+
+.loginContainer:h1 {
+    color: blue;
+}
+
+.textInput {
+    width: 90%;
+    margin: 2px 5% 2px 5%;
+    font-size:14pt;
+    padding: 3pt;
+}
+
+.buttonInput {
+    font-size:14pt;
+    padding: 3pt;
+    width:30%;
+    margin-left:35%;
+    margin-right:35%;
+}
