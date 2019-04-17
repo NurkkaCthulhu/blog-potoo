@@ -38,7 +38,7 @@ public class PotooController {
         tagRepository.save(lastTag);
 
         User user1 = new User("General Potoo", "password", UserType.ADMIN);
-        User user2 = new User("Some owl", "guest", UserType.DELETED);
+        User user2 = new User("Some owl", "pain", UserType.DELETED);
         User user3 = new User("Mom Potoo", "pain", UserType.VISITOR);
 
         userRepository.save(user1);
@@ -163,6 +163,20 @@ public class PotooController {
     @GetMapping("/api/users/{userId}")
     public Optional<User> getAllUserById(@PathVariable int userId) {
         return userRepository.findById(userId);
+    }
+
+    @GetMapping("/api/users/login")
+    public int userExists(@RequestBody ObjectNode loginInformation) {
+        String username = loginInformation.get("username").asText();
+        String password = loginInformation.get("password").asText();
+
+        Optional<User> userOptional = userRepository.findByUserNameAndPasswordIn(username, password);
+
+        if (userOptional.isPresent()) {
+            return userOptional.get().getId();
+        } else {
+            return -1;
+        }
     }
 
     private Iterable<Integer> getIdsOfThesePosts(Iterable<BlogPost> blogPosts) {
