@@ -5,6 +5,18 @@
     background-color: #fff4ba;
     font-size:12pt;
     text-align: right;
+    border-radius: 12px;
+}
+
+.loginErrorMessage {
+    width: 80%;
+    margin: 10px 10% 10px 10%;
+    padding:5px;
+    background-color: #ff8c8c;
+    border-style: solid;
+    border-color: #a81c1c;
+    color: #a81c1c;
+    text-align: center;
 }
 
 .loginContainer:h1 {
@@ -16,6 +28,7 @@
     margin: 2px 5% 2px 5%;
     font-size:14pt;
     padding: 3pt;
+    border-radius: 6px;
 }
 
 .buttonInput {
@@ -24,4 +37,5 @@
     width:30%;
     margin-left:35%;
     margin-right:35%;
+    border-radius: 6px;
 }
