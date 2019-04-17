@@ -74,3 +74,8 @@ small {
 .row{
     text-align:center;
 }
+
+.editorClassName{
+    border-style: groove;
+    height: 400px !important;
+}
