@@ -103,16 +103,29 @@ public class PotooController {
 
     @DeleteMapping("/api/blogposts/{blogPostId}")
     public void deleteBlogPost(@PathVariable int blogPostId) {
-        BlogPost blogPost = blogPostRepository.findById(blogPostId).get();
-        LinkedList<Tag> removeTags = new LinkedList<>();
+        Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
+        if (blogPostOptional.isPresent()) {
+            BlogPost blogPost = blogPostOptional.get();
+            LinkedList<Tag> tagsToBeRemoved = new LinkedList<>();
 
-        for (Tag t : blogPost.getTags()) {
-            if (t.getBlogPosts().size() > 1) {
-                t.getBlogPosts().remove(blogPost);
+            for (Tag t : blogPost.getTags()) {
+                if (t.getBlogPosts().size() > 1) {
+                    t.getBlogPosts().remove(blogPost);
+                } else {
+                    tagsToBeRemoved.add(t);
+                }
             }
-        }
 
-        blogPostRepository.deleteById(blogPostId);
+            if (tagsToBeRemoved.size() > 0) {
+                for (Tag t : tagsToBeRemoved) {
+                    blogPost.getTags().remove(t);
+                }
+
+                tagRepository.deleteAll(tagsToBeRemoved);
+            }
+
+            blogPostRepository.deleteById(blogPostId);
+        }
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -191,6 +204,10 @@ public class PotooController {
         return "" + blogPostRepository.findAll();
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------   PUT MAPPINGS   ------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
     @PutMapping("/api/blogposts/{blogPostId}")
     public void updateBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode updateJson) {
         updateBlogPostTitle(blogPostId, updateJson.get("title").asText());
@@ -206,9 +223,6 @@ public class PotooController {
         updateBlogPostTags(blogPostId, tags);
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-    // -----------------------------------------------   PUT MAPPINGS   ------------------------------------------------
-    // -----------------------------------------------------------------------------------------------------------------
 
     @PutMapping("/api/blogposts/{blogPostId}/title")
     public void updateBlogPostTitle(@PathVariable int blogPostId, @RequestBody String title) {
