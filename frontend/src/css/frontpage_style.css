@@ -15,8 +15,8 @@ nav.header {
 }
 
 nav.header a {
-     margin-left: 5%;
      margin-top: 27px;
+     margin-left:1%;
      color: #FFFFFF;
      text-transform: uppercase;
      text-decoration: none;
@@ -48,6 +48,16 @@ h1 {
 }
 
 .newpostlink {
+    float: right;
+    margin-right: 5%;
+}
+
+.loginlink {
+    float: right;
+    margin-right: 0px;
+}
+
+.registerlink {
     float: right;
     margin-right: 5%;
 }
