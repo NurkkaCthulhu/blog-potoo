@@ -63,4 +63,10 @@ h1 {
     background: #61dafb;
 }
 
-
+.nopostsimg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    max-width: 300px;
+}
