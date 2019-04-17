@@ -38,10 +38,12 @@ public class PotooController {
         tagRepository.save(lastTag);
 
         User user1 = new User("General Potoo", "password", UserType.ADMIN);
-        User user2 = new User("Some owl", "guest", UserType.VISITOR);
+        User user2 = new User("Some owl", "guest", UserType.DELETED);
+        User user3 = new User("Mom Potoo", "pain", UserType.VISITOR);
 
         userRepository.save(user1);
         userRepository.save(user2);
+        userRepository.save(user3);
 
         BlogPost post1= new BlogPost("General Potoo", "What is potoo?", "The great potoo (Nyctibius grandis) is a near passerine bird, both the largest potoo species and the largest member of the order Caprimulgiformes (nightjars and allies). They are also one of seven species in one genus, Nyctibius, located in tropical America.\n" +
                 "Much like owls, this species is nocturnal. They prey on large insects and small vertebrates, which they capture in sallies from high perches.\n" +
