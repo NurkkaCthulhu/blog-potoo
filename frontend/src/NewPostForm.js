@@ -25,7 +25,7 @@ class NewPostForm extends Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
-        const tags = target.tags;
+        //const tags = target.tags;
 
         this.setState({
             [name]: value
@@ -92,7 +92,7 @@ class NewPostForm extends Component {
         }
 
         let filtered = tagArray.filter(function (el) {
-            return el != '';
+            return el !== '';
         });
 
         tagArray = filtered;
