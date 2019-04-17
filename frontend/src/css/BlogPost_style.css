@@ -22,12 +22,6 @@
     color: #ddca61;
 }
 
-button {
-    float: right;
-    border: none;
-    color: white;
-    cursor: pointer;
-}
 
 .modifybutton {
     background-color: #4f8dea;
@@ -35,6 +29,10 @@ button {
     width: 30px;
     margin: 1px;
     border-radius: 10px;
+    float: right;
+    border: none;
+    color: white;
+    cursor: pointer;
 }
 
 .modifybutton:hover {
