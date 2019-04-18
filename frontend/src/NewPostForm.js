@@ -81,7 +81,6 @@ class NewPostForm extends Component {
                 , modifying: false
             })
         } else if (isNaN(this.props.match.params.id)) {
-            console.log('Ei ollu numbero')
             this.setState({
                 postFound: false
             })
