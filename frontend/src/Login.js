@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {withRouter} from "react-router-dom";
 import './css/Login_style.css';
 
 class Login extends Component {
@@ -25,7 +26,6 @@ class Login extends Component {
     }
 
     logUserIn() {
-        //this.setState({errorMessage: <div className="loginErrorMessage">Username or password is incorrect.</div>});
         let userInformation = {username: this.state.username, password: this.state.password};
 
         fetch('/api/users/login', {
@@ -35,7 +35,18 @@ class Login extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(userInformation)
-        }).then((response) => response.json()).then((id) => console.log(id))
+        }).then((response) => response.json()).then((user) => {
+            if (user === null) {
+                this.setState({errorMessage: <div className="loginErrorMessage">Username or password is incorrect.</div>});
+            } else {
+                localStorage.setItem('loggedin', 'true');
+                localStorage.setItem('userId', user.id);
+                localStorage.setItem('userType', user.userType);
+                localStorage.setItem('userName', user.username);
+                console.log(localStorage);
+                this.props.history.push('/');
+            }
+        })
     }
 
     render() {
@@ -52,4 +63,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default withRouter(Login);

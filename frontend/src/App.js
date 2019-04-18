@@ -7,6 +7,7 @@ import BlogPost from './BlogPost';
 import ErrorPage from "./ErrorPage";
 import Login from "./Login";
 import Register from "./Register";
+import Header from "./Header";
 
 
 function Index() {
@@ -30,12 +31,7 @@ function App() {
     return (
         <Router>
             <div>
-                <nav className="header">
-                    <Link to="/"><i className='fab fa-earlybirds'></i>Blog Potoo</Link>
-                    <Link to="/register" className="registerlink">Register</Link>
-                    <Link to="/login" className="loginlink">LogIn</Link>
-                    <Link to="/blogposts/modifypost/new" className="newpostlink">Add blog post...</Link>
-                </nav>
+                <Header />
                 <div className="right-float">
                     <p>Archives</p>
                 </div>

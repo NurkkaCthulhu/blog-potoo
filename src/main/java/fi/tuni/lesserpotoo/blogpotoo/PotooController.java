@@ -39,7 +39,7 @@ public class PotooController {
 
         User user1 = new User("General Potoo", "password", UserType.ADMIN);
         User user2 = new User("Some owl", "pain", UserType.DELETED);
-        User user3 = new User("Mom Potoo", "pain", UserType.VISITOR);
+        User user3 = new User("Potoo Mom", "pain", UserType.VISITOR);
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -242,17 +242,11 @@ public class PotooController {
     // -----------------------------------------------------------------------------------------------------------------
 
     @PutMapping("/api/users/login")
-    public int userExists(@RequestBody ObjectNode loginInformation) {
+    public Optional<User> userExists(@RequestBody ObjectNode loginInformation) {
         String username = loginInformation.get("username").asText();
         String password = loginInformation.get("password").asText();
 
-        Optional<User> userOptional = userRepository.findByUserNameAndPasswordIn(username, password);
-
-        if (userOptional.isPresent()) {
-            return userOptional.get().getId();
-        } else {
-            return -1;
-        }
+        return userRepository.findByUsernameAndPasswordIn(username, password);
     }
 
     @PutMapping("/api/blogposts/{blogPostId}")
