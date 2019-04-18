@@ -79,3 +79,7 @@ small {
     border-style: groove;
     height: 400px !important;
 }
+
+.newpostTitle {
+    text-align: center;
+}

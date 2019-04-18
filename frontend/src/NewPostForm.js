@@ -19,7 +19,8 @@ class NewPostForm extends Component {
         this.onRouteChanged = this.onRouteChanged.bind(this);
 
         this.state = {
-            author: ''
+            formTitle: 'Loading...'
+            , author: ''
             , title: ''
             , content: ''
             , tags: ''
@@ -73,7 +74,10 @@ class NewPostForm extends Component {
 
     componentDidMount() {
         if (this.props.match.params.id === 'new') {
-            this.setState({modifying: false})
+            this.setState({
+                formTitle: 'Make a new post'
+                , modifying: false
+            })
         } else {
             fetch('/api/blogposts/' + this.props.match.params.id)
                 .then((httpResponse) => httpResponse.json())
@@ -91,7 +95,8 @@ class NewPostForm extends Component {
                     const editorState = EditorState.createWithContent(contentState);
                     console.log('postinfo: ', post)
                     this.setState({
-                        author: post.author
+                        formTitle: 'Modify a post'
+                        , author: post.author
                         , title: post.title
                         , editorState: editorState
                         , tags: tags
@@ -185,7 +190,9 @@ class NewPostForm extends Component {
         const { editorState } = this.state;
         return (
             <div className = "container">
-                <div className="newpostheader"><h1>Make a new post</h1></div>
+                <div className="newpostheader">
+                    <h1 className={"newpostTitle"}>{this.state.formTitle}</h1>
+                </div>
                 <form onSubmit={this.handleSubmit}>
                     <div className="required">
                         <label>
