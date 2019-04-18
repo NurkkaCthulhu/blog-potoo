@@ -39,7 +39,6 @@ class BlogPost extends Component {
 
     componentDidMount() {
         this.setState({isFetching: true});
-        console.log(this.state.id)
         if(!isNaN(this.state.id)) {
             fetch('/api/blogposts/' + this.state.id).then((httpResponse) => httpResponse.json())
                 .then((blogpost) => {
@@ -84,7 +83,6 @@ class BlogPost extends Component {
         let tagString = '';
 
         for (let tagObj of this.state.tags) {
-            console.log(tagObj);
             tagString = tagString + '#' + tagObj.tagName + ' ';
         }
 
