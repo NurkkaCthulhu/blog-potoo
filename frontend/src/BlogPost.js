@@ -9,9 +9,7 @@ class BlogPost extends Component {
         super(props);
 
         var id = this.props.id;
-        if (this.props.match === undefined) {
-            id  = props.id;
-        } else {
+        if (this.props.match !== undefined) {
             id  = this.props.match.params.id;
         }
         let modifyUrl = '/blogposts/modifypost/' + id;
@@ -33,33 +31,39 @@ class BlogPost extends Component {
             , modifyUrl: modifyUrl
             , seen: seen
             , seenID: seenID
+            , blogpostFound: false
         }
     }
 
     componentDidMount() {
         this.setState({isFetching: true});
-        fetch('/api/blogposts/' + this.state.id).then((httpResponse) => httpResponse.json())
-            .then((blogpost) => {
-                if(blogpost) {
-                    let postUrl = '/blogposts/' + this.state.id;
-                    this.setState({
-                        author: blogpost.author
-                        , title: blogpost.title
-                        , content: blogpost.content
-                        , postDate: blogpost.dateOfCreation
-                        , postTime: blogpost.timeOfCreation
-                        , tags: blogpost.tags
-                        , postUrl: postUrl
-                        , isFetching: false
-                        , blogpostFound: true
-                    });
-                } else {
-                    this.setState({
-                        blogpostFound: false
-                        , isFetching: false});
+        if(!isNaN(this.state.id)) {
+            fetch('/api/blogposts/' + this.state.id).then((httpResponse) => httpResponse.json())
+                .then((blogpost) => {
+                    if(blogpost) {
+                        let postUrl = '/blogposts/' + this.state.id;
+                        this.setState({
+                            author: blogpost.author
+                            , title: blogpost.title
+                            , content: blogpost.content
+                            , postDate: blogpost.dateOfCreation
+                            , postTime: blogpost.timeOfCreation
+                            , tags: blogpost.tags
+                            , postUrl: postUrl
+                            , isFetching: false
+                            , blogpostFound: true
+                        });
+                    } else {
+                        this.setState({
+                            blogpostFound: false
+                            , isFetching: false});
+                    }
                 }
-            }
-        );
+            );
+        } else {
+            this.setState({blogpostFound: false
+                            , isFetching: false});
+        }
     }
 
     makeSeen() {
@@ -77,7 +81,6 @@ class BlogPost extends Component {
         let tagString = '';
 
         for (let tagObj of this.state.tags) {
-            console.log(tagObj);
             tagString = tagString + '#' + tagObj.tagName + ' ';
         }
 
