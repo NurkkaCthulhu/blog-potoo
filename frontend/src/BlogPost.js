@@ -41,7 +41,6 @@ class BlogPost extends Component {
         fetch('/api/blogposts/' + this.state.id).then((httpResponse) => httpResponse.json())
             .then((blogpost) => {
                 if(blogpost) {
-                    console.log('Tässä blogpost ', blogpost);
                     let postUrl = '/blogposts/' + this.state.id;
                     this.setState({
                         author: blogpost.author
@@ -59,7 +58,6 @@ class BlogPost extends Component {
                         blogpostFound: false
                         , isFetching: false});
                 }
-                //this.setState({blogpost: blogObject});
             }
         );
     }
@@ -100,8 +98,8 @@ class BlogPost extends Component {
             <div className="container">
             {this.state.blogpostFound ?
                 <div>
-                    <div className="postheader"><Link to={this.state.postUrl}><h1
-                        className={"blogtitle"}>{this.state.title} </h1></Link>
+                    <div className="postheader">
+                        <Link to={this.state.postUrl}><h1 className={"blogtitle"}>{this.state.title} </h1></Link>
                     </div>
                     <div className="postIcons">
                         <Link to={this.state.modifyUrl}>
