@@ -91,7 +91,7 @@ class BlogPost extends Component {
         return (
                 <div className = "container">
 
-                    <div className="postheader"><Link to={this.state.postUrl}><h1>{this.state.title} </h1></Link>
+                    <div className="postheader"><Link to={this.state.postUrl}><h1 className={"blogtitle"}>{this.state.title} </h1></Link>
                     </div>
                     <div className="postIcons">
                         <Link to={this.state.modifyUrl}><button className="modifybutton"><i className='fas fa-pen'></i></button></Link>

@@ -5,7 +5,7 @@ class ErrorPage extends Component {
 
     render() {
         return (
-            <h1>{this.props.message}</h1>
+            <h1 className={"errorTitle"}>{this.props.message}</h1>
         )
     }
 }

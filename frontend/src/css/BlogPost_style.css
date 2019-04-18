@@ -7,6 +7,7 @@
     background-color: #b4a344;
     font-family: 'Gloria Hallelujah', cursive;
     padding: 3px;
+    text-align: center !important;
 }
 
 .postheader h1:hover {
@@ -68,3 +69,4 @@ i {
 .loading {
     text-align: center;
 }
+
