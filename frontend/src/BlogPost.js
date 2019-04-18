@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import './css/BlogPost_style.css';
+import ErrorPage from "./ErrorPage";
 
 class BlogPost extends Component {
 
@@ -39,18 +40,25 @@ class BlogPost extends Component {
         this.setState({isFetching: true});
         fetch('/api/blogposts/' + this.state.id).then((httpResponse) => httpResponse.json())
             .then((blogpost) => {
-                console.log('Tässä blogpost ', blogpost);
-                let postUrl = '/blogposts/' + this.state.id;
-                this.setState({
-                    author: blogpost.author
-                    , title: blogpost.title
-                    , content: blogpost.content
-                    , postDate: blogpost.dateOfCreation
-                    , postTime: blogpost.timeOfCreation
-                    , tags: blogpost.tags
-                    , postUrl: postUrl
-                    , isFetching: false
-                });
+                if(blogpost) {
+                    console.log('Tässä blogpost ', blogpost);
+                    let postUrl = '/blogposts/' + this.state.id;
+                    this.setState({
+                        author: blogpost.author
+                        , title: blogpost.title
+                        , content: blogpost.content
+                        , postDate: blogpost.dateOfCreation
+                        , postTime: blogpost.timeOfCreation
+                        , tags: blogpost.tags
+                        , postUrl: postUrl
+                        , isFetching: false
+                        , blogpostFound: true
+                    });
+                } else {
+                    this.setState({
+                        blogpostFound: false
+                        , isFetching: false});
+                }
                 //this.setState({blogpost: blogObject});
             }
         );
@@ -89,18 +97,26 @@ class BlogPost extends Component {
         }
 
         return (
-                <div className = "container">
-
-                    <div className="postheader"><Link to={this.state.postUrl}><h1 className={"blogtitle"}>{this.state.title} </h1></Link>
+            <div className="container">
+            {this.state.blogpostFound ?
+                <div>
+                    <div className="postheader"><Link to={this.state.postUrl}><h1
+                        className={"blogtitle"}>{this.state.title} </h1></Link>
                     </div>
                     <div className="postIcons">
-                        <Link to={this.state.modifyUrl}><button className="modifybutton"><i className='fas fa-pen'></i></button></Link>
-                        <i className={seenBool ? 'far fa-eye' : 'far fa-eye-slash'}  onClick={this.makeSeen}></i>
+                        <Link to={this.state.modifyUrl}>
+                            <button className="modifybutton"><i className='fas fa-pen'></i></button>
+                        </Link>
+                        <i className={seenBool ? 'far fa-eye' : 'far fa-eye-slash'} onClick={this.makeSeen}></i>
                     </div>
-                <h3>{this.state.author}</h3>
-                <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0,5)}</p>
-                <div dangerouslySetInnerHTML={{ __html: this.state.content }}></div>
-                <p className = "tagsOfPosts">{this.listOfTags()}</p>
+                    <h3>{this.state.author}</h3>
+                    <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0, 5)}</p>
+                    <div dangerouslySetInnerHTML={{__html: this.state.content}}></div>
+                    <p className="tagsOfPosts">{this.listOfTags()}</p>
+                </div>
+                :
+                <ErrorPage message={"Blogpost does not exist!"}/>
+            }
             </div>
         );
     }
