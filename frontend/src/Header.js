@@ -31,7 +31,7 @@ class Header extends Component {
                 {this.state.loggedIn ?
                 <nav className="header">
                     <Link to="/"><i className='fab fa-earlybirds'></i>Blog Potoo</Link>
-                    <a onClick={this.logout} href="" className="registerlink">Logout</a>
+                    <Link to="/" onClick={this.logout} className="registerlink">Logout</Link>
                     <Link to="/blogposts/modifypost/new" className="newpostlink">Add blog post...</Link>
                 </nav>
                 :
