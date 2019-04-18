@@ -246,7 +246,7 @@ public class PotooController {
         String username = loginInformation.get("username").asText();
         String password = loginInformation.get("password").asText();
 
-        return userRepository.findByUserNameAndPasswordIn(username, password);
+        return userRepository.findByUsernameAndPasswordIn(username, password);
     }
 
     @PutMapping("/api/blogposts/{blogPostId}")

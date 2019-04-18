@@ -12,7 +12,7 @@ public class User {
     private int id;
 
     @Column(nullable = false)
-    private String userName;
+    private String username;
 
     @Column(nullable = false)
     @JsonIgnore
@@ -24,8 +24,8 @@ public class User {
     public User() {
     }
 
-    public User(String userName, String password, UserType userType) {
-        this.userName = userName;
+    public User(String username, String password, UserType userType) {
+        this.username = username;
         this.password = password;
         this.userType = userType;
     }
@@ -34,12 +34,12 @@ public class User {
         return id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -62,7 +62,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", userType=" + userType +
                 '}';
