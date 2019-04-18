@@ -77,9 +77,15 @@ public class PotooController {
     }
 
     @PostMapping(value = "/api/users")
-    public int saveUser(@RequestBody User user) {
-        userRepository.save(user);
-        return user.getId();
+    public Optional<User> saveUser(@RequestBody User user) {
+        Optional<User> userOptional = userRepository.findByUsernameIgnoreCase(user.getUsername());
+
+        if (userOptional.isPresent()) {
+            return Optional.empty();
+        } else {
+            userRepository.save(user);
+            return Optional.of(user);
+        }
     }
 
     @PostMapping("/api/blogposts/{blogPostId}/tag")
