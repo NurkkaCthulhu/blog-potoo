@@ -39,7 +39,6 @@ class Login extends Component {
             if (user === null) {
                 this.setState({errorMessage: <div className="loginErrorMessage">Username or password is incorrect.</div>});
             } else {
-                this.setState({errorMessage: ''});
                 localStorage.setItem('loggedin', 'true');
                 localStorage.setItem('userId', user.id);
                 localStorage.setItem('userType', user.userType);
