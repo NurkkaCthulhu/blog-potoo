@@ -6,6 +6,7 @@ import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
+import ErrorPage from './ErrorPage.js';
 
 class NewPostForm extends Component {
 
@@ -25,6 +26,7 @@ class NewPostForm extends Component {
             , content: ''
             , tags: ''
             , editorState: EditorState.createEmpty()
+            , postFound: true
         };
     }
 
@@ -78,30 +80,39 @@ class NewPostForm extends Component {
                 formTitle: 'Make a new post'
                 , modifying: false
             })
+        } else if (isNaN(this.props.match.params.id)) {
+            console.log('Ei ollu numbero')
+            this.setState({
+                postFound: false
+            })
         } else {
             fetch('/api/blogposts/' + this.props.match.params.id)
                 .then((httpResponse) => httpResponse.json())
                 .then((post) => {
-                    let tags = '';
-                    for (let t of post.tags) {
-                        tags += t.tagName;
-                        tags += ',';
-                    }
-                    tags = tags.slice(0, -1);
+                    if (post) {
+                        let tags = '';
+                        for (let t of post.tags) {
+                            tags += t.tagName;
+                            tags += ',';
+                        }
+                        tags = tags.slice(0, -1);
 
-                    const blocksFromHtml = htmlToDraft(post.content);
-                    const { contentBlocks, entityMap } = blocksFromHtml;
-                    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-                    const editorState = EditorState.createWithContent(contentState);
-                    console.log('postinfo: ', post)
-                    this.setState({
-                        formTitle: 'Modify a post'
-                        , author: post.author
-                        , title: post.title
-                        , editorState: editorState
-                        , tags: tags
-                        , modifying: true
-                    });
+                        const blocksFromHtml = htmlToDraft(post.content);
+                        const {contentBlocks, entityMap} = blocksFromHtml;
+                        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+                        const editorState = EditorState.createWithContent(contentState);
+                        console.log('postinfo: ', post)
+                        this.setState({
+                            formTitle: 'Modify a post'
+                            , author: post.author
+                            , title: post.title
+                            , editorState: editorState
+                            , tags: tags
+                            , modifying: true
+                        });
+                    } else {
+                        this.setState({postFound: false});
+                    }
             });
         }
     }
@@ -190,58 +201,64 @@ class NewPostForm extends Component {
         const { editorState } = this.state;
         return (
             <div className = "container">
-                <div className="newpostheader">
-                    <h1 className={"newpostTitle"}>{this.state.formTitle}</h1>
-                </div>
-                <form onSubmit={this.handleSubmit}>
-                    <div className="required">
-                        <label>
-                            Author
-                            <br />
-                            <input type="text" value={this.state.author} onChange={this.handleChange} name="author" readOnly={this.state.modifying}/>
-                            <small hidden={!this.state.modifying}>Post author cannot be modified.</small>
-                        </label>
-                    </div>
-
-                    <br />
-
-                    <div className="required">
-                        <label>
-                            Title
-                            <br />
-                            <input type="text" value={this.state.title} onChange={this.handleChange} name="title"/>
-                        </label>
-                    </div>
-
-                    <br />
-
-                    <label>
-                        Content
-                        <br />
-                        <div>
-                            <Editor
-                                editorState={editorState}
-                                toolbarClassName="toolbarClassName"
-                                wrapperClassName="wrapperClassName"
-                                editorClassName="editorClassName"
-                                onEditorStateChange={this.onEditorStateChange}
-                            />
+                {this.state.postFound ?
+                    <div>
+                        <div className="newpostheader">
+                            <h1 className={"newpostTitle"}>{this.state.formTitle}</h1>
                         </div>
-                    </label>
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="required">
+                                <label>
+                                    Author
+                                    <br />
+                                    <input type="text" value={this.state.author} onChange={this.handleChange} name="author" readOnly={this.state.modifying}/>
+                                    <small hidden={!this.state.modifying}>Post author cannot be modified.</small>
+                                </label>
+                            </div>
 
-                    <p><label>
-                       Tags
-                       <br />
-                       <input type="text" value={this.state.tags} onChange={this.handleChange} name="tags"/>
-                    </label></p>
-                    <div className={"row"}>
-                        <input type="submit" value="Submit" className="submit-button app-button" />
-                        <button className="cancel-button app-button" onClick={() => this.props.history.push('/')}>Cancel</button>
-                        {this.state.modifying &&
-                            <button className="delete-button app-button" onClick={this.deletePost}>Delete post</button>
-                        }
+                            <br />
+
+                            <div className="required">
+                                <label>
+                                    Title
+                                    <br />
+                                    <input type="text" value={this.state.title} onChange={this.handleChange} name="title"/>
+                                </label>
+                            </div>
+
+                            <br />
+
+                            <label>
+                                Content
+                                <br />
+                                <div>
+                                    <Editor
+                                        editorState={editorState}
+                                        toolbarClassName="toolbarClassName"
+                                        wrapperClassName="wrapperClassName"
+                                        editorClassName="editorClassName"
+                                        onEditorStateChange={this.onEditorStateChange}
+                                    />
+                                </div>
+                            </label>
+
+                            <p><label>
+                               Tags
+                               <br />
+                               <input type="text" value={this.state.tags} onChange={this.handleChange} name="tags"/>
+                            </label></p>
+                            <div className={"row"}>
+                                <input type="submit" value="Submit" className="submit-button app-button" />
+                                <button className="cancel-button app-button" onClick={() => this.props.history.push('/')}>Cancel</button>
+                                {this.state.modifying &&
+                                    <button className="delete-button app-button" onClick={this.deletePost}>Delete post</button>
+                                }
+                            </div>
+                        </form>
                     </div>
-                </form>
+                    :
+                    <ErrorPage message={"Found no post to modify."}/>
+                }
             </div>
         );
     }
