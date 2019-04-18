@@ -19,8 +19,8 @@
     text-align: center;
 }
 
-.loginContainer:h1 {
-    color: blue;
+.loginH1 {
+    text-align: center;
 }
 
 .textInput {
