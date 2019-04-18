@@ -9,9 +9,7 @@ class BlogPost extends Component {
         super(props);
 
         var id = this.props.id;
-        if (this.props.match === undefined) {
-            id  = props.id;
-        } else {
+        if (this.props.match !== undefined) {
             id  = this.props.match.params.id;
         }
         let modifyUrl = '/blogposts/modifypost/' + id;
