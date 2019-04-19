@@ -36,7 +36,7 @@ class Register extends Component {
                     localStorage.setItem('loggedin', 'true');
                     localStorage.setItem('userId', user.id);
                     localStorage.setItem('userType', user.userType);
-                    localStorage.setItem('userName', user.username);
+                    localStorage.setItem('username', user.username);
                     this.props.history.push('/');
                 }
             })
