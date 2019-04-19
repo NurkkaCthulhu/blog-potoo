@@ -43,9 +43,19 @@ span {
     line-height: normal;
 }
 
+.frontpagelink {
+    float: left;
+}
+
+.userpagelink {
+    float:right;
+    text-align: center;
+    margin-right: 2%;
+}
+
 .newpostlink {
     float: right;
-    margin-right: 5%;
+    margin-right: 2%;
 }
 
 .loginlink {
