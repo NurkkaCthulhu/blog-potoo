@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {withRouter} from "react-router-dom";
 import './css/Login_style.css';
 
 class Register extends Component {
@@ -18,6 +19,27 @@ class Register extends Component {
     registerUser(event) {
         if (this.state.password !== this.state.passwordAgain) {
             this.setState({errorMessage: <div className="loginErrorMessage">Given passwords do not match.</div>});
+        } else {
+            let userInformation = {username: this.state.username, password: this.state.password, userType: 1};
+
+            fetch('/api/users/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userInformation)
+            }).then((response) => response.json()).then((user) => {
+                if (user === null) {
+                    this.setState({errorMessage: <div className="loginErrorMessage">This username is already in use.</div>});
+                } else {
+                    localStorage.setItem('loggedin', 'true');
+                    localStorage.setItem('userId', user.id);
+                    localStorage.setItem('userType', user.userType);
+                    localStorage.setItem('userName', user.username);
+                    this.props.history.push('/');
+                }
+            })
         }
     }
 
@@ -34,4 +56,4 @@ class Register extends Component {
     }
 }
 
-export default Register;
+export default withRouter(Register);
