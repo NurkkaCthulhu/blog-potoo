@@ -122,6 +122,22 @@ public class PotooController {
         }
     }
 
+    @PostMapping("/api/blogposts/{blogPostId}/comments")
+    public void addCommentToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode commentInfo) {
+        int userId = commentInfo.get("userId").asInt();
+        String content = commentInfo.get("content").asText();
+        Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (blogPostOptional.isPresent() && userOptional.isPresent()) {
+            BlogPost blogPost = blogPostOptional.get();
+            User user = userOptional.get();
+
+            Comment newComment = new Comment(user, blogPost, content);
+            commentRepository.save(newComment);
+        }
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     // ----------------------------------------------   DELETE MAPPINGS   ----------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
