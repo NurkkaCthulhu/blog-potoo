@@ -1,26 +1,28 @@
 import React, {Component} from "react";
 import BlogPost from './BlogPost';
 import nopostimg from './img/noposts.png';
+import ErrorPage from "./ErrorPage";
 
 class PostLoader extends Component {
     constructor(props) {
         super(props);
-        var search = '';
+        var fetchUrl = '';
         if (this.props.match === undefined) {
-            search = '/';
+            fetchUrl = '/';
+        } else if (this.props.match.params.id) {
+            fetchUrl = '/' + this.props.match.params.id;
         } else {
-            console.log("help")
-            search = '/search_all/' + this.props.match.params.search;
+            fetchUrl = '/search_all/' + this.props.match.params.search;
         }
 
         this.listAllBlogPosts = this.listAllBlogPosts.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
-        this.state = {search: search, arrayOfBlogPosts: [], blogPostIds: []};
+        this.state = {fetchUrl: fetchUrl, arrayOfBlogPosts: [], fetchedBlogPosts: []};
     }
 
     componentDidMount() {
-        let fetchURL = '/api/blogposts' + this.state.search;
-        fetch(fetchURL).then((httpResponse) => httpResponse.json()).then((json) => this.setState({blogPostIds: json})).then(() => this.updatePosts());
+        let fetchURL = '/api/blogposts' + this.state.fetchUrl;
+        fetch(fetchURL).then((httpResponse) => httpResponse.json()).then((json) => this.setState({fetchedBlogPosts: json})).then(() => this.updatePosts());
     }
 
     updatePosts() {
@@ -31,15 +33,17 @@ class PostLoader extends Component {
     listAllBlogPosts() {
         let helperArray = [];
 
-        console.log(this.state.blogPostIds);
-
-        for (let id of this.state.blogPostIds) {
-            helperArray.push(<BlogPost key={id} id={id} />);
+        if(this.state.fetchedBlogPosts === null) {
+            helperArray.push(<ErrorPage key={1} message={"Blog post not found 404"}/>)
+        } else if(this.state.fetchedBlogPosts.length === undefined) {
+            helperArray.push(<BlogPost key={this.state.fetchedBlogPosts.id} post={this.state.fetchedBlogPosts} />);
+        } else {
+            for (let post of this.state.fetchedBlogPosts) {
+                helperArray.push(<BlogPost key={post.id} post={post} />);
+            }
         }
-
         this.setState({arrayOfBlogPosts: helperArray});
 
-        console.log('List all: ' + this.state.arrayOfBlogPosts);
     }
 
     render() {
