@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BlogPostRepository extends CrudRepository<BlogPost, Integer> {
-    public List<BlogPost> findByAuthor(String author);
+    public List<BlogPost> findByAuthorUsername(String author);
     public List<BlogPost> findByTitleContainingIgnoreCase(String word);
     public List<BlogPost> findByDateOfCreation(LocalDate date);
 }
