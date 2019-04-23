@@ -1,7 +1,5 @@
 package fi.tuni.lesserpotoo.blogpotoo;
 
-import jdk.vm.ci.meta.Local;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
