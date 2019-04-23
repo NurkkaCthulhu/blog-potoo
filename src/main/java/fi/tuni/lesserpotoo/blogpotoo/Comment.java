@@ -42,4 +42,42 @@ public class Comment {
         dateOfComment = LocalDate.now();
         timeOfComment = LocalTime.now();
     }
+
+    public LocalDate getDateOfComment() {
+        return dateOfComment;
+    }
+
+    public void setDateOfComment(LocalDate dateOfComment) {
+        this.dateOfComment = dateOfComment;
+    }
+
+    public LocalTime getTimeOfComment() {
+        return timeOfComment;
+    }
+
+    public void setTimeOfComment(LocalTime timeOfComment) {
+        this.timeOfComment = timeOfComment;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public User getCommentor() {
+        return commentor;
+    }
+
+    public BlogPost getBlogPost() {
+        return blogPost;
+    }
+
+
 }
