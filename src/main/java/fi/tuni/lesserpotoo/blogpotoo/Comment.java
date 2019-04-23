@@ -79,5 +79,15 @@ public class Comment {
         return blogPost;
     }
 
-
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", commentor=" + commentor +
+                ", blogPost=" + blogPost +
+                ", dateOfComment=" + dateOfComment +
+                ", timeOfComment=" + timeOfComment +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }
