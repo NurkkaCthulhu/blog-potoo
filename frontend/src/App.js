@@ -40,7 +40,7 @@ function App() {
                         <Route exact path="/" exact component={Index} />
                         <Route exact path="/search/:search" component={PostLoader} />
                         <Route exact path="/blogposts/modifypost/:id" component={NewPostForm} />
-                        <Route exact path={"/blogposts/:id"} component={BlogPost}/>
+                        <Route exact path={"/blogposts/:id"} component={PostLoader}/>
                         <Route exact path="/login" component={LoginUser}/>
                         <Route exact path="/register" component={RegisterUser}/>
                         <Route component={Error}/>
