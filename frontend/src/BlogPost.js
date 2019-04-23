@@ -1,17 +1,14 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import './css/BlogPost_style.css';
-import ErrorPage from "./ErrorPage";
 
 class BlogPost extends Component {
 
     constructor(props) {
         super(props);
 
-        var id = this.props.id;
-        if (this.props.match !== undefined) {
-            id  = this.props.match.params.id;
-        }
+        let id = this.props.post.id;
+
         let modifyUrl = '/blogposts/modifypost/' + id;
         this.listOfTags = this.listOfTags.bind(this);
         this.makeSeen = this.makeSeen.bind(this);
@@ -19,65 +16,33 @@ class BlogPost extends Component {
         let seenID = 'seen' + id;
         let seen = localStorage.getItem(seenID);
 
+        let content = this.props.post.content;
+        let cutContent = false;
+        let frontpagePostLength = 500;
+        // Show only first 500 chars of the post (includes rich text styling)
+        if (content.length > frontpagePostLength) {
+            content = content.substr(0, 500);
+            content += '...';
+            cutContent = true;
+        }
+
         this.state = {
             id: id
-            , author: ''
-            , title: ''
-            , content: ''
-            , cutContent: false
-            , postDate: '0000-01-01'
-            , postTime: '00:00:00'
-            , tags: []
-            , postUrl: ''
+            , author: this.props.post.author
+            , title: this.props.post.title
+            , content: content
+            , cutContent: cutContent
+            , postDate: this.props.post.dateOfCreation
+            , postTime: this.props.post.timeOfCreation
+            , tags: this.props.post.tags
+            , postUrl: `/blogposts/${this.props.post.id}`
             , modifyUrl: modifyUrl
             , seen: seen
             , seenID: seenID
-            , blogpostFound: false
         }
     }
 
     componentDidMount() {
-        this.setState({isFetching: true});
-        if(!isNaN(this.state.id)) {
-            fetch('/api/blogposts/' + this.state.id).then((httpResponse) => httpResponse.json())
-                .then((blogpost) => {
-                    // if blogpost was found
-                    if(blogpost) {
-                        let postUrl = '/blogposts/' + this.state.id;
-
-                        let content = blogpost.content;
-                        let cutContent = false;
-                        let frontpagePostLength = 500;
-                        // Show only first 500 chars of the post (includes rich text styling)
-                        if (blogpost.content.length > frontpagePostLength && this.props.match === undefined) {
-                            content = content.substr(0, 500);
-                            content += '...';
-                            cutContent = true;
-                        }
-
-                        this.setState({
-                            author: blogpost.author
-                            , title: blogpost.title
-                            , content: content
-                            , cutContent: cutContent
-                            , postDate: blogpost.dateOfCreation
-                            , postTime: blogpost.timeOfCreation
-                            , tags: blogpost.tags
-                            , postUrl: postUrl
-                            , isFetching: false
-                            , blogpostFound: true
-                        });
-                    } else {
-                        this.setState({
-                            blogpostFound: false
-                            , isFetching: false});
-                    }
-                }
-            );
-        } else {
-            this.setState({blogpostFound: false
-                            , isFetching: false});
-        }
     }
 
     makeSeen() {
@@ -107,16 +72,11 @@ class BlogPost extends Component {
             seenBool = true;
         }
 
-        if(this.state.isFetching || this.state.isFetching === undefined) {
-            return <p className="loading">Loading post.....</p>;
-        }
-
         return (
             <div className="container">
-            {this.state.blogpostFound ?
                 <div>
                     <div className="postheader">
-                        <Link to={this.state.postUrl}><h1 className={"blogtitle"}>{this.state.title} </h1></Link>
+                        <Link to={this.state.postUrl}><h1 className={"blogtitle"}>{this.state.title}</h1></Link>
                     </div>
                     <div className="postIcons">
                         <Link to={this.state.modifyUrl}>
@@ -132,9 +92,7 @@ class BlogPost extends Component {
                     }
                     <p className="tagsOfPosts">{this.listOfTags()}</p>
                 </div>
-                :
-                <ErrorPage message={"Blogpost does not exist!"}/>
-            }
+
             </div>
         );
     }
