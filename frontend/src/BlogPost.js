@@ -24,6 +24,7 @@ class BlogPost extends Component {
             , author: ''
             , title: ''
             , content: ''
+            , cutContent: false
             , postDate: '0000-01-01'
             , postTime: '00:00:00'
             , tags: []
@@ -40,12 +41,25 @@ class BlogPost extends Component {
         if(!isNaN(this.state.id)) {
             fetch('/api/blogposts/' + this.state.id).then((httpResponse) => httpResponse.json())
                 .then((blogpost) => {
+                    // if blogpost was found
                     if(blogpost) {
                         let postUrl = '/blogposts/' + this.state.id;
+
+                        let content = blogpost.content;
+                        let cutContent = false;
+                        let frontpagePostLength = 500;
+                        // Show only first 500 chars of the post (includes rich text styling)
+                        if (blogpost.content.length > frontpagePostLength && this.props.match === undefined) {
+                            content = content.substr(0, 500);
+                            content += '...';
+                            cutContent = true;
+                        }
+
                         this.setState({
                             author: blogpost.author
                             , title: blogpost.title
-                            , content: blogpost.content
+                            , content: content
+                            , cutContent: cutContent
                             , postDate: blogpost.dateOfCreation
                             , postTime: blogpost.timeOfCreation
                             , tags: blogpost.tags
@@ -113,6 +127,9 @@ class BlogPost extends Component {
                     <h3>{this.state.author}</h3>
                     <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0, 5)}</p>
                     <div dangerouslySetInnerHTML={{__html: this.state.content}}></div>
+                    {this.state.cutContent &&
+                        <Link to={this.state.postUrl}><p className="readmore">Read more</p></Link>
+                    }
                     <p className="tagsOfPosts">{this.listOfTags()}</p>
                 </div>
                 :
