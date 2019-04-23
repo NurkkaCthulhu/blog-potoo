@@ -20,8 +20,10 @@ public class BlogPost {
     @SequenceGenerator(name = "blogpost_seq", sequenceName = "BLOGPOST_SEQ", allocationSize = 1)
     int id;
 
-    @Column(nullable = false)
-    String author;
+    @ManyToOne
+    @JoinColumn
+    User author;
+
     @Column(nullable = false)
     String title;
     @Column(length=15000)
@@ -52,7 +54,7 @@ public class BlogPost {
         this.tags = new LinkedHashSet<>();
     }
 
-    public BlogPost(String author, String title, String content) {
+    public BlogPost(User author, String title, String content) {
         this.author = author;
         this.title = title;
         this.content = content;
@@ -65,11 +67,11 @@ public class BlogPost {
         return id;
     }
 
-    public String getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 

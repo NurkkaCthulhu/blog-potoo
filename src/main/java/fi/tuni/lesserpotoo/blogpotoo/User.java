@@ -24,6 +24,10 @@ public class User {
     @Column(nullable = false)
     private UserType userType;
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @JsonIgnore
+    Set<BlogPost> blogPosts = new HashSet<>();
+
     @OneToMany(mappedBy = "commenter", cascade = CascadeType.ALL)
     @JsonIgnore
     Set<Comment> comments = new HashSet<>();
@@ -63,6 +67,10 @@ public class User {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public Set<BlogPost> getBlogPosts() {
+        return blogPosts;
     }
 
     public Set<Comment> getComments() {
