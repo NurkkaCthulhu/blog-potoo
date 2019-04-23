@@ -83,3 +83,7 @@ small {
 .newpostTitle {
     text-align: center;
 }
+
+.tooLong {
+    color: red;
+}
