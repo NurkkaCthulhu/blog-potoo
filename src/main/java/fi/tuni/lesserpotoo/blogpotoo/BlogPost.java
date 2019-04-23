@@ -1,12 +1,15 @@
 package fi.tuni.lesserpotoo.blogpotoo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,6 +33,10 @@ public class BlogPost {
     LocalDateTime timeOfEdit;
 
     int likes;
+
+    @OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL)
+    @JsonIgnore
+    Set<Comment> comments = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
@@ -112,6 +119,10 @@ public class BlogPost {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
     }
 
     @Override
