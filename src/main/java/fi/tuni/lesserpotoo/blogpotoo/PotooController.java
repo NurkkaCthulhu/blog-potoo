@@ -26,6 +26,9 @@ public class PotooController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    CommentRepository commentRepository;
+
     @PostConstruct
     public void init() {
 
@@ -63,6 +66,14 @@ public class PotooController {
         blogPostRepository.save(post2);
         blogPostRepository.save(post3);
         blogPostRepository.save(post4);
+
+        Comment comment1 = new Comment(user1, post2, "This is a great post, POTOO");
+        Comment comment2 = new Comment(user2, post2, "certainly so!");
+        Comment comment3 = new Comment(user3, post4, "my life");
+
+        commentRepository.save(comment1);
+        commentRepository.save(comment2);
+        commentRepository.save(comment3);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
