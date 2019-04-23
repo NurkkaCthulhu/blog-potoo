@@ -214,6 +214,17 @@ public class PotooController {
         return blogPostRepository.findById(blogPostId);
     }
 
+    @GetMapping("/api/blogposts/{blogPostId}/comments")
+    public Iterable<Comment> getCommentsByPostId(@PathVariable int blogPostId) {
+        Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
+
+        if (blogPostOptional.isPresent()) {
+            return blogPostOptional.get().getComments();
+        } else {
+            return new HashSet<Comment>();
+        }
+    }
+
     @GetMapping("/api/blogposts/author/{authorName}")
     public Iterable<Integer> getBlogPostsByAuthor(@PathVariable String authorName) {
         return getIdsOfThesePosts(blogPostRepository.findByAuthor(authorName));
