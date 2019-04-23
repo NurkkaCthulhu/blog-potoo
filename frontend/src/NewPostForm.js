@@ -24,6 +24,7 @@ class NewPostForm extends Component {
             , author: ''
             , title: ''
             , content: ''
+            , maxContentLength: 15000
             , tags: ''
             , editorState: EditorState.createEmpty()
             , postFound: true
@@ -50,8 +51,11 @@ class NewPostForm extends Component {
     handleSubmit(event) {
         const author = this.state.author;
         const title = this.state.title;
+        let htmlContent = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
         if (author.length <= 0 || title.length <= 0) {
-            alert('You must give author and title. Please try again.');
+            alert('You must give title. Please try again.');
+        } else if (htmlContent.length > 15000) {
+            alert('Your blogpost is too long! Try to keep it under 15 000 characters, including styling.');
         } else {
             this.makeNewPost();
         }
@@ -199,6 +203,8 @@ class NewPostForm extends Component {
 
     render() {
         const { editorState } = this.state;
+        let content = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
+        let contentLength = content.length;
         return (
             <div className = "container">
                 {this.state.postFound ?
@@ -231,11 +237,16 @@ class NewPostForm extends Component {
                                 </div>
                             </label>
 
-                            <p><label>
-                               Tags
-                               <br />
-                               <input type="text" value={this.state.tags} onChange={this.handleChange} name="tags"/>
-                            </label></p>
+                            <p className={contentLength > this.state.maxContentLength ? "tooLong" : "normal"}>
+                                Content length (incl. styling) {contentLength}/{this.state.maxContentLength}
+                            </p>
+                            <p>
+                                <label>
+                                   Tags
+                                   <br />
+                                   <input type="text" value={this.state.tags} onChange={this.handleChange} name="tags"/>
+                                </label>
+                            </p>
                             <div className={"row"}>
                                 <input type="submit" value="Submit" className="submit-button app-button" />
                                 <button className="cancel-button app-button" onClick={() => this.props.history.push('/')}>Cancel</button>
