@@ -51,7 +51,7 @@ class PostLoader extends Component {
             <div>
                 {this.state.arrayOfBlogPosts.length <= 0 ?
                     <div>
-                        <h1>No blog posts :'(</h1>
+                        <h1 className={"newpostTitle"}>No blog posts :'(</h1>
                         <img className={"nopostsimg"} src={nopostimg} alt={"Crying potoo"}></img>
                     </div>
                     :
