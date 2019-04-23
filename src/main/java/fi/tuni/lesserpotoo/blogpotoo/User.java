@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -21,6 +23,10 @@ public class User {
 
     @Column(nullable = false)
     private UserType userType;
+
+    @OneToMany(mappedBy = "commenter", cascade = CascadeType.ALL)
+    @JsonIgnore
+    Set<Comment> comments = new HashSet<>();
 
     public User() {
     }
@@ -57,6 +63,10 @@ public class User {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
     }
 
     @Override
