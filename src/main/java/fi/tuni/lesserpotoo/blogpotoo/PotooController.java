@@ -211,15 +211,9 @@ public class PotooController {
         return userRepository.findById(userId);
     }
 
-    private Iterable<Integer> getIdsOfThesePosts(Iterable<BlogPost> blogPosts) {
-        LinkedList<Integer> allIds = new LinkedList<>();
-        blogPosts.forEach(x -> allIds.add(x.getId()));
-        return allIds;
-    }
-
     @GetMapping("/api/blogposts")
-    public Iterable<Integer> getAllBlogPosts() {
-        return getIdsOfThesePosts(blogPostRepository.findAll());
+    public Iterable<BlogPost> getAllBlogPosts() {
+        return blogPostRepository.findAll();
     }
 
     @GetMapping("/api/blogposts/{blogPostId}")
@@ -239,31 +233,31 @@ public class PotooController {
     }
 
     @GetMapping("/api/blogposts/author/{authorName}")
-    public Iterable<Integer> getBlogPostsByAuthor(@PathVariable String authorName) {
-        return getIdsOfThesePosts(blogPostRepository.findByAuthor(authorName));
+    public Iterable<BlogPost> getBlogPostsByAuthor(@PathVariable String authorName) {
+        return blogPostRepository.findByAuthor(authorName);
     }
 
     @GetMapping("/api/blogposts/title/{containingWord}")
-    public Iterable<Integer> getBlogPostsByTitleContaining(@PathVariable String containingWord) {
-        return getIdsOfThesePosts(blogPostRepository.findByTitleContainingIgnoreCase(containingWord));
+    public Iterable<BlogPost> getBlogPostsByTitleContaining(@PathVariable String containingWord) {
+        return blogPostRepository.findByTitleContainingIgnoreCase(containingWord);
     }
 
     @GetMapping("/api/blogposts/tag/{tagName}")
-    public Iterable<Integer> getBlogPostsByTag(@PathVariable String tagName) {
+    public Iterable<BlogPost> getBlogPostsByTag(@PathVariable String tagName) {
         Optional<Tag> tag = tagRepository.findTagByTagNameIgnoreCase(tagName);
 
         if (tag.isPresent()) {
-            return getIdsOfThesePosts(tag.get().getBlogPosts());
+            return tag.get().getBlogPosts();
         } else {
-            return new LinkedList<Integer>();
+            return new LinkedList<BlogPost>();
         }
     }
 
     @GetMapping("/api/blogposts/date/{date:[0-9]{4}-[0-9]{2}-[0-9]{2}}")
-    public Iterable<Integer> getBlogPostsByDateAsc(@PathVariable String date) {
+    public Iterable<BlogPost> getBlogPostsByDateAsc(@PathVariable String date) {
         try {
             LocalDate localDate = LocalDate.parse(date);
-            return getIdsOfThesePosts(blogPostRepository.findByDateOfCreation(localDate));
+            return blogPostRepository.findByDateOfCreation(localDate);
         } catch (DateTimeParseException e) {
             e.printStackTrace();
             return null;
@@ -271,22 +265,22 @@ public class PotooController {
     }
 
     @GetMapping("/api/blogposts/search_all/{keyWord}")
-    public Iterable<Integer> getBlogPostsByKeyWord(@PathVariable String keyWord) {
-        HashSet<Integer> blogPostIds = new HashSet<>();
+    public Iterable<BlogPost> getBlogPostsByKeyWord(@PathVariable String keyWord) {
+        HashSet<BlogPost> blogPosts = new HashSet<>();
 
-        for (Integer blogPostId : getBlogPostsByAuthor(keyWord)) {
-            blogPostIds.add(blogPostId);
+        for (BlogPost blogPost : getBlogPostsByAuthor(keyWord)) {
+            blogPosts.add(blogPost);
         }
 
-        for (Integer blogPostId : getBlogPostsByTag(keyWord)) {
-            blogPostIds.add(blogPostId);
+        for (BlogPost blogPost: getBlogPostsByTag(keyWord)) {
+            blogPosts.add(blogPost);
         }
 
-        for (Integer blogPostId : getBlogPostsByTitleContaining(keyWord)) {
-            blogPostIds.add(blogPostId);
+        for (BlogPost blogPost : getBlogPostsByTitleContaining(keyWord)) {
+            blogPosts.add(blogPost);
         }
 
-        return blogPostIds;
+        return blogPosts;
     }
 
     @GetMapping("/api/hello")
