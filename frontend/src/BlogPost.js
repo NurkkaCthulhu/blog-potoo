@@ -28,7 +28,7 @@ class BlogPost extends Component {
 
         this.state = {
             id: id
-            , author: this.props.post.author
+            , author: this.props.post.author.username
             , title: this.props.post.title
             , content: content
             , cutContent: cutContent
