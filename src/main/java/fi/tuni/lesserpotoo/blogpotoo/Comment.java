@@ -25,7 +25,7 @@ public class Comment {
     @Column(nullable = false)
     LocalTime timeOfComment;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     String content;
 
     public Comment() {
