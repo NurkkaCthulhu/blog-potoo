@@ -1,5 +1,7 @@
 package fi.tuni.lesserpotoo.blogpotoo;
 
+import jdk.vm.ci.meta.Local;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,4 +29,17 @@ public class Comment {
 
     @Column(nullable = false)
     String content;
+
+    public Comment() {
+        dateOfComment = LocalDate.now();
+        timeOfComment = LocalTime.now();
+    }
+
+    public Comment(User commentor, BlogPost blogPost, String content) {
+        this.commentor = commentor;
+        this.blogPost = blogPost;
+        this.content = content;
+        dateOfComment = LocalDate.now();
+        timeOfComment = LocalTime.now();
+    }
 }
