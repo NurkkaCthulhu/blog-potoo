@@ -15,7 +15,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn
-    User commentor;
+    User commenter;
 
     @ManyToOne
     @JoinColumn
@@ -35,8 +35,8 @@ public class Comment {
         timeOfComment = LocalTime.now();
     }
 
-    public Comment(User commentor, BlogPost blogPost, String content) {
-        this.commentor = commentor;
+    public Comment(User commenter, BlogPost blogPost, String content) {
+        this.commenter = commenter;
         this.blogPost = blogPost;
         this.content = content;
         dateOfComment = LocalDate.now();
@@ -71,8 +71,8 @@ public class Comment {
         return id;
     }
 
-    public User getCommentor() {
-        return commentor;
+    public User getCommenter() {
+        return commenter;
     }
 
     public BlogPost getBlogPost() {
@@ -83,7 +83,7 @@ public class Comment {
     public String toString() {
         return "Comment{" +
                 "id=" + id +
-                ", commentor=" + commentor +
+                ", commentor=" + commenter +
                 ", blogPost=" + blogPost +
                 ", dateOfComment=" + dateOfComment +
                 ", timeOfComment=" + timeOfComment +
