@@ -78,6 +78,7 @@ class NewPostForm extends Component {
         if (this.props.match.params.id === 'new') {
             this.setState({
                 formTitle: 'Make a new post'
+                , author: localStorage.getItem('username')
                 , modifying: false
             })
         } else if (isNaN(this.props.match.params.id)) {
@@ -206,17 +207,6 @@ class NewPostForm extends Component {
                             <h1 className={"newpostTitle"}>{this.state.formTitle}</h1>
                         </div>
                         <form onSubmit={this.handleSubmit}>
-                            <div className="required">
-                                <label>
-                                    Author
-                                    <br />
-                                    <input type="text" value={this.state.author} onChange={this.handleChange} name="author" readOnly={this.state.modifying}/>
-                                    <small hidden={!this.state.modifying}>Post author cannot be modified.</small>
-                                </label>
-                            </div>
-
-                            <br />
-
                             <div className="required">
                                 <label>
                                     Title
