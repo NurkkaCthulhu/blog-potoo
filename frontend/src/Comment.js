@@ -5,9 +5,22 @@ import {Link} from "react-router-dom";
 class Comment extends Component {
     constructor(props) {
         super(props);
-        //console.log('props in comment ', props);
+        console.log('props in comment ', props);
     }
 
+    deleteComment = (event) => {
+        fetch('/api/blogposts/' + this.props.comment.blogPost.id + '/comments/' + this.props.comment.id,{
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            this.props.updateComments();
+        });
+
+        event.preventDefault();
+    };
 
     render() {
         return (
