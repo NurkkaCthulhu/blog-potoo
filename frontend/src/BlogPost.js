@@ -20,11 +20,13 @@ class BlogPost extends Component {
         let cutContent = false;
         let frontpagePostLength = 500;
         // Show only first 500 chars of the post (includes rich text styling)
-        if (content.length > frontpagePostLength) {
+        if (content.length > frontpagePostLength && !this.props.ownPage) {
             content = content.substr(0, 500);
             content += '...';
             cutContent = true;
         }
+
+        let dynamicClassName = window.innerWidth>= 500 ? "desktop" : "mobile";
 
         this.state = {
             id: id
@@ -39,6 +41,8 @@ class BlogPost extends Component {
             , modifyUrl: modifyUrl
             , seen: seen
             , seenID: seenID
+            , windowWidth: window.innerWidth
+            , dynamicClassName: dynamicClassName
         }
     }
 
@@ -67,13 +71,14 @@ class BlogPost extends Component {
     }
 
     render() {
+
         let seenBool = false;
         if(localStorage.getItem(this.state.seenID) === 'true') {
             seenBool = true;
         }
 
         return (
-            <div className="container">
+            <div className={this.state.dynamicClassName}>
                 <div>
                     <div className="postheader">
                         <Link to={this.state.postUrl}><h1 className={"blogtitle"}>{this.state.title}</h1></Link>

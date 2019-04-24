@@ -1,6 +1,11 @@
-.container {
-    margin-left: 30%;
-    margin-right: 30%;
+.desktop {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.mobile {
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .postheader h1 {
