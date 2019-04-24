@@ -31,4 +31,38 @@ public class ViewAndLike {
         this.viewed = viewed;
         this.liked = liked;
     }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public int getBlogPostId() {
+        return blogPostId;
+    }
+
+    public boolean isViewed() {
+        return viewed;
+    }
+
+    public void setViewed(boolean viewed) {
+        this.viewed = viewed;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+
+    @Override
+    public String toString() {
+        return "ViewAndLike{" +
+                "userId=" + userId +
+                ", blogPostId=" + blogPostId +
+                ", viewed=" + viewed +
+                ", liked=" + liked +
+                '}';
+    }
 }
