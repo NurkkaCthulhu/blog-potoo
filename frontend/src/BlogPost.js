@@ -18,9 +18,6 @@ class BlogPost extends Component {
         this.listAllComments = this.listAllComments.bind(this);
         this.updateComments = this.updateComments.bind(this);
 
-        let seenID = 'seen' + id;
-        let seen = localStorage.getItem(seenID);
-
         let content = this.props.post.content;
         let cutContent = false;
         let frontpagePostLength = 500;
@@ -42,14 +39,21 @@ class BlogPost extends Component {
             , tags: this.props.post.tags
             , postUrl: `/blogposts/${this.props.post.id}`
             , modifyUrl: modifyUrl
-            , seen: seen
-            , seenID: seenID
+            , seen: false
             , fetchedComments: []
             , arrayOfComments: []
         }
     }
 
     componentDidMount() {
+        fetch('/api/blogposts/' + this.state.id + '/viewAndLike/' + localStorage.getItem('userId'))
+            .then((httpResp) => httpResp.json())
+            .then((json) => {
+                if(json) {
+                    this.setState({seen: json.viewed})
+                }
+            });
+
         if(this.props.ownPage) {
             this.updateComments();
         }
@@ -79,14 +83,20 @@ class BlogPost extends Component {
     }
 
     makeSeen() {
-        if(localStorage.getItem(this.state.seenID) === 'true') {
-            localStorage.setItem(this.state.seenID, 'false');
-        } else {
-            localStorage.setItem(this.state.seenID, 'true');
-        }
-
-        let seed = localStorage.getItem(this.state.seenID);
-        this.setState({seen: seed});
+        let fetchUrl = '/api/blogposts/' + this.state.id + '/toggleView/' + localStorage.getItem('userId');
+        console.log(fetchUrl);
+        fetch(fetchUrl, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: ''})
+            .then(() => {
+                    let seen = !this.state.seen;
+                    this.setState({seen: seen});
+                }
+            );
     }
 
     listOfTags() {
@@ -101,11 +111,6 @@ class BlogPost extends Component {
 
     render() {
 
-        let seenBool = false;
-        if(localStorage.getItem(this.state.seenID) === 'true') {
-            seenBool = true;
-        }
-
         return (
             <div>
                 <div className="postheader">
@@ -118,7 +123,7 @@ class BlogPost extends Component {
                         </Link>
                     }
                     {localStorage.getItem('loggedin') === 'true' &&
-                    <i className={seenBool ? 'far fa-eye' : 'far fa-eye-slash'} onClick={this.makeSeen}></i>
+                        <i className={this.state.seen ? 'far fa-eye' : 'far fa-eye-slash'} onClick={this.makeSeen}></i>
                     }
 
                 </div>
