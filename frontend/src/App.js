@@ -1,12 +1,13 @@
-import React, {Component} from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, {Component} from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './css/frontpage_style.css';
 import PostLoader from './PostLoader';
 import NewPostForm from './NewPostForm';
-import ErrorPage from "./ErrorPage";
-import Login from "./Login";
-import Register from "./Register";
-import Header from "./Header";
+import ErrorPage from './ErrorPage';
+import Login from './Login';
+import Register from './Register';
+import Header from './Header';
+import SearchPage from './SearchPage';
 
 function Index() {
     return <PostLoader />;
@@ -51,7 +52,7 @@ class App extends Component {
                     <div className={"blog-posts " + this.state.monitorType}>
                         <Switch>
                             <Route exact path="/" exact component={Index} />
-                            <Route exact path="/search/:search" component={PostLoader} />
+                            <Route exact path="/search/:search" component={SearchPage} />
                             <Route exact path="/blogposts/modifypost/:id" component={NewPostForm} />
                             <Route exact path={"/blogposts/:id"} component={PostLoader}/>
                             <Route exact path="/login" component={LoginUser}/>
