@@ -37,7 +37,11 @@ class Header extends Component {
                     <Link to="/" className="frontpagelink"><i className='fab fa-earlybirds'></i>{this.props.monitorType === 'desktop' && "Blog Potoo"}</Link>
                     <Link to="/search/" className="frontpagelink"><i className='fas fa-search'></i></Link>
                     <Link to="/" onClick={this.logout} className="registerlink">{this.props.monitorType === 'desktop' ? "Logout" : <i className='fas fa-sign-out-alt'></i>}</Link>
-                    <Link to="/blogposts/modifypost/new" className="newpostlink">{this.props.monitorType === 'desktop' ? "New post" : <i className='fas fa-edit'></i>}</Link>
+                    {localStorage.getItem('userType') === 'ADMIN' &&
+                        <Link to="/blogposts/modifypost/new"
+                              className="newpostlink">{this.props.monitorType === 'desktop' ? "New post" :
+                            <i className='fas fa-edit'></i>}</Link>
+                    }
                     <Link to="/" className="userpagelink">{this.props.monitorType === 'desktop' ? welcomeMessage : <i className='fas fa-user-alt'></i>}</Link>
                 </nav>
                 :

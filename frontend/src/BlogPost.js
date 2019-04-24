@@ -1,6 +1,9 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import './css/BlogPost_style.css';
+import Comment from "./Comment";
+import NewComment from "./NewComment";
+import ErrorPage from "./ErrorPage";
 
 class BlogPost extends Component {
 
@@ -12,6 +15,8 @@ class BlogPost extends Component {
         let modifyUrl = '/blogposts/modifypost/' + id;
         this.listOfTags = this.listOfTags.bind(this);
         this.makeSeen = this.makeSeen.bind(this);
+        this.listAllComments = this.listAllComments.bind(this);
+        this.updateComments = this.updateComments.bind(this);
 
         let seenID = 'seen' + id;
         let seen = localStorage.getItem(seenID);
@@ -39,10 +44,38 @@ class BlogPost extends Component {
             , modifyUrl: modifyUrl
             , seen: seen
             , seenID: seenID
+            , fetchedComments: []
+            , arrayOfComments: []
         }
     }
 
     componentDidMount() {
+        if(this.props.ownPage) {
+            this.updateComments();
+        }
+    }
+
+    updateComments() {
+        fetch('/api/blogposts/' + this.state.id + '/comments')
+            .then((httpResponse) => httpResponse.json())
+            .then((json) => this.setState({fetchedComments: json}))
+            .then(() => this.listAllComments());
+    }
+
+    listAllComments() {
+        let helperArray = [];
+
+        if(this.state.fetchedComments === null) {
+            helperArray.push(<ErrorPage key={1} message={"Comment found 404"}/>)
+        } else if(this.state.fetchedComments.length === undefined) {
+            helperArray.push(<Comment key={this.state.fetchedComments.id} comment={this.state.fetchedComments} updateComments={this.updateComments}/>);
+        } else {
+            for (let comment of this.state.fetchedComments) {
+                helperArray.push(<Comment key={comment.id} comment={comment} updateComments={this.updateComments}/>);
+            }
+        }
+        helperArray.sort(function(a, b) {return a.key - b.key});
+        this.setState({arrayOfComments: helperArray});
     }
 
     makeSeen() {
@@ -79,9 +112,11 @@ class BlogPost extends Component {
                     <Link to={this.state.postUrl}><h1 className={"blogtitle"}>{this.state.title}</h1></Link>
                 </div>
                 <div className="postIcons">
-                    <Link to={this.state.modifyUrl}>
-                        <button className="modifybutton"><i className='fas fa-pen'></i></button>
-                    </Link>
+                    {localStorage.getItem('userType') === 'ADMIN' &&
+                        <Link to={this.state.modifyUrl}>
+                            <button className="modifybutton"><i className='fas fa-pen'></i></button>
+                        </Link>
+                    }
                     <i className={seenBool ? 'far fa-eye' : 'far fa-eye-slash'} onClick={this.makeSeen}></i>
                 </div>
                 <h3>{this.state.author}</h3>
@@ -91,6 +126,16 @@ class BlogPost extends Component {
                     <Link to={this.state.postUrl}><p className="readmore">Read more</p></Link>
                 }
                 <p className="tagsOfPosts">{this.listOfTags()}</p>
+
+                {this.props.ownPage &&
+                    <div className="blogpost_comments">
+                        { localStorage.getItem('loggedin') === 'true' &&
+                            <NewComment postId={this.state.id} updateComments={this.updateComments}/>
+                        }
+                        <br/>
+                        {this.state.arrayOfComments}
+                    </div>
+                }
             </div>
 
         );

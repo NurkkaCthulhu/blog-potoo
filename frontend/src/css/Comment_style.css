@@ -1,0 +1,48 @@
+.comment {
+    border: 2px solid red;
+    border-radius: 8px;
+    margin-top: 5px;
+}
+
+.commentContent {
+    word-wrap: break-word;
+    margin: 5px;
+}
+
+.newComment {
+    height: 200px;
+}
+
+.charsLeft {
+    display: inline-block;
+}
+
+.commentSubmitButton{
+    text-align: right !important;
+    float:right !important;;
+}
+
+.longposttrue {
+    color: red;
+}
+
+.deletebutton {
+    background-color: #cc2626;
+    height: 30px;
+    width: 30px;
+    margin: 1px;
+    border-radius: 10px;
+    float: right;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.deletebutton:hover {
+    background-color: #aa1b1b;
+}
+
+.fa-trash-alt {
+    font-size: 16px;
+    margin-right: 3px;
+}
