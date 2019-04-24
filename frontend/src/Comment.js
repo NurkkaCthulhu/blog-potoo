@@ -4,7 +4,7 @@ import './css/Comment_style.css';
 class Comment extends Component {
     constructor(props) {
         super(props);
-        console.log('propsit commentissa ', props);
+        //console.log('props in comment ', props);
     }
 
     render() {
