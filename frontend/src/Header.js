@@ -35,8 +35,8 @@ class Header extends Component {
                 <nav className="header">
                     <Link to="/" className="frontpagelink"><i className='fab fa-earlybirds'></i>{windowWidth >= 500 && "Blog Potoo"}</Link>
                     <Link to="/" onClick={this.logout} className="registerlink">{windowWidth >= 500 ? "Logout" : <i className='fas fa-sign-out-alt'></i>}</Link>
-                    <Link to="/blogposts/modifypost/new" className="newpostlink">{windowWidth >= 500 ? "New post" : "New post"}</Link>
-                    <Link to="/" className="userpagelink">{windowWidth >= 500 && welcomeMessage}</Link>
+                    <Link to="/blogposts/modifypost/new" className="newpostlink">{windowWidth >= 500 ? "New post" : <i className='fas fa-edit'></i>}</Link>
+                    <Link to="/" className="userpagelink">{windowWidth >= 500 ? welcomeMessage : <i className='fas fa-user-alt'></i>}</Link>
                 </nav>
                 :
                  <nav className="header">

@@ -56,6 +56,7 @@ span {
 .newpostlink {
     float: right;
     margin-right: 2%;
+    padding-left: 10px;
 }
 
 .loginlink {
@@ -80,6 +81,6 @@ span {
     width: 50%;
     max-width: 300px;
 }
-.fa-sign-out-alt {
+.fas {
     font-size: 30px;
 }
