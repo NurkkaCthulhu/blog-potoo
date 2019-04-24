@@ -58,7 +58,6 @@ class BlogPost extends Component {
     }
 
     listAllComments() {
-        console.log('listing comments')
         let helperArray = [];
 
         if(this.state.fetchedComments === null) {
@@ -108,9 +107,11 @@ class BlogPost extends Component {
                     <Link to={this.state.postUrl}><h1 className={"blogtitle"}>{this.state.title}</h1></Link>
                 </div>
                 <div className="postIcons">
-                    <Link to={this.state.modifyUrl}>
-                        <button className="modifybutton"><i className='fas fa-pen'></i></button>
-                    </Link>
+                    {localStorage.getItem('userType') === 'ADMIN' &&
+                        <Link to={this.state.modifyUrl}>
+                            <button className="modifybutton"><i className='fas fa-pen'></i></button>
+                        </Link>
+                    }
                     <i className={seenBool ? 'far fa-eye' : 'far fa-eye-slash'} onClick={this.makeSeen}></i>
                 </div>
                 <h3>{this.state.author}</h3>
