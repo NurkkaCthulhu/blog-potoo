@@ -7,7 +7,7 @@ import java.util.Optional;
 
 /**
  * @author Essi Supponen [essi.supponen@tuni.fi]
- * @version 2019-0423
+ * @version 2019-0401
  * @since 2.0
  */
 public interface TagRepository extends CrudRepository<Tag, Integer> {
