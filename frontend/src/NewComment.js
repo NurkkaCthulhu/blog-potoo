@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import './css/Comment_style.css';
-import { Link } from "react-router-dom";
 
 class NewComment extends Component {
     constructor(props) {
