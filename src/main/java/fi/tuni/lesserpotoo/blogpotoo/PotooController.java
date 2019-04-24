@@ -70,8 +70,6 @@ public class PotooController {
         post4.getTags().add(potooTag);
         post4.getTags().add(lastTag);
 
-        post2.setLikes(1);
-
         blogPostRepository.save(post1);
         blogPostRepository.save(post2);
         blogPostRepository.save(post3);
@@ -85,11 +83,13 @@ public class PotooController {
         commentRepository.save(comment2);
         commentRepository.save(comment3);
 
-        ViewAndLike viewAndLike1 = new ViewAndLike(user1.getId(), post2.getId(), true, true);
-        ViewAndLike viewAndLike2 = new ViewAndLike(user2.getId(), post2.getId(), true, false);
+        ViewAndLike val1 = new ViewAndLike(2,1,true,false);
+        ViewAndLike val2 = new ViewAndLike(2,2,true,false);
+        ViewAndLike val3 = new ViewAndLike(1,1,true,true);
 
-        viewAndLikeRepository.save(viewAndLike1);
-        viewAndLikeRepository.save(viewAndLike2);
+        viewAndLikeRepository.save(val1);
+        viewAndLikeRepository.save(val2);
+        viewAndLikeRepository.save(val3);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -209,6 +209,12 @@ public class PotooController {
                 tagRepository.deleteAll(tagsToBeRemoved);
             }
 
+            List<ViewAndLike> viewAndLikes = viewAndLikeRepository.findAllByBlogPostId(blogPostId);
+
+            for (ViewAndLike val : viewAndLikes) {
+                viewAndLikeRepository.delete(val);
+            }
+
             blogPostRepository.deleteById(blogPostId);
         }
     }
@@ -238,6 +244,12 @@ public class PotooController {
 
     @DeleteMapping("/api/users/finaldelete/{userId}")
     public void removeUserById(@PathVariable int userId) {
+        List<ViewAndLike> viewAndLikes = viewAndLikeRepository.findAllByUserId(userId);
+
+        for (ViewAndLike val : viewAndLikes) {
+            viewAndLikeRepository.delete(val);
+        }
+
         userRepository.deleteById(userId);
     }
 
