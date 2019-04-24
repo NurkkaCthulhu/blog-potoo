@@ -16,6 +16,7 @@ class BlogPost extends Component {
         this.listOfTags = this.listOfTags.bind(this);
         this.makeSeen = this.makeSeen.bind(this);
         this.listAllComments = this.listAllComments.bind(this);
+        this.updateComments = this.updateComments.bind(this);
 
         let seenID = 'seen' + id;
         let seen = localStorage.getItem(seenID);
@@ -50,11 +51,15 @@ class BlogPost extends Component {
 
     componentDidMount() {
         if(this.props.ownPage) {
-            fetch('/api/blogposts/' + this.state.id + '/comments')
-                .then((httpResponse) => httpResponse.json())
-                .then((json) => this.setState({fetchedComments: json}))
-                .then(() => this.listAllComments());
+            this.updateComments();
         }
+    }
+
+    updateComments() {
+        fetch('/api/blogposts/' + this.state.id + '/comments')
+            .then((httpResponse) => httpResponse.json())
+            .then((json) => this.setState({fetchedComments: json}))
+            .then(() => this.listAllComments());
     }
 
     listAllComments() {
@@ -125,7 +130,7 @@ class BlogPost extends Component {
                 {this.props.ownPage &&
                     <div className="blogpost_comments">
                         { localStorage.getItem('loggedin') === 'true' &&
-                            <NewComment postId={this.state.id}/>
+                            <NewComment postId={this.state.id} updateComments={this.updateComments}/>
                         }
                         <br/>
                         {this.state.arrayOfComments}
