@@ -38,7 +38,6 @@ class NewComment extends Component {
             userId: localStorage.getItem('userId')
             , content: this.state.comment
         };
-        console.log('uus okommentti', newComment);
 
         await fetch('/api/blogposts/' + this.props.postId + '/comments', {
                 method: 'POST',
@@ -47,13 +46,17 @@ class NewComment extends Component {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(newComment),
-        }).then(() => console.log('done'));
+        }).finally(() => {
+            this.setState({comment:''
+                , tooLong: false});
+                this.props.updateComments();
+            });
     }
 
     render() {
         return (
             <div className="newcomment">
-                <textarea placeholder="Write comment" name="comment" className="newComment" onChange={this.handleChange} />
+                <textarea placeholder="Write comment" name="comment" className="newComment" onChange={this.handleChange} value={this.state.comment} />
                 <div>
                     <p className={"charsLeft " + "longpost" + this.state.tooLong}>{this.state.comment.length}/2000</p>
                     <button onClick={this.handleSubmit} className={"commentSubmitButton"}>Submit</button>
