@@ -17,15 +17,21 @@ class PostLoader extends Component {
 
         this.listAllBlogPosts = this.listAllBlogPosts.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
-        this.state = {fetchUrl: fetchUrl, arrayOfBlogPosts: [], fetchedBlogPosts: []};
+        this.state = {fetchUrl: fetchUrl
+                    , arrayOfBlogPosts: []
+                    , fetchedBlogPosts: []
+                    , isFetching: false
+                    };
     }
 
     componentDidMount() {
+        this.setState({isFetching: true});
         let fetchURL = '/api/blogposts' + this.state.fetchUrl;
         fetch(fetchURL).then((httpResponse) => httpResponse.json()).then((json) => this.setState({fetchedBlogPosts: json})).then(() => this.updatePosts());
     }
 
     updatePosts() {
+        this.setState({isFetching: false});
         this.listAllBlogPosts();
         //fetch('/api/blogposts/').then((httpResponse) => httpResponse.json()).then(this.listAllBlogPosts);
     }
@@ -49,7 +55,10 @@ class PostLoader extends Component {
     render() {
         return (
             <div>
-                {this.state.arrayOfBlogPosts.length <= 0 ?
+                {this.state.isFetching ?
+                    <p>Loading....</p>
+                    :
+                    this.state.arrayOfBlogPosts.length <= 0 ?
                     <div>
                         <h1 className={"newpostTitle"}>No blog posts :'(</h1>
                         <img className={"nopostsimg"} src={nopostimg} alt={"Crying potoo"}></img>
