@@ -44,7 +44,19 @@ class SearchPage extends Component {
         switch (this.state.sort) {
             case 'newest':
                 this.state.arrayOfBlogPostInformation.sort(function(a,b) {return b.id - a.id;});
-                this.listAllBlogPosts(this.state.arrayOfBlogPostInformation)
+                this.listAllBlogPosts(this.state.arrayOfBlogPostInformation);
+                break;
+            case 'oldest':
+                this.state.arrayOfBlogPostInformation.sort(function(a,b) {return a.id - b.id;});
+                this.listAllBlogPosts(this.state.arrayOfBlogPostInformation);
+                break;
+            case 'titleAlphAsc':
+                this.state.arrayOfBlogPostInformation.sort(function(a,b) {return a.title.localeCompare(b.title);});
+                this.listAllBlogPosts(this.state.arrayOfBlogPostInformation);
+                break;
+            case 'titleAlphDesc':
+                this.state.arrayOfBlogPostInformation.sort(function(a,b) {return b.title.localeCompare(a.title);});
+                this.listAllBlogPosts(this.state.arrayOfBlogPostInformation);
                 break;
         }
     }
