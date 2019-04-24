@@ -87,7 +87,7 @@ public class BlogPost {
     /**
      * Default constructor.
      *
-     * Gets date and time of creation automatically.
+     * Sets date and time of creation automatically.
      */
     public BlogPost() {
         this.dateOfCreation = LocalDate.now();
@@ -98,7 +98,7 @@ public class BlogPost {
     /**
      * Constructor with author, title and content.
      *
-     * Get date and time of creation automatically.
+     * Sets date and time of creation automatically.
      *
      * @param author
      * @param title
