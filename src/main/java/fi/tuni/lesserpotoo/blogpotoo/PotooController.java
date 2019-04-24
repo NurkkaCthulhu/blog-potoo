@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.swing.text.View;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -28,6 +29,9 @@ public class PotooController {
 
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    ViewAndLikeRepository viewAndLikeRepository;
 
     @PostConstruct
     public void init() {
@@ -74,6 +78,12 @@ public class PotooController {
         commentRepository.save(comment1);
         commentRepository.save(comment2);
         commentRepository.save(comment3);
+
+        ViewAndLike viewAndLike1 = new ViewAndLike(user1.getId(), post2.getId(), true, true);
+        ViewAndLike viewAndLike2 = new ViewAndLike(user2.getId(), post2.getId(), true, false);
+
+        viewAndLikeRepository.save(viewAndLike1);
+        viewAndLikeRepository.save(viewAndLike2);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
