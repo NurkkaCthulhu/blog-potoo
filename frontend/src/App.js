@@ -30,9 +30,15 @@ class App extends Component {
         super();
 
         let monitorType = window.innerWidth >= 500 ? 'desktop' : 'mobile';
-        this.state = {monitorType: monitorType}
+        let loggedIn = (localStorage.getItem('loggedin') === 'true');
+        this.state = {monitorType: monitorType, loggedIn: loggedIn}
 
         window.onresize = this.checkWindowSize.bind(this);
+        this.checkLoggedIn = this.checkLoggedIn.bind(this);
+    }
+
+    checkLoggedIn(trueOrFalse) {
+        this.setState({loggedIn: trueOrFalse});
     }
 
     checkWindowSize() {
@@ -52,6 +58,7 @@ class App extends Component {
                     <div className={"blog-posts " + this.state.monitorType}>
                         <Switch>
                             <Route exact path="/" exact component={Index} />
+                            <Route exact path="/search/" component={SearchPage} />
                             <Route exact path="/search/:search" component={SearchPage} />
                             <Route exact path="/blogposts/modifypost/:id" component={NewPostForm} />
                             <Route exact path={"/blogposts/:id"} component={PostLoader}/>
