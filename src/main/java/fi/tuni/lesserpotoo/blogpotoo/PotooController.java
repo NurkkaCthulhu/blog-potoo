@@ -414,6 +414,7 @@ public class PotooController {
         if (viewAndLikeOptional.isPresent()) {
             ViewAndLike viewAndLike = viewAndLikeOptional.get();
             viewAndLike.setViewed(!viewAndLike.isViewed());
+            viewAndLikeRepository.save(viewAndLike);
         } else if (blogPostRepository.findById(blogPostId).isPresent() && userRepository.findById(userId).isPresent()) {
             viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, true, false));
         }
