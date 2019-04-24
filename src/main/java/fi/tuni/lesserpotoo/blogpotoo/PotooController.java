@@ -419,4 +419,26 @@ public class PotooController {
             viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, true, false));
         }
     }
+
+    @PutMapping("/api/blogposts/{blogPostId}/toggleLike/{userId}")
+    public void toggleBlogPostLike(@PathVariable int blogPostId, @PathVariable int userId) {
+        Optional<ViewAndLike> viewAndLikeOptional = viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
+
+        if (viewAndLikeOptional.isPresent()) {
+            ViewAndLike viewAndLike = viewAndLikeOptional.get();
+            BlogPost blogPost = blogPostRepository.findById(blogPostId).get();
+
+            if (viewAndLike.isLiked()) {
+                blogPost.setLikes(blogPost.getLikes() - 1);
+            } else {
+                blogPost.setLikes(blogPost.getLikes() + 1);
+            }
+
+            viewAndLike.setLiked(!viewAndLike.isLiked());
+            viewAndLikeRepository.save(viewAndLike);
+            blogPostRepository.save(blogPost);
+        } else if (blogPostRepository.findById(blogPostId).isPresent() && userRepository.findById(userId).isPresent()) {
+            viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, false, true));
+        }
+    }
 }
