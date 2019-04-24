@@ -2,19 +2,23 @@ package fi.tuni.lesserpotoo.blogpotoo;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fi.tuni.lesserpotoo.blogpotoo.entities.*;
+import fi.tuni.lesserpotoo.blogpotoo.misc.UserType;
+import fi.tuni.lesserpotoo.blogpotoo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.swing.text.View;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
+/**
+ * @author Essi Supponen [essi.supponen@tuni.fi]
+ * @version 2019-0423
+ * @since 1.0
+ */
 @RestController
 public class PotooController {
 
@@ -65,6 +69,8 @@ public class PotooController {
         post3.getTags().add(potooTag);
         post4.getTags().add(potooTag);
         post4.getTags().add(lastTag);
+
+        post2.setLikes(1);
 
         blogPostRepository.save(post1);
         blogPostRepository.save(post2);
@@ -448,6 +454,9 @@ public class PotooController {
             blogPostRepository.save(blogPost);
         } else if (blogPostRepository.findById(blogPostId).isPresent() && userRepository.findById(userId).isPresent()) {
             viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, false, true));
+            BlogPost blogPost = blogPostRepository.findById(blogPostId).get();
+            blogPost.setLikes(blogPost.getLikes() + 1);
+            blogPostRepository.save(blogPost);
         }
     }
 }
