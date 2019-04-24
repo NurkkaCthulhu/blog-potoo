@@ -49,9 +49,9 @@ class NewComment extends Component {
         return (
             <div className="newcomment">
                 <textarea placeholder="Write comment" name="comment" className="newComment" onChange={this.handleChange} />
-                <div className={"floatRight"}>
-                    <p>{this.state.comment.length}/2000</p>
-                    <button onClick={this.handleSubmit}>Submit</button>
+                <div>
+                    <p className={"floatRight"}>{this.state.comment.length}/2000</p>
+                    <button onClick={this.handleSubmit} className={"commentSubmitButton"}>Submit</button>
                 </div>
             </div>
         );
