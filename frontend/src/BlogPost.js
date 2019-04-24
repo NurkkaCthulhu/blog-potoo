@@ -1,6 +1,9 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import './css/BlogPost_style.css';
+import Comment from "./Comment";
+import NewComment from "./NewComment";
+import ErrorPage from "./ErrorPage";
 
 class BlogPost extends Component {
 
@@ -12,6 +15,7 @@ class BlogPost extends Component {
         let modifyUrl = '/blogposts/modifypost/' + id;
         this.listOfTags = this.listOfTags.bind(this);
         this.makeSeen = this.makeSeen.bind(this);
+        this.listAllComments = this.listAllComments.bind(this);
 
         let seenID = 'seen' + id;
         let seen = localStorage.getItem(seenID);
@@ -39,10 +43,35 @@ class BlogPost extends Component {
             , modifyUrl: modifyUrl
             , seen: seen
             , seenID: seenID
+            , fetchedComments: []
+            , arrayOfComments: []
         }
     }
 
     componentDidMount() {
+        if(this.props.ownPage) {
+            fetch('/api/blogposts/' + this.state.id + '/comments')
+                .then((httpResponse) => httpResponse.json())
+                .then((json) => this.setState({fetchedComments: json}))
+                .then(() => this.listAllComments());
+        }
+    }
+
+    listAllComments() {
+        console.log('listing comments')
+        let helperArray = [];
+
+        if(this.state.fetchedComments === null) {
+            helperArray.push(<ErrorPage key={1} message={"Comment found 404"}/>)
+        } else if(this.state.fetchedComments.length === undefined) {
+            helperArray.push(<Comment key={this.state.fetchedComments.id} comment={this.state.fetchedComments}/>);
+        } else {
+            for (let comment of this.state.fetchedComments) {
+                helperArray.push(<Comment key={comment.id} comment={comment}/>);
+            }
+        }
+        this.setState({arrayOfComments: helperArray});
+
     }
 
     makeSeen() {
@@ -91,6 +120,15 @@ class BlogPost extends Component {
                     <Link to={this.state.postUrl}><p className="readmore">Read more</p></Link>
                 }
                 <p className="tagsOfPosts">{this.listOfTags()}</p>
+
+                {this.props.ownPage &&
+                    <div>
+                        { localStorage.getItem('loggedin') === 'true' &&
+                            <NewComment postId={this.state.id}/>
+                        }
+                        {this.state.arrayOfComments}
+                    </div>
+                }
             </div>
 
         );
