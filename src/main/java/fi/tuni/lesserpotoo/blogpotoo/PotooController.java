@@ -70,6 +70,8 @@ public class PotooController {
         post4.getTags().add(potooTag);
         post4.getTags().add(lastTag);
 
+        post2.setLikes(1);
+
         blogPostRepository.save(post1);
         blogPostRepository.save(post2);
         blogPostRepository.save(post3);
@@ -452,6 +454,9 @@ public class PotooController {
             blogPostRepository.save(blogPost);
         } else if (blogPostRepository.findById(blogPostId).isPresent() && userRepository.findById(userId).isPresent()) {
             viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, false, true));
+            BlogPost blogPost = blogPostRepository.findById(blogPostId).get();
+            blogPost.setLikes(blogPost.getLikes() + 1);
+            blogPostRepository.save(blogPost);
         }
     }
 }
