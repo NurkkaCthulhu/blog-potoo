@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 class Comment extends Component {
     constructor(props) {
         super(props);
-        console.log('props in comment ', props);
+        //console.log('props in comment ', props);
     }
 
     deleteComment = (event) => {
