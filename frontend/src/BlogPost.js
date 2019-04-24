@@ -121,8 +121,7 @@ class BlogPost extends Component {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                },
-                body: ''})
+                }})
                 .then(() => {
                         let liked = !this.state.userLiked;
                         let likesAmount = this.state.likes;
@@ -165,7 +164,7 @@ class BlogPost extends Component {
                     {localStorage.getItem('loggedin') === 'true' &&
                         <i className={this.state.seen ? 'far fa-eye' : 'far fa-eye-slash'} onClick={this.makeSeen}></i>
                     }
-                    <i className={this.state.userLiked ? 'fas fa-heart' : 'far fa-heart'} onClick={this.likePost}></i>
+                    <i className={this.state.userLiked && localStorage.getItem('loggedin') === 'true' ? 'fas fa-heart' : 'far fa-heart'} onClick={this.likePost}></i>
                     <p className={"likeCounter"}>{this.state.likes}</p>
                 </div>
                 <h3>{this.state.author}</h3>
