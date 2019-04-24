@@ -127,10 +127,12 @@ class BlogPost extends Component {
                             <button className="modifybutton"><i className='fas fa-pen'></i></button>
                         </Link>
                     }
+
                     {localStorage.getItem('loggedin') === 'true' &&
                         <i className={this.state.seen ? 'far fa-eye' : 'far fa-eye-slash'} onClick={this.makeSeen}></i>
                     }
-
+                    <i className={this.state.seen ? 'fas fa-heart' : 'far fa-heart'} onClick={this.makeSeen}></i>
+                    <p className={"likeCounter"}>0</p>
                 </div>
                 <h3>{this.state.author}</h3>
                 <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0, 5)}</p>
