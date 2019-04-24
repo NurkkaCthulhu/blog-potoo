@@ -28,6 +28,7 @@ class NewPostForm extends Component {
             , tags: ''
             , editorState: EditorState.createEmpty()
             , postFound: true
+            , errorMessage: ''
         };
     }
 
@@ -79,45 +80,52 @@ class NewPostForm extends Component {
     }
 
     componentDidMount() {
-        if (this.props.match.params.id === 'new') {
-            this.setState({
-                formTitle: 'Make a new post'
-                , author: localStorage.getItem('username')
-                , modifying: false
-            })
-        } else if (isNaN(this.props.match.params.id)) {
-            this.setState({
-                postFound: false
-            })
-        } else {
-            fetch('/api/blogposts/' + this.props.match.params.id)
-                .then((httpResponse) => httpResponse.json())
-                .then((post) => {
-                    if (post) {
-                        let tags = '';
-                        for (let t of post.tags) {
-                            tags += t.tagName;
-                            tags += ',';
-                        }
-                        tags = tags.slice(0, -1);
+        if(localStorage.getItem('userType') === 'ADMIN' && localStorage.getItem('loggedin') === 'true') {
+            if (this.props.match.params.id === 'new') {
+                this.setState({
+                    formTitle: 'Make a new post'
+                    , author: localStorage.getItem('username')
+                    , modifying: false
+                })
+            } else if (isNaN(this.props.match.params.id)) {
+                this.setState({
+                    postFound: false
+                    , errorMessage: 'Found no matching post'
+                })
+            } else {
+                fetch('/api/blogposts/' + this.props.match.params.id)
+                    .then((httpResponse) => httpResponse.json())
+                    .then((post) => {
+                        if (post) {
+                            let tags = '';
+                            for (let t of post.tags) {
+                                tags += t.tagName;
+                                tags += ',';
+                            }
+                            tags = tags.slice(0, -1);
 
-                        const blocksFromHtml = htmlToDraft(post.content);
-                        const {contentBlocks, entityMap} = blocksFromHtml;
-                        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-                        const editorState = EditorState.createWithContent(contentState);
-                        console.log('postinfo: ', post)
-                        this.setState({
-                            formTitle: 'Modify a post'
-                            , author: post.author
-                            , title: post.title
-                            , editorState: editorState
-                            , tags: tags
-                            , modifying: true
-                        });
-                    } else {
-                        this.setState({postFound: false});
-                    }
-            });
+                            const blocksFromHtml = htmlToDraft(post.content);
+                            const {contentBlocks, entityMap} = blocksFromHtml;
+                            const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+                            const editorState = EditorState.createWithContent(contentState);
+                            console.log('postinfo: ', post)
+                            this.setState({
+                                formTitle: 'Modify a post'
+                                , author: post.author
+                                , title: post.title
+                                , editorState: editorState
+                                , tags: tags
+                                , modifying: true
+                            });
+                        } else {
+                            this.setState({postFound: false
+                                , errorMessage: 'Found no matching post'});
+                        }
+                });
+            }
+        } else {
+            this.setState({postFound: false
+                , errorMessage: 'You\'re not authorized to modify posts.'});
         }
     }
 
@@ -257,7 +265,7 @@ class NewPostForm extends Component {
                         </form>
                     </div>
                     :
-                    <ErrorPage message={"Found no post to modify."}/>
+                    <ErrorPage message={this.state.errorMessage}/>
                 }
             </div>
         );
