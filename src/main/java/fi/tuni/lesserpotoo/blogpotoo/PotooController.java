@@ -16,27 +16,45 @@ import java.util.*;
 
 /**
  * @author Essi Supponen [essi.supponen@tuni.fi]
- * @version 2019-0423
+ * @version 2019-0424
  * @since 1.0
  */
 @RestController
 public class PotooController {
 
-    @Autowired
-    BlogPostRepository blogPostRepository;
-
-    @Autowired
-    TagRepository tagRepository;
-
+    /**
+     * Repository of Users
+     */
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * Repository of BlogPosts
+     */
+    @Autowired
+    BlogPostRepository blogPostRepository;
+
+    /**
+     * Repository of Tags
+     */
+    @Autowired
+    TagRepository tagRepository;
+
+    /**
+     * Repository of Comments
+     */
     @Autowired
     CommentRepository commentRepository;
 
+    /**
+     * Repository of ViewAndLikes
+     */
     @Autowired
     ViewAndLikeRepository viewAndLikeRepository;
 
+    /**
+     * Adds initial information to database for testing purposes.
+     */
     @PostConstruct
     public void init() {
 
@@ -82,20 +100,21 @@ public class PotooController {
         commentRepository.save(comment1);
         commentRepository.save(comment2);
         commentRepository.save(comment3);
-
-        ViewAndLike val1 = new ViewAndLike(2,1,true,false);
-        ViewAndLike val2 = new ViewAndLike(2,2,true,false);
-        ViewAndLike val3 = new ViewAndLike(1,1,true,true);
-
-        viewAndLikeRepository.save(val1);
-        viewAndLikeRepository.save(val2);
-        viewAndLikeRepository.save(val3);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------   POST MAPPINGS   -----------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Creates and saves a BlogPost based on given information.
+     *
+     * Creates a BlogPost if author is an existing User and then returns the id of created BlogPost. If User does not
+     * exist, returns -1 as it cannot be an Id for BlogPost.
+     *
+     * @param blogPostInfo  needs to have properties authorId, title and content
+     * @return id of created blogPost
+     */
     @PostMapping(value = "/api/blogposts")
     public int saveBlogPost(@RequestBody ObjectNode blogPostInfo) {
         int authorId = blogPostInfo.get("authorId").asInt();
@@ -112,6 +131,15 @@ public class PotooController {
         }
     }
 
+    /**
+     * Creates and saves an User based on given information.
+     *
+     * Checks if user of that name already exists. If it doesn't, creates a new User, saves it and returns the User
+     * object. If user of that name exists, returns null.
+     *
+     * @param user
+     * @return User or null
+     */
     @PostMapping(value = "/api/users")
     public Optional<User> saveUser(@RequestBody User user) {
         Optional<User> userOptional = userRepository.findByUsernameIgnoreCase(user.getUsername());
@@ -124,6 +152,15 @@ public class PotooController {
         }
     }
 
+    /**
+     * Creates Tags, adds them to BlogPost and saves them.
+     *
+     * If BlogPost of given id exists, goes trough the list on tagNames. If a Tag of same name already exists, then
+     * add the existing Tag to the BlogPost. If not, creates a new Tag of that name and adds it to BlogPost.
+     *
+     * @param blogPostId
+     * @param tagNames
+     */
     @PostMapping("/api/blogposts/{blogPostId}/tag")
     public void addTagsToBlogPost(@PathVariable int blogPostId, @RequestBody List<String> tagNames) {
         Optional<BlogPost> blogPostO = blogPostRepository.findById(blogPostId);
@@ -147,6 +184,14 @@ public class PotooController {
         }
     }
 
+    /**
+     * Adds a Comment to given BlogPost.
+     *
+     * If BlogPost and User exist make create a Comment and save it.
+     *
+     * @param blogPostId
+     * @param commentInfo needs to have properties userId and content
+     */
     @PostMapping("/api/blogposts/{blogPostId}/comments")
     public void addCommentToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode commentInfo) {
         int userId = commentInfo.get("userId").asInt();
@@ -163,6 +208,14 @@ public class PotooController {
         }
     }
 
+    /**
+     * Adds ViewAndLike to BlogPost and User.
+     *
+     * If BlogPost and User exist, create and save ViewAndLike object.
+     *
+     * @param blogPostId
+     * @param viewAndLikeInfo needs to have userId, view and like
+     */
     @PostMapping("/api/blogposts/{blogPostId}/viewAndLike")
     public void addViewAndLikeToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode viewAndLikeInfo) {
         int userId = viewAndLikeInfo.get("userId").asInt();
@@ -186,6 +239,14 @@ public class PotooController {
     // ----------------------------------------------   DELETE MAPPINGS   ----------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Deletes BlogPost and Tags and ViewAndLikes associated with it.
+     *
+     * If BlogPoist exists, goes trough all the Tags. If Tag is only on the BlogPost, removes it. If not, removes it
+     * only from BlogPost's tags. Also removes all ViewAndLikes associated with this BlogPost.
+     *
+     * @param blogPostId
+     */
     @DeleteMapping("/api/blogposts/{blogPostId}")
     public void deleteBlogPost(@PathVariable int blogPostId) {
         Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
@@ -219,6 +280,14 @@ public class PotooController {
         }
     }
 
+    /**
+     * Deletes Comment from a BlogPost.
+     *
+     * Checks if BlogPost and Comment exist. Checks if BlogPost has the said Comment. If it is, deletes the comment.
+     *
+     * @param blogPostId
+     * @param commentId
+     */
     @DeleteMapping("/api/blogposts/{blogPostId}/comments/{commentId}")
     public void deleteCommentFromABlogPost(@PathVariable int blogPostId, @PathVariable int commentId) {
         Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
@@ -232,6 +301,11 @@ public class PotooController {
         }
     }
 
+    /**
+     * Changes Users UserType to DELETED, does not delete user from the database.
+     *
+     * @param userId
+     */
     @DeleteMapping("/api/users/{userId}")
     public void makeUserTypeDeletedById(@PathVariable int userId) {
         Optional<User> userOptional = userRepository.findById(userId);
@@ -242,6 +316,13 @@ public class PotooController {
         }
     }
 
+    /**
+     * Deletes User and all ViewAndLikes associated with it.
+     *
+     * If User exists, deletes it.
+     *
+     * @param userId
+     */
     @DeleteMapping("/api/users/finaldelete/{userId}")
     public void removeUserById(@PathVariable int userId) {
         List<ViewAndLike> viewAndLikes = viewAndLikeRepository.findAllByUserId(userId);
@@ -257,26 +338,54 @@ public class PotooController {
     // -----------------------------------------------   GET MAPPINGS   ------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Returns all users.
+     *
+     * @return
+     */
     @GetMapping("/api/users")
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    /**
+     * Returns user by id.
+     *
+     * @param userId
+     * @return User (optional)
+     */
     @GetMapping("/api/users/{userId}")
     public Optional<User> getAllUserById(@PathVariable int userId) {
         return userRepository.findById(userId);
     }
 
+    /**
+     * Returns all BlogPost in descending order by id.
+     *
+     * @return BlogPosts (iterable)
+     */
     @GetMapping("/api/blogposts")
     public Iterable<BlogPost> getAllBlogPosts() {
         return blogPostRepository.findAllByOrderByIdDesc();
     }
 
+    /**
+     * Returns BlogPost by blogPostId.
+     *
+     * @param blogPostId
+     * @return BlogPost (Optional)
+     */
     @GetMapping("/api/blogposts/{blogPostId}")
     public Optional<BlogPost> getBlogPostById(@PathVariable int blogPostId) {
         return blogPostRepository.findById(blogPostId);
     }
 
+    /**
+     * Returns all Comments of all BlogPosts.
+     *
+     * @param blogPostId
+     * @return Comments (iterable)
+     */
     @GetMapping("/api/blogposts/{blogPostId}/comments")
     public Iterable<Comment> getCommentsByPostId(@PathVariable int blogPostId) {
         Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
@@ -288,6 +397,14 @@ public class PotooController {
         }
     }
 
+    /**
+     * Returns all BlogPosts written by given author.
+     *
+     * Checks if User of authorId exists. If so, returns all BlogPosts written by that User.
+     *
+     * @param authorId
+     * @return BlogPosts (iterable)
+     */
     @GetMapping("/api/blogposts/author/{authorId}")
     public Iterable<BlogPost> getBlogPostsById(@PathVariable int authorId) {
         Optional<User> userOptional = userRepository.findById(authorId);
@@ -299,16 +416,38 @@ public class PotooController {
         }
     }
 
+    /**
+     * Returns all BlogPosts written by given author.
+     *
+     * Finds and returns all BlogPost by Author's username.
+     *
+     * @param authorName
+     * @return BlogPosts (iterable)
+     */
     @GetMapping("/api/blogposts/authorName/{authorName}")
     public Iterable<BlogPost> getBlogPostsByAuthor(@PathVariable String authorName) {
         return blogPostRepository.findByAuthorUsername(authorName);
     }
 
+    /**
+     * Returns all BlogPosts whose title contains given word.
+     *
+     * @param containingWord
+     * @return BlogPosts (iterable)
+     */
     @GetMapping("/api/blogposts/title/{containingWord}")
     public Iterable<BlogPost> getBlogPostsByTitleContaining(@PathVariable String containingWord) {
         return blogPostRepository.findByTitleContainingIgnoreCase(containingWord);
     }
 
+    /**
+     * Returns all BlogPost that have a Tag of certain name.
+     *
+     * Checks if tag by given name exists. Returns all BlogPosts that have it. If not, returns empty list.
+     *
+     * @param tagName
+     * @return BlogPosts (iterable)
+     */
     @GetMapping("/api/blogposts/tag/{tagName}")
     public Iterable<BlogPost> getBlogPostsByTag(@PathVariable String tagName) {
         Optional<Tag> tag = tagRepository.findTagByTagNameIgnoreCase(tagName);
@@ -320,6 +459,14 @@ public class PotooController {
         }
     }
 
+    /**
+     * Returns all BlogPosts written on a certain day.
+     *
+     * If date cannot be parsed, will return null.
+     *
+     * @param date
+     * @return BlogPosts (iterable)
+     */
     @GetMapping("/api/blogposts/date/{date:[0-9]{4}-[0-9]{2}-[0-9]{2}}")
     public Iterable<BlogPost> getBlogPostsByDateAsc(@PathVariable String date) {
         try {
@@ -331,6 +478,15 @@ public class PotooController {
         }
     }
 
+    /**
+     * Returns all BlogPost which title, tags or author include the search word.
+     *
+     * Uses getBlogPostsByTag, getBlogPostsByTitleContaining and getBlogPostsByAuthor to find all BlogPosts. Adds them
+     * to a same set. Returns that set.
+     *
+     * @param keyWord
+     * @return BlogPosts (iterable)
+     */
     @GetMapping("/api/blogposts/search_all/{keyWord}")
     public Iterable<BlogPost> getBlogPostsByKeyWord(@PathVariable String keyWord) {
         HashSet<BlogPost> blogPosts = new HashSet<>();
@@ -350,20 +506,28 @@ public class PotooController {
         return blogPosts;
     }
 
+    /**
+     * Returns ViewAndLike by userId and blogPostId.
+     *
+     * @param blogPostId
+     * @param userId
+     * @return ViewAndLike (Optional)
+     */
     @GetMapping("/api/blogposts/{blogPostId}/viewAndLike/{userId}")
     public Optional<ViewAndLike> getViewAndLikeByBlogPostIdAndUserId(@PathVariable int blogPostId, @PathVariable int userId) {
         return viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
-    }
-
-    @GetMapping("/api/hello")
-    public String hello() {
-        return "" + blogPostRepository.findAll();
     }
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------   PUT MAPPINGS   ------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Returns user by username and password.
+     *
+     * @param loginInformation needs to have username and password
+     * @return User (optional)
+     */
     @PutMapping("/api/users/login")
     public Optional<User> userExists(@RequestBody ObjectNode loginInformation) {
         String username = loginInformation.get("username").asText();
@@ -372,6 +536,15 @@ public class PotooController {
         return userRepository.findByUsernameIgnoreCaseAndPasswordIn(username, password);
     }
 
+    /**
+     * Updates the information in a blogPost.
+     *
+     * If BlogPost exists, gets new information from the updateJson. Uses updateBlogPostTitle, updateBlogPostContent and
+     * updateBlogPostTags to update information.
+     *
+     * @param blogPostId
+     * @param updateJson needs to have title, content and tags
+     */
     @PutMapping("/api/blogposts/{blogPostId}")
     public void updateBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode updateJson) {
         updateBlogPostTitle(blogPostId, updateJson.get("title").asText());
@@ -388,6 +561,12 @@ public class PotooController {
     }
 
 
+    /**
+     * If BlogPost exists, updates the title and TimeOfEdit.
+     *
+     * @param blogPostId
+     * @param title
+     */
     @PutMapping("/api/blogposts/{blogPostId}/title")
     public void updateBlogPostTitle(@PathVariable int blogPostId, @RequestBody String title) {
         Optional<BlogPost> blogPostOpt = blogPostRepository.findById(blogPostId);
@@ -399,6 +578,12 @@ public class PotooController {
         }
     }
 
+    /**
+     * If BlogPost exists, updates the content and TimeOfEdit.
+     *
+     * @param blogPostId
+     * @param content
+     */
     @PutMapping("/api/blogposts/{blogPostId}/content")
     public void updateBlogPostContent(@PathVariable int blogPostId, @RequestBody String content) {
         Optional<BlogPost> blogPostOpt = blogPostRepository.findById(blogPostId);
@@ -410,6 +595,15 @@ public class PotooController {
         }
     }
 
+    /**
+     * If BlogPost exists, adds tags.
+     *
+     * Checks if BlogPost exists. If so, checks if tags already exist. If tag exists, adds it to BlogPost. If not,
+     * creates new Tag and adds it to BlogPost.
+     *
+     * @param blogPostId
+     * @param tags
+     */
     @PutMapping("/api/blogposts/{blogPostId}/tags")
     public void updateBlogPostTags(@PathVariable int blogPostId, @RequestBody List<String> tags) {
         Optional<BlogPost> blogPostOpt = blogPostRepository.findById(blogPostId);
@@ -434,6 +628,12 @@ public class PotooController {
         }
     }
 
+    /**
+     * Toggles view attribute of ViewAndLike of certain blogPostId and userId.
+     *
+     * @param blogPostId
+     * @param userId
+     */
     @PutMapping("/api/blogposts/{blogPostId}/toggleView/{userId}")
     public void toggleBlogPostView(@PathVariable int blogPostId, @PathVariable int userId) {
         Optional<ViewAndLike> viewAndLikeOptional = viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
@@ -447,6 +647,12 @@ public class PotooController {
         }
     }
 
+    /**
+     * Toggles like attribute of ViewAndLike of certain blogPostId and userId, and removes or adds likes to BlogPost.
+     *
+     * @param blogPostId
+     * @param userId
+     */
     @PutMapping("/api/blogposts/{blogPostId}/toggleLike/{userId}")
     public void toggleBlogPostLike(@PathVariable int blogPostId, @PathVariable int userId) {
         Optional<ViewAndLike> viewAndLikeOptional = viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
