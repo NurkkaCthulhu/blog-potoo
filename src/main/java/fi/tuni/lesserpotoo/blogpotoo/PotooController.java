@@ -148,6 +148,20 @@ public class PotooController {
         }
     }
 
+    @PostMapping("/api/blogposts/{blogPostId}/viewAndLike")
+    public void addViewAndLikeToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode viewAndLikeInfo) {
+        int userId = viewAndLikeInfo.get("userId").asInt();
+        boolean view = viewAndLikeInfo.get("view").asBoolean();
+        boolean like = viewAndLikeInfo.get("like").asBoolean();
+
+        Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (blogPostOptional.isPresent() && userOptional.isPresent()) {
+            viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, view, like));
+        }
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     // ----------------------------------------------   DELETE MAPPINGS   ----------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
