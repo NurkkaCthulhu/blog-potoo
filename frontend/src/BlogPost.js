@@ -46,17 +46,19 @@ class BlogPost extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/blogposts/' + this.state.id + '/viewAndLike/' + localStorage.getItem('userId'))
-            .then((httpResp) => httpResp.json())
-            .then((json) => {
-                if(json) {
-                    if (this.props.ownPage && !json.viewed) {
-                        this.makeSeen();
-                    } else {
-                        this.setState({seen: json.viewed})
+        if(localStorage.getItem('loggedin') === 'true') {
+            fetch('/api/blogposts/' + this.state.id + '/viewAndLike/' + localStorage.getItem('userId'))
+                .then((httpResp) => httpResp.json())
+                .then((json) => {
+                    if(json) {
+                        if (this.props.ownPage && !json.viewed) {
+                            this.makeSeen();
+                        } else {
+                            this.setState({seen: json.viewed})
+                        }
                     }
-                }
-            });
+                });
+        }
 
         if(this.props.ownPage) {
             this.updateComments();
