@@ -44,7 +44,10 @@ class Register extends Component {
     }
 
     render() {
-        return (<div className="loginContainer">
+        let classn = window.innerWidth >= 640 ? "desktop" : "mobile";
+        console.log(classn)
+        return (
+            <div className={"loginContainer " + classn}>
             <h1 className="loginH1">Register</h1>
             <input name="username" type="text" className="textInput" placeholder="Username" onChange={this.handleChange} />
             <br/><input name="password" type="password" className="textInput" placeholder="Password" onChange={this.handleChange}  />

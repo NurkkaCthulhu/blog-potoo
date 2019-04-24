@@ -1,7 +1,15 @@
-.loginContainer {
+.loginContainerdesktop {
     margin: 20px 37.5% 0px 37.5%;
     padding: 10pt;
     width: 25%;
+    background-color: #fff4ba;
+    font-size:12pt;
+    text-align: right;
+    border-radius: 12px;
+}
+
+.loginContainermobile {
+    padding: 10pt;
     background-color: #fff4ba;
     font-size:12pt;
     text-align: right;
