@@ -72,13 +72,6 @@ span {
     margin-bottom: 60px;
 }
 
-.right-float {
-    margin-right: 5%;
-    width: 20%;
-    float: right;
-    background: #61dafb;
-}
-
 .nopostsimg {
     display: block;
     margin-left: auto;
