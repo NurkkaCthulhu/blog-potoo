@@ -15,6 +15,7 @@ class BlogPost extends Component {
         let modifyUrl = '/blogposts/modifypost/' + id;
         this.listOfTags = this.listOfTags.bind(this);
         this.makeSeen = this.makeSeen.bind(this);
+        this.likePost = this.likePost.bind(this);
         this.listAllComments = this.listAllComments.bind(this);
         this.updateComments = this.updateComments.bind(this);
 
@@ -40,12 +41,16 @@ class BlogPost extends Component {
             , postUrl: `/blogposts/${this.props.post.id}`
             , modifyUrl: modifyUrl
             , seen: false
+            , likes: this.props.post.likes
+            , userLiked: false
             , fetchedComments: []
             , arrayOfComments: []
         }
     }
 
     componentDidMount() {
+
+        // Get user's personal liked and viewed status if user is logged in.
         if(localStorage.getItem('loggedin') === 'true') {
             fetch('/api/blogposts/' + this.state.id + '/viewAndLike/' + localStorage.getItem('userId'))
                 .then((httpResp) => httpResp.json())
@@ -54,12 +59,14 @@ class BlogPost extends Component {
                         if (this.props.ownPage && !json.viewed) {
                             this.makeSeen();
                         } else {
-                            this.setState({seen: json.viewed})
+                            this.setState({seen: json.viewed
+                                            , userLiked: json.liked})
                         }
                     }
                 });
         }
 
+        // Get comments if you're on the blog post's own page.
         if(this.props.ownPage) {
             this.updateComments();
         }
@@ -104,6 +111,32 @@ class BlogPost extends Component {
             );
     }
 
+    likePost() {
+        if(localStorage.getItem('loggedin') === 'true') {
+            let fetchUrl = '/api/blogposts/' + this.state.id + '/toggleLike/' + localStorage.getItem('userId');
+            fetch(fetchUrl, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: ''})
+                .then(() => {
+                        let liked = !this.state.userLiked;
+                        let likesAmount = this.state.likes;
+                        if(liked) {
+                            likesAmount += 1;
+                        } else {
+                            likesAmount -= 1;
+                        }
+                        this.setState({userLiked: liked
+                                    , likes: likesAmount
+                                    });
+                    }
+                );
+        }
+    }
+
     listOfTags() {
         let tagString = '';
 
@@ -131,8 +164,8 @@ class BlogPost extends Component {
                     {localStorage.getItem('loggedin') === 'true' &&
                         <i className={this.state.seen ? 'far fa-eye' : 'far fa-eye-slash'} onClick={this.makeSeen}></i>
                     }
-                    <i className={this.state.seen ? 'fas fa-heart' : 'far fa-heart'} onClick={this.makeSeen}></i>
-                    <p className={"likeCounter"}>0</p>
+                    <i className={this.state.userLiked ? 'fas fa-heart' : 'far fa-heart'} onClick={this.likePost}></i>
+                    <p className={"likeCounter"}>{this.state.likes}</p>
                 </div>
                 <h3>{this.state.author}</h3>
                 <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0, 5)}</p>
