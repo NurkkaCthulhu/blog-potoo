@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * @author Essi Supponen [essi.supponen@tuni.fi]
- * @version 2019-0423
+ * @version 2019-0424
  * @since 1.0
  */
 public interface BlogPostRepository extends CrudRepository<BlogPost, Integer> {
