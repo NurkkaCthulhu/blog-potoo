@@ -62,6 +62,8 @@ class BlogPost extends Component {
                             this.setState({seen: json.viewed
                                             , userLiked: json.liked})
                         }
+                    } else if (!json && this.props.ownPage) {
+                        this.makeSeen();
                     }
                 });
         }
@@ -148,7 +150,6 @@ class BlogPost extends Component {
     }
 
     render() {
-
         return (
             <div>
                 <div className="postheader">
