@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import './css/search_style.css';
-import { Link } from "react-router-dom";
+import './css/Comment_style.css';
 
 class Comment extends Component {
     constructor(props) {
@@ -11,7 +10,10 @@ class Comment extends Component {
     render() {
         return (
             <div className="comment">
-                <h1>{this.props.comment.content}</h1>
+                <div className="commentContent">
+                    <h3>{this.props.comment.commenter.username} says:</h3>
+                    <p>{this.props.comment.content}</p>
+                </div>
             </div>
         );
     }
