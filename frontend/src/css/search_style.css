@@ -1,29 +1,27 @@
 .search {
     margin-top:20px;
-    margin-left: 30%;
-    margin-right: 30%;
     box-sizing: border-box;
 }
 
-input[type=text] {
+.searchInput {
     padding: 6px;
     font-size: 17px;
-    height:30px;
+    height:40px;
     width:90%;
     box-sizing: border-box;
 }
 
-button {
-    float: right;
+.searchButton {
     padding: 6px;
     background: #ddca61;
     font-size: 17px;
-    height:30px;
+    height:40px;
     cursor: pointer;
     box-sizing: border-box;
     border-radius: 8px;
+    float:right;
 }
 
-button:hover {
+.searchButton:hover {
     background: #967f2b;
 }

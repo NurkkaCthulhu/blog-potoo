@@ -85,6 +85,11 @@ span {
     font-size: 30px;
 }
 
+.fa-search {
+    font-size:25px;
+    float: left;
+}
+
 .desktop {
     margin-left: 20%;
     margin-right: 20%;
