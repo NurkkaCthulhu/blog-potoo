@@ -155,7 +155,7 @@ class NewPostForm extends Component {
             })
         } else {
             const newPost = {
-                author: this.state.author,
+                authorId: localStorage.getItem("userId"),
                 title: this.state.title,
                 content: htmlContent,
             };
