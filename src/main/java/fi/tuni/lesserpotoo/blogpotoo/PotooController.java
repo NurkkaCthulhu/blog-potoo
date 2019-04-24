@@ -14,6 +14,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
+/**
+ * @author Essi Supponen [essi.supponen@tuni.fi]
+ * @version 2019-0423
+ * @since 1.0
+ */
 @RestController
 public class PotooController {
 
