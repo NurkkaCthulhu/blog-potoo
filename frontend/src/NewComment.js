@@ -6,24 +6,29 @@ class NewComment extends Component {
     constructor(props) {
         super(props);
         this.makeNewComment = this.makeNewComment.bind(this);
-        this.state = {comment: ''}
+        this.state = {comment: ''
+                    , tooLong: false}
     }
 
     handleChange = (event) => {
         const target = event.target;
         let value = target.value;
         let name = target.name;
+        let tooLong = value.length > 2000;
 
         this.setState({
             [name]: value
+            , tooLong: tooLong
         });
     };
 
     handleSubmit = (event) => {
-        if(this.state.comment.length > 0) {
-            this.makeNewComment();
-        } else {
+        if(this.state.comment.length <= 0) {
             alert('You can\'t submit an empty comment');
+        } else if (this.state.comment.length > 2000) {
+            alert('Comment too long!');
+        } else {
+            this.makeNewComment();
         }
         event.preventDefault();
     };
@@ -50,7 +55,7 @@ class NewComment extends Component {
             <div className="newcomment">
                 <textarea placeholder="Write comment" name="comment" className="newComment" onChange={this.handleChange} />
                 <div>
-                    <p className={"floatRight"}>{this.state.comment.length}/2000</p>
+                    <p className={"charsLeft " + "longpost" + this.state.tooLong}>{this.state.comment.length}/2000</p>
                     <button onClick={this.handleSubmit} className={"commentSubmitButton"}>Submit</button>
                 </div>
             </div>
