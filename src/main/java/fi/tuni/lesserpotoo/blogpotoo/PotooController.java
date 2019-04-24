@@ -406,4 +406,16 @@ public class PotooController {
             addTagsToBlogPost(blogPostId, tags);
         }
     }
+
+    @PutMapping("/api/blogposts/{blogPostId}/toggleView/{userId}")
+    public void toggleBlogPostView(@PathVariable int blogPostId, @PathVariable int userId) {
+        Optional<ViewAndLike> viewAndLikeOptional = viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
+
+        if (viewAndLikeOptional.isPresent()) {
+            ViewAndLike viewAndLike = viewAndLikeOptional.get();
+            viewAndLike.setViewed(!viewAndLike.isViewed());
+        } else if (blogPostRepository.findById(blogPostId).isPresent() && userRepository.findById(userId).isPresent()) {
+            viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, true, false));
+        }
+    }
 }
