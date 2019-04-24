@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import './css/search_style.css';
 import { Link, withRouter } from "react-router-dom";
-import SearchBar from "./SearchBar";
 import PostLoader from "./PostLoader";
 import BlogPost from "./BlogPost";
 import ErrorPage from "./ErrorPage";
