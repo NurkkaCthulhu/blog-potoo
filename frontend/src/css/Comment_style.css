@@ -1,0 +1,17 @@
+.comment {
+    border: 2px solid red;
+    border-radius: 8px;
+    margin-top: 5px;
+}
+
+.commentContent {
+    margin: 5px;
+}
+
+.newComment {
+    height: 200px;
+}
+
+.floatRight {
+    display: inline-block;
+}
