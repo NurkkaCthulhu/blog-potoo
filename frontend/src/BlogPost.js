@@ -68,10 +68,10 @@ class BlogPost extends Component {
         if(this.state.fetchedComments === null) {
             helperArray.push(<ErrorPage key={1} message={"Comment found 404"}/>)
         } else if(this.state.fetchedComments.length === undefined) {
-            helperArray.push(<Comment key={this.state.fetchedComments.id} comment={this.state.fetchedComments}/>);
+            helperArray.push(<Comment key={this.state.fetchedComments.id} comment={this.state.fetchedComments} updateComments={this.updateComments}/>);
         } else {
             for (let comment of this.state.fetchedComments) {
-                helperArray.push(<Comment key={comment.id} comment={comment}/>);
+                helperArray.push(<Comment key={comment.id} comment={comment} updateComments={this.updateComments}/>);
             }
         }
         helperArray.sort(function(a, b) {return a.key - b.key});
