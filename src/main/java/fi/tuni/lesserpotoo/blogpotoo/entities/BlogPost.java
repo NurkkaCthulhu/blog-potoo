@@ -259,7 +259,7 @@ public class BlogPost {
 
     /**
      * Returns string representation of the blogPost
-     * @return
+     * @return string representation of the blogPost
      */
     @Override
     public String toString() {
