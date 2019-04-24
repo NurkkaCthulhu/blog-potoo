@@ -7,12 +7,13 @@ class PostLoader extends Component {
     constructor(props) {
         super(props);
         var fetchUrl = '';
+
         if (this.props.match === undefined) {
             fetchUrl = '/';
-        } else if (this.props.match.params.id) {
-            fetchUrl = '/' + this.props.match.params.id;
-        } else {
+        } else if (this.props.match.params.search) {
             fetchUrl = '/search_all/' + this.props.match.params.search;
+        } else if (!isNaN(this.props.match.params.id)) {
+            fetchUrl = '/' + this.props.match.params.id;
         }
 
         this.listAllBlogPosts = this.listAllBlogPosts.bind(this);
