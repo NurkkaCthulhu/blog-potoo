@@ -52,7 +52,7 @@ i {
 
 .fa-eye-slash, .fa-eye {
     font-size: 16px;
-    margin: 7px;
+    padding-top: 23px;
 }
 
 .postIcons {
@@ -75,3 +75,14 @@ i {
     margin-right: 10%;
 }
 
+.fa-heart {
+    font-size: 20px;
+    margin-left: 3px;
+    margin-right: 3px;
+    padding-top: 23px;
+}
+
+.likeCounter {
+    float:right;
+    font-size: 20px;
+}
