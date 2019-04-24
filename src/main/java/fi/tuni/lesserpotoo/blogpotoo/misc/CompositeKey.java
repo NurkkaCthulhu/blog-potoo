@@ -1,4 +1,4 @@
-package fi.tuni.lesserpotoo.blogpotoo;
+package fi.tuni.lesserpotoo.blogpotoo.misc;
 
 import java.io.Serializable;
 

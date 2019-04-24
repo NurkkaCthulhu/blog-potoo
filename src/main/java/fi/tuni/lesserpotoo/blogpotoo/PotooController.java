@@ -2,16 +2,15 @@ package fi.tuni.lesserpotoo.blogpotoo;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fi.tuni.lesserpotoo.blogpotoo.entities.*;
+import fi.tuni.lesserpotoo.blogpotoo.misc.UserType;
+import fi.tuni.lesserpotoo.blogpotoo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.swing.text.View;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 

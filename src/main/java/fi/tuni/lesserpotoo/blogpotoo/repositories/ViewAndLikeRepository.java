@@ -1,8 +1,9 @@
-package fi.tuni.lesserpotoo.blogpotoo;
+package fi.tuni.lesserpotoo.blogpotoo.repositories;
 
+import fi.tuni.lesserpotoo.blogpotoo.misc.CompositeKey;
+import fi.tuni.lesserpotoo.blogpotoo.entities.ViewAndLike;
 import org.springframework.data.repository.CrudRepository;
 
-import javax.swing.text.View;
 import java.util.Optional;
 
 public interface ViewAndLikeRepository extends CrudRepository<ViewAndLike, CompositeKey> {

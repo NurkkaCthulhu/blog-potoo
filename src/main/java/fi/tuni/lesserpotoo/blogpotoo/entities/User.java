@@ -1,7 +1,8 @@
-package fi.tuni.lesserpotoo.blogpotoo;
+package fi.tuni.lesserpotoo.blogpotoo.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fi.tuni.lesserpotoo.blogpotoo.misc.UserType;
 
 import javax.persistence.*;
 import java.util.HashSet;

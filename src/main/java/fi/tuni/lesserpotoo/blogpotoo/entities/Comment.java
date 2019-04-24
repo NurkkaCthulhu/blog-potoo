@@ -1,4 +1,4 @@
-package fi.tuni.lesserpotoo.blogpotoo;
+package fi.tuni.lesserpotoo.blogpotoo.entities;
 
 import javax.persistence.*;
 import java.time.LocalDate;

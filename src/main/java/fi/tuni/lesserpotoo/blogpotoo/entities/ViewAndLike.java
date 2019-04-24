@@ -1,4 +1,6 @@
-package fi.tuni.lesserpotoo.blogpotoo;
+package fi.tuni.lesserpotoo.blogpotoo.entities;
+
+import fi.tuni.lesserpotoo.blogpotoo.misc.CompositeKey;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,5 +1,6 @@
-package fi.tuni.lesserpotoo.blogpotoo;
+package fi.tuni.lesserpotoo.blogpotoo.repositories;
 
+import fi.tuni.lesserpotoo.blogpotoo.entities.BlogPost;
 import org.springframework.data.repository.CrudRepository;
 
 import java.time.LocalDate;
