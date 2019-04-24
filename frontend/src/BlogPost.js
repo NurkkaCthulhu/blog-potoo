@@ -12,47 +12,45 @@ class BlogPost extends Component {
 
         let id = this.props.post.id;
 
-        if(id !== undefined) {
-            let modifyUrl = '/blogposts/modifypost/' + id;
-            this.listOfTags = this.listOfTags.bind(this);
-            this.makeSeen = this.makeSeen.bind(this);
-            this.listAllComments = this.listAllComments.bind(this);
-            this.updateComments = this.updateComments.bind(this);
+        let modifyUrl = '/blogposts/modifypost/' + id;
+        this.listOfTags = this.listOfTags.bind(this);
+        this.makeSeen = this.makeSeen.bind(this);
+        this.listAllComments = this.listAllComments.bind(this);
+        this.updateComments = this.updateComments.bind(this);
 
-            let seenID = 'seen' + id;
-            let seen = localStorage.getItem(seenID);
+        let seenID = 'seen' + id;
+        let seen = localStorage.getItem(seenID);
 
-            let content = this.props.post.content;
-            let cutContent = false;
-            let frontpagePostLength = 500;
-            // Show only first 500 chars of the post (includes rich text styling)
-            if (content.length > frontpagePostLength && !this.props.ownPage) {
-                content = content.substr(0, 500);
-                content += '...';
-                cutContent = true;
-            }
+        let content = this.props.post.content;
+        let cutContent = false;
+        let frontpagePostLength = 500;
+        // Show only first 500 chars of the post (includes rich text styling)
+        if (content.length > frontpagePostLength && !this.props.ownPage) {
+            content = content.substr(0, 500);
+            content += '...';
+            cutContent = true;
+        }
 
-            this.state = {
-                id: id
-                , author: this.props.post.author.username
-                , title: this.props.post.title
-                , content: content
-                , cutContent: cutContent
-                , postDate: this.props.post.dateOfCreation
-                , postTime: this.props.post.timeOfCreation
-                , tags: this.props.post.tags
-                , postUrl: `/blogposts/${this.props.post.id}`
-                , modifyUrl: modifyUrl
-                , seen: seen
-                , seenID: seenID
-                , fetchedComments: []
-                , arrayOfComments: []
-            }
+        this.state = {
+            id: id
+            , author: this.props.post.author.username
+            , title: this.props.post.title
+            , content: content
+            , cutContent: cutContent
+            , postDate: this.props.post.dateOfCreation
+            , postTime: this.props.post.timeOfCreation
+            , tags: this.props.post.tags
+            , postUrl: `/blogposts/${this.props.post.id}`
+            , modifyUrl: modifyUrl
+            , seen: seen
+            , seenID: seenID
+            , fetchedComments: []
+            , arrayOfComments: []
         }
     }
 
     componentDidMount() {
-        if(this.props.ownPage && this.props.id) {
+        if(this.props.ownPage) {
             this.updateComments();
         }
     }
@@ -68,7 +66,7 @@ class BlogPost extends Component {
         let helperArray = [];
 
         if(this.state.fetchedComments === null) {
-            helperArray.push(<ErrorPage key={1} message={"Comment not found 404"}/>)
+            helperArray.push(<ErrorPage key={1} message={"Comment found 404"}/>)
         } else if(this.state.fetchedComments.length === undefined) {
             helperArray.push(<Comment key={this.state.fetchedComments.id} comment={this.state.fetchedComments} updateComments={this.updateComments}/>);
         } else {
@@ -103,49 +101,44 @@ class BlogPost extends Component {
 
     render() {
 
-        if(this.props.id !== undefined) {
+        let seenBool = false;
+        if(localStorage.getItem(this.state.seenID) === 'true') {
+            seenBool = true;
+        }
 
-            let seenBool = false;
-            if (localStorage.getItem(this.state.seenID) === 'true') {
-                seenBool = true;
-            }
-
-            return (
-                <div>
-                    <div className="postheader">
-                        <Link to={this.state.postUrl}><h1 className={"blogtitle"}>{this.state.title}</h1></Link>
-                    </div>
-                    <div className="postIcons">
-                        {localStorage.getItem('userType') === 'ADMIN' &&
+        return (
+            <div>
+                <div className="postheader">
+                    <Link to={this.state.postUrl}><h1 className={"blogtitle"}>{this.state.title}</h1></Link>
+                </div>
+                <div className="postIcons">
+                    {localStorage.getItem('userType') === 'ADMIN' &&
                         <Link to={this.state.modifyUrl}>
                             <button className="modifybutton"><i className='fas fa-pen'></i></button>
                         </Link>
-                        }
-                        <i className={seenBool ? 'far fa-eye' : 'far fa-eye-slash'} onClick={this.makeSeen}></i>
-                    </div>
-                    <h3>{this.state.author}</h3>
-                    <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0, 5)}</p>
-                    <div dangerouslySetInnerHTML={{__html: this.state.content}}></div>
-                    {this.state.cutContent &&
-                    <Link to={this.state.postUrl}><p className="readmore">Read more</p></Link>
                     }
-                    <p className="tagsOfPosts">{this.listOfTags()}</p>
+                    <i className={seenBool ? 'far fa-eye' : 'far fa-eye-slash'} onClick={this.makeSeen}></i>
+                </div>
+                <h3>{this.state.author}</h3>
+                <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0, 5)}</p>
+                <div dangerouslySetInnerHTML={{__html: this.state.content}}></div>
+                {this.state.cutContent &&
+                    <Link to={this.state.postUrl}><p className="readmore">Read more</p></Link>
+                }
+                <p className="tagsOfPosts">{this.listOfTags()}</p>
 
-                    {this.props.ownPage &&
+                {this.props.ownPage &&
                     <div className="blogpost_comments">
-                        {localStorage.getItem('loggedin') === 'true' &&
-                        <NewComment postId={this.state.id} updateComments={this.updateComments}/>
+                        { localStorage.getItem('loggedin') === 'true' &&
+                            <NewComment postId={this.state.id} updateComments={this.updateComments}/>
                         }
                         <br/>
                         {this.state.arrayOfComments}
                     </div>
-                    }
-                </div>
+                }
+            </div>
 
-            );
-        } else {
-            return <ErrorPage message={"Blog post not found 404"}/>
-        }
+        );
     }
 }
 
