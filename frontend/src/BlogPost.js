@@ -122,10 +122,11 @@ class BlogPost extends Component {
                 <p className="tagsOfPosts">{this.listOfTags()}</p>
 
                 {this.props.ownPage &&
-                    <div>
+                    <div className="blogpost_comments">
                         { localStorage.getItem('loggedin') === 'true' &&
                             <NewComment postId={this.state.id}/>
                         }
+                        <br/>
                         {this.state.arrayOfComments}
                     </div>
                 }
