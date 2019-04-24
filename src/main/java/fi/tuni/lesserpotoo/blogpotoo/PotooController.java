@@ -251,7 +251,7 @@ public class PotooController {
 
     @GetMapping("/api/blogposts")
     public Iterable<BlogPost> getAllBlogPosts() {
-        return blogPostRepository.findAll();
+        return blogPostRepository.findAllByOrderByIdDesc();
     }
 
     @GetMapping("/api/blogposts/{blogPostId}")
