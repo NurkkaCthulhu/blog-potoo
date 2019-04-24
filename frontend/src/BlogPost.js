@@ -50,7 +50,11 @@ class BlogPost extends Component {
             .then((httpResp) => httpResp.json())
             .then((json) => {
                 if(json) {
-                    this.setState({seen: json.viewed})
+                    if (this.props.ownPage && !json.viewed) {
+                        this.makeSeen();
+                    } else {
+                        this.setState({seen: json.viewed})
+                    }
                 }
             });
 
@@ -84,7 +88,6 @@ class BlogPost extends Component {
 
     makeSeen() {
         let fetchUrl = '/api/blogposts/' + this.state.id + '/toggleView/' + localStorage.getItem('userId');
-        console.log(fetchUrl);
         fetch(fetchUrl, {
             method: 'PUT',
             headers: {
