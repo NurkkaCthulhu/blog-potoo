@@ -11,7 +11,8 @@ class Comment extends Component {
         return (
             <div className="comment">
                 <div className="commentContent">
-                    <h3>{this.props.comment.commenter.username} says:</h3>
+                    <h3>{this.props.comment.commenter.username}</h3>
+                    <small>{this.props.comment.dateOfComment + " at " + this.props.comment.timeOfComment}</small>
                     <p>{this.props.comment.content}</p>
                 </div>
             </div>
