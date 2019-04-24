@@ -26,12 +26,13 @@ function RegisterUser() {
 }
 
 function App() {
+    let dynamicClassName = window.innerWidth >= 500 ? "desktop" : "mobile";
 
     return (
         <Router>
             <div>
                 <Header />
-                <div className="blog-posts">
+                <div className={"blog-posts " + dynamicClassName}>
                     <Switch>
                         <Route exact path="/" exact component={Index} />
                         <Route exact path="/search/:search" component={PostLoader} />

@@ -84,3 +84,13 @@ span {
 .fas {
     font-size: 30px;
 }
+
+.desktop {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.mobile {
+    margin-left: 5%;
+    margin-right: 5%;
+}

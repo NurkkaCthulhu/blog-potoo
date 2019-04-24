@@ -26,8 +26,6 @@ class BlogPost extends Component {
             cutContent = true;
         }
 
-        let dynamicClassName = window.innerWidth>= 500 ? "desktop" : "mobile";
-
         this.state = {
             id: id
             , author: this.props.post.author.username
@@ -41,8 +39,6 @@ class BlogPost extends Component {
             , modifyUrl: modifyUrl
             , seen: seen
             , seenID: seenID
-            , windowWidth: window.innerWidth
-            , dynamicClassName: dynamicClassName
         }
     }
 
@@ -78,27 +74,25 @@ class BlogPost extends Component {
         }
 
         return (
-            <div className={this.state.dynamicClassName}>
-                <div>
-                    <div className="postheader">
-                        <Link to={this.state.postUrl}><h1 className={"blogtitle"}>{this.state.title}</h1></Link>
-                    </div>
-                    <div className="postIcons">
-                        <Link to={this.state.modifyUrl}>
-                            <button className="modifybutton"><i className='fas fa-pen'></i></button>
-                        </Link>
-                        <i className={seenBool ? 'far fa-eye' : 'far fa-eye-slash'} onClick={this.makeSeen}></i>
-                    </div>
-                    <h3>{this.state.author}</h3>
-                    <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0, 5)}</p>
-                    <div dangerouslySetInnerHTML={{__html: this.state.content}}></div>
-                    {this.state.cutContent &&
-                        <Link to={this.state.postUrl}><p className="readmore">Read more</p></Link>
-                    }
-                    <p className="tagsOfPosts">{this.listOfTags()}</p>
+            <div>
+                <div className="postheader">
+                    <Link to={this.state.postUrl}><h1 className={"blogtitle"}>{this.state.title}</h1></Link>
                 </div>
-
+                <div className="postIcons">
+                    <Link to={this.state.modifyUrl}>
+                        <button className="modifybutton"><i className='fas fa-pen'></i></button>
+                    </Link>
+                    <i className={seenBool ? 'far fa-eye' : 'far fa-eye-slash'} onClick={this.makeSeen}></i>
+                </div>
+                <h3>{this.state.author}</h3>
+                <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0, 5)}</p>
+                <div dangerouslySetInnerHTML={{__html: this.state.content}}></div>
+                {this.state.cutContent &&
+                    <Link to={this.state.postUrl}><p className="readmore">Read more</p></Link>
+                }
+                <p className="tagsOfPosts">{this.listOfTags()}</p>
             </div>
+
         );
     }
 }

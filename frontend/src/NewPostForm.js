@@ -205,9 +205,8 @@ class NewPostForm extends Component {
         const { editorState } = this.state;
         let content = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
         let contentLength = content.length;
-        let dynamicClassName = window.innerWidth>= 500 ? "desktop" : "mobile";
         return (
-            <div className = {"container " + dynamicClassName}>
+            <div className = {"container"}>
                 {this.state.postFound ?
                     <div>
                         <div className="newpostheader">
