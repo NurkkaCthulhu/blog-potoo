@@ -70,8 +70,8 @@ class BlogPost extends Component {
                 helperArray.push(<Comment key={comment.id} comment={comment}/>);
             }
         }
+        helperArray.sort(function(a, b) {return a.key - b.key});
         this.setState({arrayOfComments: helperArray});
-
     }
 
     makeSeen() {
