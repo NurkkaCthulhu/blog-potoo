@@ -46,7 +46,8 @@ class Header extends Component {
                 </nav>
                 :
                  <nav className="header">
-                    <Link to="/"><i className='fab fa-earlybirds'></i>{this.props.monitorType === 'desktop' && "Blog Potoo"}</Link>
+                    <Link to="/" className="frontpagelink"><i className='fab fa-earlybirds'></i>{this.props.monitorType === 'desktop' && "Blog Potoo"}</Link>
+                    <Link to="/search/" className="frontpagelink"><i className='fas fa-search'></i></Link>
                     <Link to="/register" className="registerlink">Register</Link>
                     <Link to="/login" className="loginlink">LogIn</Link>
                 </nav>}
