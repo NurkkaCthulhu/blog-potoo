@@ -318,6 +318,11 @@ public class PotooController {
         return blogPosts;
     }
 
+    @GetMapping("/api/blogposts/{blogPostId}/viewAndLike/{userId}")
+    public Optional<ViewAndLike> getViewAndLikeByBlogPostIdAndUserId(@PathVariable int blogPostId, @PathVariable int userId) {
+        return viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
+    }
+
     @GetMapping("/api/hello")
     public String hello() {
         return "" + blogPostRepository.findAll();
