@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 class Comment extends Component {
     constructor(props) {
         super(props);
+        console.log('propsit commentissa ', props);
     }
 
     render() {
         return (
             <div className="comment">
-                <h1>Comment :D</h1>
+                <h1>{this.props.comment.content}</h1>
             </div>
         );
     }
