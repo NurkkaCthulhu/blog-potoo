@@ -158,6 +158,11 @@ public class PotooController {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (blogPostOptional.isPresent() && userOptional.isPresent()) {
+            if (like) {
+                BlogPost blogPost = blogPostOptional.get();
+                blogPost.setLikes(blogPost.getLikes() + 1);
+                blogPostRepository.save(blogPost);
+            }
             viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, view, like));
         }
     }
