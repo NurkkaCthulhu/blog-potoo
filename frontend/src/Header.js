@@ -26,19 +26,21 @@ class Header extends Component {
         if (!this.state.loggedIn && localStorage.getItem('loggedin') === 'true') {
             this.setState({loggedIn: true})
         }
+        let windowWidth = window.innerWidth;
+        let welcomeMessage = 'Welcome, ' + localStorage.getItem('username') + '!';
 
         return (
             <div>
                 {this.state.loggedIn ?
                 <nav className="header">
-                    <Link to="/" className="frontpagelink"><i className='fab fa-earlybirds'></i>Blog Potoo</Link>
-                    <Link to="/" onClick={this.logout} className="registerlink">Logout</Link>
-                    <Link to="/blogposts/modifypost/new" className="newpostlink">Add blog post...</Link>
-                    <Link to="/" className="userpagelink">Welcome, {localStorage.getItem('username')}!</Link>
+                    <Link to="/" className="frontpagelink"><i className='fab fa-earlybirds'></i>{windowWidth >= 500 && "Blog Potoo"}</Link>
+                    <Link to="/" onClick={this.logout} className="registerlink">{windowWidth >= 500 ? "Logout" : <i className='fas fa-sign-out-alt'></i>}</Link>
+                    <Link to="/blogposts/modifypost/new" className="newpostlink">{windowWidth >= 500 ? "New post" : "New post"}</Link>
+                    <Link to="/" className="userpagelink">{windowWidth >= 500 && welcomeMessage}</Link>
                 </nav>
                 :
                  <nav className="header">
-                    <Link to="/"><i className='fab fa-earlybirds'></i>Blog Potoo</Link>
+                    <Link to="/"><i className='fab fa-earlybirds'></i>{windowWidth >= 500 && "Blog Potoo"}</Link>
                     <Link to="/register" className="registerlink">Register</Link>
                     <Link to="/login" className="loginlink">LogIn</Link>
                 </nav>}
