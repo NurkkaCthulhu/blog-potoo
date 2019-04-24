@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import './css/search_style.css';
+import './css/Comment_style.css';
 import { Link } from "react-router-dom";
 
 class NewComment extends Component {
@@ -48,8 +48,11 @@ class NewComment extends Component {
     render() {
         return (
             <div className="newcomment">
-                <input type="textarea" placeholder="Write comment" name="comment" onChange={this.handleChange} />
-                <button onClick={this.handleSubmit}>Submit</button>
+                <textarea placeholder="Write comment" name="comment" className="newComment" onChange={this.handleChange} />
+                <div className={"floatRight"}>
+                    <p>{this.state.comment.length}/2000</p>
+                    <button onClick={this.handleSubmit}>Submit</button>
+                </div>
             </div>
         );
     }
