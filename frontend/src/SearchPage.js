@@ -66,6 +66,16 @@ class SearchPage extends Component {
                 this.state.arrayOfBlogPostInformation.sort(function(a,b) {return b.author.username.localeCompare(a.author.username);});
                 this.listAllBlogPosts(this.state.arrayOfBlogPostInformation);
                 break;
+            case 'lenghtDesc':
+                this.state.arrayOfBlogPostInformation.sort(function(a,b) {return b.content.length - a.content.length;});
+                this.listAllBlogPosts(this.state.arrayOfBlogPostInformation);
+                break;
+            case 'lenghtAsc':
+                this.state.arrayOfBlogPostInformation.sort(function(a,b) {return a.content.length - b.content.length;});
+                this.listAllBlogPosts(this.state.arrayOfBlogPostInformation);
+                break;
+            default:
+                break;
         }
     }
 
