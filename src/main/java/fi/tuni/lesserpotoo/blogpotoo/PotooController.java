@@ -91,10 +91,19 @@ public class PotooController {
     // -----------------------------------------------------------------------------------------------------------------
 
     @PostMapping(value = "/api/blogposts")
-    public int saveBlogPost(@RequestBody BlogPost blogPost) {
-        blogPost.getTags().clear();
-        blogPostRepository.save(blogPost);
-        return blogPost.getId();
+    public int saveBlogPost(@RequestBody ObjectNode blogPostInfo) {
+        int authorId = blogPostInfo.get("authorId").asInt();
+        String title = blogPostInfo.get("title").asText();
+        String content = blogPostInfo.get("content").asText();
+        Optional<User> authorOptional = userRepository.findById(authorId);
+
+        if (authorOptional.isPresent()) {
+            BlogPost blogPost = new BlogPost(authorOptional.get(), title, content);
+            blogPostRepository.save(blogPost);
+            return blogPost.getId();
+        } else {
+            return -1;
+        }
     }
 
     @PostMapping(value = "/api/users")
