@@ -19,4 +19,16 @@ public class ViewAndLike {
 
     @Column(nullable = false)
     private boolean liked;
+
+    public ViewAndLike() {
+        this.viewed = false;
+        this.liked = false;
+    }
+
+    public ViewAndLike(int userId, int blogPostId, boolean viewed, boolean liked) {
+        this.userId = userId;
+        this.blogPostId = blogPostId;
+        this.viewed = viewed;
+        this.liked = liked;
+    }
 }
