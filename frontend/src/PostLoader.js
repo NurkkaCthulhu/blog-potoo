@@ -40,7 +40,7 @@ class PostLoader extends Component {
     listAllBlogPosts() {
         let helperArray = [];
 
-        if(this.state.fetchedBlogPosts === null) {
+        if(this.state.fetchedBlogPosts.status) {
             helperArray.push(<ErrorPage key={1} message={"Blog post not found 404"}/>)
         } else if(this.state.fetchedBlogPosts.length === undefined) {
             helperArray.push(<BlogPost key={this.state.fetchedBlogPosts.id} post={this.state.fetchedBlogPosts} ownPage={true} />);
