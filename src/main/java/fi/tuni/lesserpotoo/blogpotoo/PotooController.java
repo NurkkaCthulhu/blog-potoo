@@ -114,11 +114,13 @@ public class PotooController {
     /**
      * Creates and saves a BlogPost based on given information.
      *
-     * Creates a BlogPost if author is an existing User and then returns the id of created BlogPost. If User does not
-     * exist, returns -1 as it cannot be an Id for BlogPost.
+     * Creates a BlogPost if author is an existing User and then returns the id of created BlogPost.
      *
      * @param blogPostInfo  needs to have properties authorId, title and content
-     * @return id of created blogPost
+     * @return ResponseEntity with body of id of the blog post and http status CREATED
+     *
+     * @throws UserNotFoundException            there is no user with given authorId
+     * @throws NoNeededValuesInBodyException    values are missing from RequestBody
      */
     @PostMapping(value = "/api/blogposts")
     public ResponseEntity<Integer> saveBlogPost(@RequestBody ObjectNode blogPostInfo) throws UserNotFoundException, NoNeededValuesInBodyException {
@@ -147,18 +149,20 @@ public class PotooController {
      * Checks if user of that name already exists. If it doesn't, creates a new User, saves it and returns the User
      * object. If user of that name exists, returns null.
      *
-     * @param user
-     * @return User or null
+     * @param user  RequestBody with all information of the user
+     * @return ResponseEntity with body of user and http status CREATED
+     *
+     * @throws UsernameAlreadyUsedException     username is already in use
      */
     @PostMapping(value = "/api/users")
-    public ResponseEntity<User> saveUser(@RequestBody User user) {
+    public ResponseEntity<User> saveUser(@RequestBody User user) throws  UsernameAlreadyUsedException {
         Optional<User> userOptional = userRepository.findByUsernameIgnoreCase(user.getUsername());
 
         if (userOptional.isPresent()) {
             throw new UsernameAlreadyUsedException(user.getUsername());
         } else {
             userRepository.save(user);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(user, HttpStatus.CREATED);
         }
     }
 
@@ -168,12 +172,15 @@ public class PotooController {
      * If BlogPost of given id exists, goes trough the list on tagNames. If a Tag of same name already exists, then
      * add the existing Tag to the BlogPost. If not, creates a new Tag of that name and adds it to BlogPost.
      *
-     * @param blogPostId
-     * @param tagNames
+     * @param blogPostId    id of BlogPost
+     * @param tagNames      list of strings
+     * @return ResponseEntity with http status CREATED
+     *
+     * @throws BlogPostNotFoundException        there is no BlogPost with given blogPostId
      */
     @PostMapping("/api/blogposts/{blogPostId}/tag")
     public ResponseEntity<Void> addTagsToBlogPost(@PathVariable int blogPostId, @RequestBody List<String> tagNames)
-            throws BlogPostNotFoundException, UsernameAlreadyUsedException {
+            throws BlogPostNotFoundException {
         Optional<BlogPost> blogPostO = blogPostRepository.findById(blogPostId);
 
         if (blogPostO.isPresent()) {
@@ -203,8 +210,13 @@ public class PotooController {
      *
      * If BlogPost and User exist make create a Comment and save it.
      *
-     * @param blogPostId
-     * @param commentInfo needs to have properties userId and content
+     * @param blogPostId    id of BlogPost
+     * @param commentInfo   needs to have properties userId and content
+     * @return ResponseEntity with http status CREATED
+     *
+     * @throws BlogPostNotFoundException        there is no BlogPost with given blogPostId
+     * @throws UserNotFoundException            there is no User with given userId
+     * @throws NoNeededValuesInBodyException    values are missing from RequestBody
      */
     @PostMapping("/api/blogposts/{blogPostId}/comments")
     public ResponseEntity<Void> addCommentToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode commentInfo)
@@ -238,8 +250,13 @@ public class PotooController {
      *
      * If BlogPost and User exist, create and save ViewAndLike object.
      *
-     * @param blogPostId
-     * @param viewAndLikeInfo needs to have userId, view and like
+     * @param blogPostId        id of BlogPost
+     * @param viewAndLikeInfo   needs to have userId, view and like
+     * @return ResponseEntity with http status CREATED
+     *
+     * @throws BlogPostNotFoundException        there is no BlogPost with given blogPostId
+     * @throws UserNotFoundException            there is no User with given userId
+     * @throws NoNeededValuesInBodyException    values are missing from RequestBody
      */
     @PostMapping("/api/blogposts/{blogPostId}/viewAndLike")
     public ResponseEntity<Void> addViewAndLikeToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode viewAndLikeInfo)
