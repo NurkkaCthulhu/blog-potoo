@@ -27,12 +27,12 @@ class Comment extends Component {
             <div className="comment">
                 <div className="commentContent">
                     {localStorage.getItem('userType') === 'ADMIN' &&
-                    <Link to="/">
-                        <button className="deletebutton" onClick={this.deleteComment}><i className='fas fa-trash-alt'></i></button>
-                    </Link>
+                        <Link to="/">
+                            <button className="deletebutton" onClick={this.deleteComment}><i className='fas fa-trash-alt'></i></button>
+                        </Link>
                     }
                     <h3>{this.props.comment.commenter.username}</h3>
-                    <small>{this.props.comment.dateOfComment + " at " + this.props.comment.timeOfComment}</small>
+                    <small>{this.props.comment.dateOfComment + " at " + this.props.comment.timeOfComment.substring(0, 5)}</small>
                     <p>{this.props.comment.content}</p>
                 </div>
             </div>
