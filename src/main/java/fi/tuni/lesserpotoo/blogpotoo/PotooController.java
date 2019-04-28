@@ -131,7 +131,7 @@ public class PotooController {
      * @return id of created blogPost
      */
     @PostMapping(value = "/api/blogposts")
-    public int saveBlogPost(@RequestBody ObjectNode blogPostInfo) {
+    public int saveBlogPost(@RequestBody ObjectNode blogPostInfo) throws UserNotFoundException {
         int authorId = blogPostInfo.get("authorId").asInt();
         String title = blogPostInfo.get("title").asText();
         String content = blogPostInfo.get("content").asText();
@@ -142,7 +142,7 @@ public class PotooController {
             blogPostRepository.save(blogPost);
             return blogPost.getId();
         } else {
-            return -1;
+            throw new UserNotFoundException(authorId);
         }
     }
 
