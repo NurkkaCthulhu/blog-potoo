@@ -569,7 +569,7 @@ public class PotooController {
      * @param updateJson needs to have title, content and tags
      */
     @PutMapping("/api/blogposts/{blogPostId}")
-    public void updateBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode updateJson) {
+    public void updateBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode updateJson) throws BlogPostNotFoundException {
         if (blogPostRepository.findById(blogPostId).isPresent()) {
             updateBlogPostTitle(blogPostId, updateJson.get("title").asText());
             updateBlogPostContent(blogPostId, updateJson.get("content").asText());
@@ -595,7 +595,7 @@ public class PotooController {
      * @param title
      */
     @PutMapping("/api/blogposts/{blogPostId}/title")
-    public void updateBlogPostTitle(@PathVariable int blogPostId, @RequestBody String title) {
+    public void updateBlogPostTitle(@PathVariable int blogPostId, @RequestBody String title) throws BlogPostNotFoundException {
         Optional<BlogPost> blogPostOpt = blogPostRepository.findById(blogPostId);
 
         if (blogPostOpt.isPresent()) {
@@ -614,7 +614,7 @@ public class PotooController {
      * @param content
      */
     @PutMapping("/api/blogposts/{blogPostId}/content")
-    public void updateBlogPostContent(@PathVariable int blogPostId, @RequestBody String content) {
+    public void updateBlogPostContent(@PathVariable int blogPostId, @RequestBody String content) throws BlogPostNotFoundException {
         Optional<BlogPost> blogPostOpt = blogPostRepository.findById(blogPostId);
 
         if (blogPostOpt.isPresent()) {
@@ -636,7 +636,7 @@ public class PotooController {
      * @param tags
      */
     @PutMapping("/api/blogposts/{blogPostId}/tags")
-    public void updateBlogPostTags(@PathVariable int blogPostId, @RequestBody List<String> tags) {
+    public void updateBlogPostTags(@PathVariable int blogPostId, @RequestBody List<String> tags) throws BlogPostNotFoundException {
         Optional<BlogPost> blogPostOpt = blogPostRepository.findById(blogPostId);
 
         if (blogPostOpt.isPresent()) {
@@ -668,13 +668,15 @@ public class PotooController {
      * @param userId
      */
     @PutMapping("/api/blogposts/{blogPostId}/toggleView/{userId}")
-    public void toggleBlogPostView(@PathVariable int blogPostId, @PathVariable int userId) {
+    public void toggleBlogPostView(@PathVariable int blogPostId, @PathVariable int userId) throws BlogPostNotFoundException {
         Optional<ViewAndLike> viewAndLikeOptional = viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
 
         if (viewAndLikeOptional.isPresent()) {
             ViewAndLike viewAndLike = viewAndLikeOptional.get();
             viewAndLike.setViewed(!viewAndLike.isViewed());
             viewAndLikeRepository.save(viewAndLike);
+        } else if (!blogPostRepository.findById(blogPostId).isPresent()) {
+            throw new BlogPostNotFoundException(blogPostId);
         } else if (blogPostRepository.findById(blogPostId).isPresent() && userRepository.findById(userId).isPresent()) {
             viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, true, false));
         }
@@ -687,7 +689,7 @@ public class PotooController {
      * @param userId
      */
     @PutMapping("/api/blogposts/{blogPostId}/toggleLike/{userId}")
-    public void toggleBlogPostLike(@PathVariable int blogPostId, @PathVariable int userId) {
+    public void toggleBlogPostLike(@PathVariable int blogPostId, @PathVariable int userId) throws BlogPostNotFoundException {
         Optional<ViewAndLike> viewAndLikeOptional = viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
 
         if (viewAndLikeOptional.isPresent()) {
@@ -703,6 +705,8 @@ public class PotooController {
             viewAndLike.setLiked(!viewAndLike.isLiked());
             viewAndLikeRepository.save(viewAndLike);
             blogPostRepository.save(blogPost);
+        } else if (!blogPostRepository.findById(blogPostId).isPresent()) {
+            throw new BlogPostNotFoundException(blogPostId);
         } else if (blogPostRepository.findById(blogPostId).isPresent() && userRepository.findById(userId).isPresent()) {
             viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, false, true));
             BlogPost blogPost = blogPostRepository.findById(blogPostId).get();
