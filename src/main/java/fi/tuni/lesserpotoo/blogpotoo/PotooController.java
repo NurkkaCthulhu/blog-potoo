@@ -515,7 +515,7 @@ public class PotooController {
      * @return BlogPosts (iterable)
      */
     @GetMapping("/api/blogposts/date/{date:[0-9]{4}-[0-9]{2}-[0-9]{2}}")
-    public Iterable<BlogPost> getBlogPostsByDateAsc(@PathVariable String date) {
+    public Iterable<BlogPost> getBlogPostsByDateAsc(@PathVariable String date) throws DateTimeParseException {
         LocalDate localDate = LocalDate.parse(date);
         return blogPostRepository.findByDateOfCreation(localDate);
     }
@@ -556,12 +556,14 @@ public class PotooController {
      * @return ViewAndLike (Optional)
      */
     @GetMapping("/api/blogposts/{blogPostId}/viewAndLike/{userId}")
-    public Optional<ViewAndLike> getViewAndLikeByBlogPostIdAndUserId(@PathVariable int blogPostId, @PathVariable int userId) throws BlogPostNotFoundException {
+    public Optional<ViewAndLike> getViewAndLikeByBlogPostIdAndUserId(@PathVariable int blogPostId, @PathVariable int userId) throws BlogPostNotFoundException, UserNotFoundException {
         if (!blogPostRepository.findById(blogPostId).isPresent()) {
             throw new BlogPostNotFoundException(blogPostId);
+        } else if (!userRepository.findById(userId).isPresent()) {
+            throw new UserNotFoundException(userId);
+        } else {
+            return viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
         }
-
-        return viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
