@@ -382,8 +382,14 @@ public class PotooController {
      * @return BlogPost (Optional)
      */
     @GetMapping("/api/blogposts/{blogPostId}")
-    public Optional<BlogPost> getBlogPostById(@PathVariable int blogPostId) {
-        return blogPostRepository.findById(blogPostId);
+    public BlogPost getBlogPostById(@PathVariable int blogPostId) {
+        Optional<BlogPost> blogPost = blogPostRepository.findById(blogPostId);
+
+        if (blogPost.isPresent()) {
+            return blogPost.get();
+        } else {
+            throw new BlogPostNotFoundException();
+        }
     }
 
     /**
