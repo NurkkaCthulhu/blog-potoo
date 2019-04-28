@@ -45,7 +45,6 @@ class Register extends Component {
 
     render() {
         let classn = window.innerWidth >= 640 ? "desktop" : "mobile";
-        console.log(classn)
         return (
             <div className={"loginContainer " + classn}>
             <h1 className="loginH1">Register</h1>

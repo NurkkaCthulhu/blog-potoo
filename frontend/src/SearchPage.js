@@ -162,7 +162,7 @@ class SearchPage extends Component {
     }
 
     doSearch(event) {
-        console.log("search:" + this.state.searchWord)
+        //console.log("search:" + this.state.searchWord)
         this.props.history.push('/search/' + this.state.searchWord);
         this.componentDidMount();
     }

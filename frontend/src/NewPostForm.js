@@ -108,7 +108,7 @@ class NewPostForm extends Component {
                             const {contentBlocks, entityMap} = blocksFromHtml;
                             const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
                             const editorState = EditorState.createWithContent(contentState);
-                            console.log('postinfo: ', post)
+                            //console.log('postinfo: ', post)
                             this.setState({
                                 formTitle: 'Modify a post'
                                 , author: post.author
@@ -177,7 +177,7 @@ class NewPostForm extends Component {
             }).then((response) => {
                 return response.json()
             }).then((value) => {
-                console.log(value);
+                //console.log(value);
 
                 if (tagArray.length > 0) {
                     fetch('/api/blogposts/' + value + '/tag', {
@@ -187,8 +187,6 @@ class NewPostForm extends Component {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(tagArray),
-                    }).then(() => {
-                        console.log("tags added to " + value)
                     })
                 }
             }).finally(() => {
