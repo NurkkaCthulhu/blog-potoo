@@ -336,12 +336,14 @@ public class PotooController {
      * @param userId
      */
     @DeleteMapping("/api/users/{userId}")
-    public void makeUserTypeDeletedById(@PathVariable int userId) {
+    public void makeUserTypeDeletedById(@PathVariable int userId) throws UserNotFoundException {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isPresent()) {
             userOptional.get().setUserType(UserType.DELETED);
             userRepository.save(userOptional.get());
+        } else {
+            throw new UserNotFoundException(userId);
         }
     }
 
@@ -353,14 +355,18 @@ public class PotooController {
      * @param userId
      */
     @DeleteMapping("/api/users/finaldelete/{userId}")
-    public void removeUserById(@PathVariable int userId) {
-        List<ViewAndLike> viewAndLikes = viewAndLikeRepository.findAllByUserId(userId);
+    public void removeUserById(@PathVariable int userId) throws UserNotFoundException {
+        if (userRepository.findById(userId).isPresent()) {
+            List<ViewAndLike> viewAndLikes = viewAndLikeRepository.findAllByUserId(userId);
 
-        for (ViewAndLike val : viewAndLikes) {
-            viewAndLikeRepository.delete(val);
+            for (ViewAndLike val : viewAndLikes) {
+                viewAndLikeRepository.delete(val);
+            }
+
+            userRepository.deleteById(userId);
+        } else {
+            throw new UserNotFoundException(userId);
         }
-
-        userRepository.deleteById(userId);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
