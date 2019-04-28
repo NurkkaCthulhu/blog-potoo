@@ -13,7 +13,6 @@ class BlogPost extends Component {
         let id = this.props.post.id;
 
         let modifyUrl = '/blogposts/modifypost/' + id;
-        this.listOfTags = this.listOfTags.bind(this);
         this.makeSeen = this.makeSeen.bind(this);
         this.likePost = this.likePost.bind(this);
         this.listAllComments = this.listAllComments.bind(this);
@@ -37,7 +36,6 @@ class BlogPost extends Component {
             , cutContent: cutContent
             , postDate: this.props.post.dateOfCreation
             , postTime: this.props.post.timeOfCreation
-            , tags: this.props.post.tags
             , postUrl: `/blogposts/${this.props.post.id}`
             , modifyUrl: modifyUrl
             , seen: false
@@ -138,16 +136,6 @@ class BlogPost extends Component {
         }
     }
 
-    listOfTags() {
-        let tagString = '';
-
-        for (let tagObj of this.state.tags) {
-            tagString = tagString + '#' + tagObj.tagName + ' ';
-        }
-
-        return tagString;
-    }
-
     render() {
         return (
             <div>
@@ -173,7 +161,9 @@ class BlogPost extends Component {
                 {this.state.cutContent &&
                     <Link to={this.state.postUrl}><p className="readmore">Read more</p></Link>
                 }
-                <p className="tagsOfPosts">{this.listOfTags()}</p>
+                {this.props.post.tags.map((tag) =>
+                    <Link to={"/search/" + tag.tagName} key={tag.id}><span className="postTag">#{tag.tagName}&ensp;</span></Link>
+                )}
 
                 {this.props.ownPage &&
                     <div className="blogpost_comments">
