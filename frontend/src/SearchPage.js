@@ -18,6 +18,7 @@ class SearchPage extends Component {
             , arrayOfBlogPostInformation: []
             , arrayOfBlogPosts: []
         };
+        this.fetchBySearchWord = this.fetchBySearchWord.bind(this);
         this.listAllBlogPosts = this.listAllBlogPosts.bind(this);
         this.listAllBlogPostInfo = this.listAllBlogPostInfo.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -28,10 +29,14 @@ class SearchPage extends Component {
     }
 
     componentDidMount() {
+        this.fetchBySearchWord();
+    }
+
+    fetchBySearchWord() {
         if (this.state.searchWord !== '') {
             fetch('/api/blogposts/search_all/' + this.state.searchWord)
-               .then((httpResponse) => httpResponse.json())
-               .then(this.listAllBlogPostInfo);
+                .then((httpResponse) => httpResponse.json())
+                .then(this.listAllBlogPostInfo);
         }
     }
 
@@ -164,7 +169,7 @@ class SearchPage extends Component {
     doSearch(event) {
         //console.log("search:" + this.state.searchWord)
         this.props.history.push('/search/' + this.state.searchWord);
-        this.componentDidMount();
+        this.fetchBySearchWord();
     }
 
     render() {
