@@ -57,7 +57,7 @@ class NewComment extends Component {
             <div className="newcomment">
                 <textarea placeholder="Write comment" name="comment" className="newComment" onChange={this.handleChange} value={this.state.comment} />
                 <div>
-                    <p className={"charsLeft " + "longpost" + this.state.tooLong}>{this.state.comment.length}/2000</p>
+                    <p className={`charsLeft longpost${this.state.tooLong}`}>{this.state.comment.length}/2000</p>
                     <button onClick={this.handleSubmit} className={"commentSubmitButton"}>Submit</button>
                 </div>
             </div>
