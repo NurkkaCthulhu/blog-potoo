@@ -200,22 +200,27 @@ public class PotooController {
      * @param commentInfo needs to have properties userId and content
      */
     @PostMapping("/api/blogposts/{blogPostId}/comments")
-    public void addCommentToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode commentInfo) throws BlogPostNotFoundException, UserNotFoundException {
-        int userId = commentInfo.get("userId").asInt();
-        String content = commentInfo.get("content").asText();
-        Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
-        Optional<User> userOptional = userRepository.findById(userId);
+    public void addCommentToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode commentInfo)
+            throws BlogPostNotFoundException, UserNotFoundException, NoNeededValuesInBodyException {
+        try {
+            int userId = commentInfo.get("userId").asInt();
+            String content = commentInfo.get("content").asText();
+            Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
+            Optional<User> userOptional = userRepository.findById(userId);
 
-        if (!blogPostOptional.isPresent()) {
-            throw new BlogPostNotFoundException(blogPostId);
-        } else if (!userOptional.isPresent()) {
-            throw new UserNotFoundException(userId);
-        } else {
-            BlogPost blogPost = blogPostOptional.get();
-            User user = userOptional.get();
+            if (!blogPostOptional.isPresent()) {
+                throw new BlogPostNotFoundException(blogPostId);
+            } else if (!userOptional.isPresent()) {
+                throw new UserNotFoundException(userId);
+            } else {
+                BlogPost blogPost = blogPostOptional.get();
+                User user = userOptional.get();
 
-            Comment newComment = new Comment(user, blogPost, content);
-            commentRepository.save(newComment);
+                Comment newComment = new Comment(user, blogPost, content);
+                commentRepository.save(newComment);
+            }
+        } catch (Exception e) {
+            throw NoNeededValuesInBodyException.parseException("userId", "content");
         }
     }
 
