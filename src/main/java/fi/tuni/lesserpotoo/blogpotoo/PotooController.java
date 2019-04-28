@@ -305,11 +305,13 @@ public class PotooController {
      * @param commentId
      */
     @DeleteMapping("/api/blogposts/{blogPostId}/comments/{commentId}")
-    public void deleteCommentFromABlogPost(@PathVariable int blogPostId, @PathVariable int commentId) {
+    public void deleteCommentFromABlogPost(@PathVariable int blogPostId, @PathVariable int commentId) throws BlogPostNotFoundException {
         Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
 
-        if (blogPostOptional.isPresent() && commentOptional.isPresent()) {
+        if (!blogPostOptional.isPresent()) {
+            throw new BlogPostNotFoundException(blogPostId);
+        } else if (blogPostOptional.isPresent() && commentOptional.isPresent()) {
             if (blogPostOptional.get().getComments().contains(commentOptional.get())) {
                 blogPostOptional.get().getComments().remove(commentOptional.get());
                 commentRepository.delete(commentOptional.get());
