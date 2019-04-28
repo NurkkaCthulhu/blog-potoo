@@ -11,7 +11,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class NoNeededValuesInBodyException extends RuntimeException {
 
-    public NoNeededValuesInBodyException(String... valueNames) {
-        super("RequestBody needs to have following values: " + valueNames);
+    public NoNeededValuesInBodyException(String message) {
+        super(message);
+    }
+
+    public static NoNeededValuesInBodyException parseException(String... valueNames) {
+        String message = "RequestBody needs to have following values: ";
+
+        for (int i = 0; i < valueNames.length; i++) {
+            message += valueNames[i];
+
+            if (i < valueNames.length -1) {
+                message += ", ";
+            }
+        }
+
+        return new NoNeededValuesInBodyException(message);
     }
 }
