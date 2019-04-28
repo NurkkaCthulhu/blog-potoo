@@ -170,7 +170,7 @@ public class PotooController {
      * @param tagNames
      */
     @PostMapping("/api/blogposts/{blogPostId}/tag")
-    public void addTagsToBlogPost(@PathVariable int blogPostId, @RequestBody List<String> tagNames) {
+    public void addTagsToBlogPost(@PathVariable int blogPostId, @RequestBody List<String> tagNames) throws BlogPostNotFoundException {
         Optional<BlogPost> blogPostO = blogPostRepository.findById(blogPostId);
 
         if (blogPostO.isPresent()) {
@@ -189,6 +189,8 @@ public class PotooController {
             }
 
             blogPostRepository.save(blogPost);
+        } else {
+            throw new BlogPostNotFoundException(blogPostId);
         }
     }
 
