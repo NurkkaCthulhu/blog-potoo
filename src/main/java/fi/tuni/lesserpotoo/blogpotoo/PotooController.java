@@ -693,17 +693,21 @@ public class PotooController {
      * @param userId
      */
     @PutMapping("/api/blogposts/{blogPostId}/toggleView/{userId}")
-    public void toggleBlogPostView(@PathVariable int blogPostId, @PathVariable int userId) throws BlogPostNotFoundException {
-        Optional<ViewAndLike> viewAndLikeOptional = viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
-
-        if (viewAndLikeOptional.isPresent()) {
-            ViewAndLike viewAndLike = viewAndLikeOptional.get();
-            viewAndLike.setViewed(!viewAndLike.isViewed());
-            viewAndLikeRepository.save(viewAndLike);
-        } else if (!blogPostRepository.findById(blogPostId).isPresent()) {
+    public void toggleBlogPostView(@PathVariable int blogPostId, @PathVariable int userId) throws BlogPostNotFoundException, UserNotFoundException {
+        if (!blogPostRepository.findById(blogPostId).isPresent()) {
             throw new BlogPostNotFoundException(blogPostId);
-        } else if (blogPostRepository.findById(blogPostId).isPresent() && userRepository.findById(userId).isPresent()) {
-            viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, true, false));
+        } else if (!userRepository.findById(userId).isPresent()) {
+            throw new UserNotFoundException(userId);
+        } else {
+            Optional<ViewAndLike> viewAndLikeOptional = viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
+
+            if (viewAndLikeOptional.isPresent()) {
+                ViewAndLike viewAndLike = viewAndLikeOptional.get();
+                viewAndLike.setViewed(!viewAndLike.isViewed());
+                viewAndLikeRepository.save(viewAndLike);
+            } else if (blogPostRepository.findById(blogPostId).isPresent() && userRepository.findById(userId).isPresent()) {
+                viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, true, false));
+            }
         }
     }
 
@@ -714,29 +718,33 @@ public class PotooController {
      * @param userId
      */
     @PutMapping("/api/blogposts/{blogPostId}/toggleLike/{userId}")
-    public void toggleBlogPostLike(@PathVariable int blogPostId, @PathVariable int userId) throws BlogPostNotFoundException {
-        Optional<ViewAndLike> viewAndLikeOptional = viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
-
-        if (viewAndLikeOptional.isPresent()) {
-            ViewAndLike viewAndLike = viewAndLikeOptional.get();
-            BlogPost blogPost = blogPostRepository.findById(blogPostId).get();
-
-            if (viewAndLike.isLiked()) {
-                blogPost.setLikes(blogPost.getLikes() - 1);
-            } else {
-                blogPost.setLikes(blogPost.getLikes() + 1);
-            }
-
-            viewAndLike.setLiked(!viewAndLike.isLiked());
-            viewAndLikeRepository.save(viewAndLike);
-            blogPostRepository.save(blogPost);
-        } else if (!blogPostRepository.findById(blogPostId).isPresent()) {
+    public void toggleBlogPostLike(@PathVariable int blogPostId, @PathVariable int userId) throws BlogPostNotFoundException, UserNotFoundException {
+        if (!blogPostRepository.findById(blogPostId).isPresent()) {
             throw new BlogPostNotFoundException(blogPostId);
-        } else if (blogPostRepository.findById(blogPostId).isPresent() && userRepository.findById(userId).isPresent()) {
-            viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, false, true));
-            BlogPost blogPost = blogPostRepository.findById(blogPostId).get();
-            blogPost.setLikes(blogPost.getLikes() + 1);
-            blogPostRepository.save(blogPost);
+        } else if (!userRepository.findById(userId).isPresent()) {
+            throw new UserNotFoundException(userId);
+        } else {
+            Optional<ViewAndLike> viewAndLikeOptional = viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
+
+            if (viewAndLikeOptional.isPresent()) {
+                ViewAndLike viewAndLike = viewAndLikeOptional.get();
+                BlogPost blogPost = blogPostRepository.findById(blogPostId).get();
+
+                if (viewAndLike.isLiked()) {
+                    blogPost.setLikes(blogPost.getLikes() - 1);
+                } else {
+                    blogPost.setLikes(blogPost.getLikes() + 1);
+                }
+
+                viewAndLike.setLiked(!viewAndLike.isLiked());
+                viewAndLikeRepository.save(viewAndLike);
+                blogPostRepository.save(blogPost);
+            } else if (blogPostRepository.findById(blogPostId).isPresent() && userRepository.findById(userId).isPresent()) {
+                viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, false, true));
+                BlogPost blogPost = blogPostRepository.findById(blogPostId).get();
+                blogPost.setLikes(blogPost.getLikes() + 1);
+                blogPostRepository.save(blogPost);
+            }
         }
     }
 }
