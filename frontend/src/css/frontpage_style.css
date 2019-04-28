@@ -99,3 +99,15 @@ span {
     margin-left: 5%;
     margin-right: 5%;
 }
+
+.postsSpan{
+    margin-top: 16px;
+    margin-right: 10px;
+    font-family: 'Gloria Hallelujah', cursive;
+    padding: 6px;
+    background: #ff3e67;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 8px;
+    color: white;
+}
