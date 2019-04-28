@@ -2,10 +2,7 @@ package fi.tuni.lesserpotoo.blogpotoo.entities;
 
 import fi.tuni.lesserpotoo.blogpotoo.misc.CompositeKey;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.*;
 
 /**
  * @author Essi Supponen [essi.supponen@tuni.fi]
@@ -13,6 +10,7 @@ import javax.persistence.IdClass;
  * @since 3.0
  */
 @Entity
+@Table(name = "viewandlike", schema = "schema")
 @IdClass(CompositeKey.class)
 public class ViewAndLike {
 

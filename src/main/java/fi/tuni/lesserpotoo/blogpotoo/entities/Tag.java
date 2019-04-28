@@ -11,6 +11,7 @@ import java.util.Set;
  * @since 2.0
  */
 @Entity
+@Table(name = "tag", schema = "schema")
 public class Tag {
 
     /**

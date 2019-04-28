@@ -10,6 +10,7 @@ import java.time.LocalTime;
  * @since 3.0
  */
 @Entity
+@Table(name = "comment", schema = "schema")
 public class Comment {
 
     /**

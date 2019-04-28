@@ -16,6 +16,7 @@ import java.util.Set;
  * @since 1.0
  */
 @Entity
+@Table(name = "blogpost", schema = "schema")
 public class BlogPost {
 
     /**
