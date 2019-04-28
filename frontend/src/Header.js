@@ -43,7 +43,7 @@ class Header extends Component {
                             <i className='fas fa-edit'></i>}</Link>
                     }
                     <Link to="/" className="userpagelink">{this.props.monitorType === 'desktop' ? welcomeMessage : <i className='fas fa-user-alt'></i>}</Link>
-                    {localStorage.getItem('userType') === 'ADMIN' && <Link to="/adminpanel/" className="userpagelink"><i className='fas fa-cog'></i></Link> }
+                    {localStorage.getItem('userType') === 'ADMIN' && <Link to="/adminpanel/" className="userpagelink"><i className='fas fa-users-cog'></i></Link> }
                 </nav>
                 :
                  <nav className="header">
