@@ -14,6 +14,8 @@ public class BlogPostNotFoundException extends RuntimeException {
     /**
      * Creates instance of BlogPostNotFoundException with message.
      *
+     * Message is always in following form: "BlogPost with id [id] not found."
+     *
      * @param id    BlogPost id
      */
     public BlogPostNotFoundException(int id) {
