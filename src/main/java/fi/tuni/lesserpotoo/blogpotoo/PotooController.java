@@ -316,7 +316,8 @@ public class PotooController {
      * @param commentId
      */
     @DeleteMapping("/api/blogposts/{blogPostId}/comments/{commentId}")
-    public void deleteCommentFromABlogPost(@PathVariable int blogPostId, @PathVariable int commentId) throws BlogPostNotFoundException, NoSuchCommentUnderThisBlogPostException {
+    public void deleteCommentFromABlogPost(@PathVariable int blogPostId, @PathVariable int commentId)
+            throws BlogPostNotFoundException, NoSuchCommentUnderThisBlogPostException {
         Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
 
@@ -579,11 +580,15 @@ public class PotooController {
      * @return User (optional)
      */
     @PutMapping("/api/users/login")
-    public Optional<User> userExists(@RequestBody ObjectNode loginInformation) {
-        String username = loginInformation.get("username").asText();
-        String password = loginInformation.get("password").asText();
+    public Optional<User> userExists(@RequestBody ObjectNode loginInformation) throws NoNeededValuesInBodyException {
+        try {
+            String username = loginInformation.get("username").asText();
+            String password = loginInformation.get("password").asText();
 
-        return userRepository.findByUsernameIgnoreCaseAndPasswordIn(username, password);
+            return userRepository.findByUsernameIgnoreCaseAndPasswordIn(username, password);
+        } catch (Exception e) {
+            throw NoNeededValuesInBodyException.parseException("username", "password");
+        }
     }
 
     /**
