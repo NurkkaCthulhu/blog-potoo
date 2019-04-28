@@ -656,8 +656,11 @@ public class PotooController {
      * If BlogPost exists, gets new information from the updateJson. Uses updateBlogPostTitle, updateBlogPostContent and
      * updateBlogPostTags to update information.
      *
-     * @param blogPostId
-     * @param updateJson needs to have title, content and tags
+     * @param blogPostId    id of BlogPost
+     * @param updateJson    needs to have title, content and tags
+     *
+     * @throws BlogPostNotFoundException        there is no BlogPost with given blogPostId
+     * @throws NoNeededValuesInBodyException    values are missing from RequestBody
      */
     @PutMapping("/api/blogposts/{blogPostId}")
     public void updateBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode updateJson)
@@ -687,8 +690,10 @@ public class PotooController {
     /**
      * If BlogPost exists, updates the title and TimeOfEdit.
      *
-     * @param blogPostId
-     * @param title
+     * @param blogPostId   if of BlogPost
+     * @param title        new title
+     *
+     * @throws BlogPostNotFoundException    there is no BlogPost with given blogPostId
      */
     @PutMapping("/api/blogposts/{blogPostId}/title")
     public void updateBlogPostTitle(@PathVariable int blogPostId, @RequestBody String title) throws BlogPostNotFoundException {
@@ -706,8 +711,10 @@ public class PotooController {
     /**
      * If BlogPost exists, updates the content and TimeOfEdit.
      *
-     * @param blogPostId
-     * @param content
+     * @param blogPostId    id of BlogPost
+     * @param content       new content
+     *
+     * @throws BlogPostNotFoundException    there is no BlogPost with given blogPostId
      */
     @PutMapping("/api/blogposts/{blogPostId}/content")
     public void updateBlogPostContent(@PathVariable int blogPostId, @RequestBody String content) throws BlogPostNotFoundException {
@@ -728,8 +735,10 @@ public class PotooController {
      * Checks if BlogPost exists. If so, checks if tags already exist. If tag exists, adds it to BlogPost. If not,
      * creates new Tag and adds it to BlogPost.
      *
-     * @param blogPostId
-     * @param tags
+     * @param blogPostId    id of BlogPost
+     * @param tags          new tags
+     *
+     * @throws BlogPostNotFoundException    there is no BlogPost with given blogPostId
      */
     @PutMapping("/api/blogposts/{blogPostId}/tags")
     public void updateBlogPostTags(@PathVariable int blogPostId, @RequestBody List<String> tags) throws BlogPostNotFoundException {
@@ -760,11 +769,15 @@ public class PotooController {
     /**
      * Toggles view attribute of ViewAndLike of certain blogPostId and userId.
      *
-     * @param blogPostId
-     * @param userId
+     * @param blogPostId    id of BlogPost
+     * @param userId        id of User
+     *
+     * @throws BlogPostNotFoundException    there is no BlogPost with given blogPostId
+     * @throws UserNotFoundException        there is no User with given userId
      */
     @PutMapping("/api/blogposts/{blogPostId}/toggleView/{userId}")
-    public void toggleBlogPostView(@PathVariable int blogPostId, @PathVariable int userId) throws BlogPostNotFoundException, UserNotFoundException {
+    public void toggleBlogPostView(@PathVariable int blogPostId, @PathVariable int userId)
+            throws BlogPostNotFoundException, UserNotFoundException {
         if (!blogPostRepository.findById(blogPostId).isPresent()) {
             throw new BlogPostNotFoundException(blogPostId);
         } else if (!userRepository.findById(userId).isPresent()) {
@@ -785,11 +798,15 @@ public class PotooController {
     /**
      * Toggles like attribute of ViewAndLike of certain blogPostId and userId, and removes or adds likes to BlogPost.
      *
-     * @param blogPostId
-     * @param userId
+     * @param blogPostId    id of BlogPost
+     * @param userId        id of User
+     *
+     * @throws BlogPostNotFoundException    there is no BlogPost with given blogPostId
+     * @throws UserNotFoundException        there is no User with given userId
      */
     @PutMapping("/api/blogposts/{blogPostId}/toggleLike/{userId}")
-    public void toggleBlogPostLike(@PathVariable int blogPostId, @PathVariable int userId) throws BlogPostNotFoundException, UserNotFoundException {
+    public void toggleBlogPostLike(@PathVariable int blogPostId, @PathVariable int userId)
+            throws BlogPostNotFoundException, UserNotFoundException {
         if (!blogPostRepository.findById(blogPostId).isPresent()) {
             throw new BlogPostNotFoundException(blogPostId);
         } else if (!userRepository.findById(userId).isPresent()) {
