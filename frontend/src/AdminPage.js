@@ -23,10 +23,27 @@ class AdminPage extends Component {
     }
 
     deleteUser = (event) => {
-        if(window.confirm('Are you sure you want to delete this user?')) {
+        if(window.confirm('Are you sure you want to delete this user? All their activity is still saved.')) {
             let user = event.target;
 
             fetch('/api/users/' + user.id, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then(() => {
+                this.updateUserList();
+            });
+        }
+        event.preventDefault();
+    };
+
+    deleteUserPermanently = (event) => {
+        if(window.confirm('Are you sure you want to delete this user and all their activity? This cannot be reversed!')) {
+            let user = event.target;
+
+            fetch('/api/users/finaldelete/' + user.id, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
@@ -65,9 +82,12 @@ class AdminPage extends Component {
                                         <td className="username">{user.username}</td>
                                         <td className="usertype">{user.userType}</td>
                                         {user.username !== localStorage.getItem('username') && user.userType !== 'DELETED'  ?
-                                            <td className="deleteUser" id={user.id} onClick={this.deleteUser}>Delete user</td>
+                                            <td className="deleteUser"><span id={user.id} onClick={this.deleteUser}>Mark deleted</span><span className={"deleteSeparator"}>&ensp;|&ensp;</span><span id={user.id} onClick={this.deleteUserPermanently}>Delete user</span></td>
                                             :
-                                            <td></td>
+                                            user.username === localStorage.getItem('username') ?
+                                                <td><span>Can't delete own account</span></td>
+                                                :
+                                                <td className="deleteUser" id={user.id} onClick={this.deleteUserPermanently}><span>Delete user</span></td>
                                         }
 
                                     </tr>
