@@ -416,7 +416,7 @@ public class PotooController {
     /**
      * Returns all users.
      *
-     * @return
+     * @return  Users (iterable)
      */
     @GetMapping("/api/users")
     public Iterable<User> getAllUsers() {
@@ -426,8 +426,10 @@ public class PotooController {
     /**
      * Returns user by id.
      *
-     * @param userId
+     * @param userId    id of User
      * @return User (optional)
+     *
+     * @throws UserNotFoundException    there is no User with given userId
      */
     @GetMapping("/api/users/{userId}")
     public User getUserById(@PathVariable int userId) throws UserNotFoundException {
@@ -453,8 +455,10 @@ public class PotooController {
     /**
      * Returns BlogPost by blogPostId.
      *
-     * @param blogPostId
-     * @return BlogPost (Optional)
+     * @param blogPostId id of BlogPost
+     * @return BlogPost
+     *
+     * @throws BlogPostNotFoundException    there is no BlogPost with given blogPostId
      */
     @GetMapping("/api/blogposts/{blogPostId}")
     public BlogPost getBlogPostById(@PathVariable int blogPostId) throws BlogPostNotFoundException {
@@ -468,10 +472,12 @@ public class PotooController {
     }
 
     /**
-     * Returns all Comments of all BlogPosts.
+     * Returns all Comments of an BlogPost.
      *
-     * @param blogPostId
+     * @param blogPostId    id of BlogPost
      * @return Comments (iterable)
+     *
+     * @throws BlogPostNotFoundException    there is no BlogPost with given blogPostId
      */
     @GetMapping("/api/blogposts/{blogPostId}/comments")
     public Iterable<Comment> getCommentsByPostId(@PathVariable int blogPostId) throws BlogPostNotFoundException {
@@ -489,8 +495,10 @@ public class PotooController {
      *
      * Checks if User of authorId exists. If so, returns all BlogPosts written by that User.
      *
-     * @param authorId
+     * @param authorId      id of User
      * @return BlogPosts (iterable)
+     *
+     * @throws UserNotFoundException    there is no User with given userId
      */
     @GetMapping("/api/blogposts/author/{authorId}")
     public Iterable<BlogPost> getBlogPostsByAuthorId(@PathVariable int authorId) throws UserNotFoundException {
@@ -508,7 +516,7 @@ public class PotooController {
      *
      * Finds and returns all BlogPost by Author's username.
      *
-     * @param authorName
+     * @param authorName    username
      * @return BlogPosts (iterable)
      */
     @GetMapping("/api/blogposts/authorName/{authorName}")
@@ -519,7 +527,7 @@ public class PotooController {
     /**
      * Returns all BlogPosts whose title contains given word.
      *
-     * @param containingWord
+     * @param containingWord    word that title contains
      * @return BlogPosts (iterable)
      */
     @GetMapping("/api/blogposts/title/{containingWord}")
@@ -532,7 +540,7 @@ public class PotooController {
      *
      * Checks if tag by given name exists. Returns all BlogPosts that have it. If not, returns empty list.
      *
-     * @param tagName
+     * @param tagName   name of tag in a BlogPost
      * @return BlogPosts (iterable)
      */
     @GetMapping("/api/blogposts/tag/{tagName}")
@@ -551,8 +559,10 @@ public class PotooController {
      *
      * If date cannot be parsed, will return null.
      *
-     * @param date
+     * @param date  String in following form: YYYY-MM-DD
      * @return BlogPosts (iterable)
+     *
+     * @throws DateTimeParseException   Date could not be parsed
      */
     @GetMapping("/api/blogposts/date/{date:[0-9]{4}-[0-9]{2}-[0-9]{2}}")
     public Iterable<BlogPost> getBlogPostsByDateAsc(@PathVariable String date) throws DateTimeParseException {
@@ -566,7 +576,7 @@ public class PotooController {
      * Uses getBlogPostsByTag, getBlogPostsByTitleContaining and getBlogPostsByAuthor to find all BlogPosts. Adds them
      * to a same set. Returns that set.
      *
-     * @param keyWord
+     * @param keyWord       word ro search by
      * @return BlogPosts (iterable)
      */
     @GetMapping("/api/blogposts/search_all/{keyWord}")
@@ -591,12 +601,16 @@ public class PotooController {
     /**
      * Returns ViewAndLike by userId and blogPostId.
      *
-     * @param blogPostId
-     * @param userId
-     * @return ViewAndLike (Optional)
+     * @param blogPostId    id of BlogPost
+     * @param userId        id of User
+     * @return ViewAndLike
+     *
+     * @throws BlogPostNotFoundException    there is no BlogPost with given blogPostId
+     * @throws UserNotFoundException        there is no User with given userId
      */
     @GetMapping("/api/blogposts/{blogPostId}/viewAndLike/{userId}")
-    public Optional<ViewAndLike> getViewAndLikeByBlogPostIdAndUserId(@PathVariable int blogPostId, @PathVariable int userId) throws BlogPostNotFoundException, UserNotFoundException {
+    public Optional<ViewAndLike> getViewAndLikeByBlogPostIdAndUserId(@PathVariable int blogPostId, @PathVariable int userId)
+            throws BlogPostNotFoundException, UserNotFoundException {
         if (!blogPostRepository.findById(blogPostId).isPresent()) {
             throw new BlogPostNotFoundException(blogPostId);
         } else if (!userRepository.findById(userId).isPresent()) {
@@ -614,7 +628,10 @@ public class PotooController {
      * Returns user by username and password.
      *
      * @param loginInformation needs to have username and password
-     * @return User (optional)
+     * @return User
+     *
+     * @throws NoNeededValuesInBodyException    there is no BlogPost with given blogPostId
+     * @throws LoginFailedException             no users found with given username and password
      */
     @PutMapping("/api/users/login")
     public User userExists(@RequestBody ObjectNode loginInformation) throws NoNeededValuesInBodyException, LoginFailedException {
