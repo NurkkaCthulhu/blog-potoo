@@ -30,7 +30,7 @@ class Register extends Component {
                 },
                 body: JSON.stringify(userInformation)
             }).then((response) => response.json()).then((user) => {
-                if (user === null) {
+                if (user.status === 400) {
                     this.setState({errorMessage: <div className="loginErrorMessage">This username is already in use.</div>});
                 } else {
                     localStorage.setItem('loggedin', 'true');
