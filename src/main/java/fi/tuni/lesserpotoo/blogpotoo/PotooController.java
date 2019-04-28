@@ -262,7 +262,7 @@ public class PotooController {
      * @param blogPostId
      */
     @DeleteMapping("/api/blogposts/{blogPostId}")
-    public void deleteBlogPost(@PathVariable int blogPostId) {
+    public void deleteBlogPost(@PathVariable int blogPostId) throws BlogPostNotFoundException {
         Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
         if (blogPostOptional.isPresent()) {
             BlogPost blogPost = blogPostOptional.get();
@@ -291,6 +291,8 @@ public class PotooController {
             }
 
             blogPostRepository.deleteById(blogPostId);
+        } else {
+            throw new BlogPostNotFoundException(blogPostId);
         }
     }
 
