@@ -20,7 +20,7 @@ public class BlogpotooApplication {
 		System.out.println("cURL commands for testing:\n"
 			+ "\n"
 			+ "POST User:           curl -d \"{\"username\":\"testUser\",\"password\":\"password\",\"userType\":1}\" -H \"Content-Type:application/json\" -X POST http://localhost:8080/api/users\n"
-			+ "POST BlogPost:       curl -d \"{\"authorId\":1,\"title\":\"test title\",\"content\":\"test content\"}\" -H \"Content-Type:application/json\" -X -OST http://localhost:8080/api/blogposts\n"
+			+ "POST BlogPost:       curl -d \"{\"authorId\":1,\"title\":\"test title\",\"content\":\"test content\"}\" -H \"Content-Type:application/json\" -X POST http://localhost:8080/api/blogposts\n"
 			+ "POST Tags:           curl -d \"[\"new tag1\", \"new tag2\"]\" -H \"Content-Type:application/json\" -X POST http://localhost:8080/api/blogposts/1/tag\n"
 			+ "POST Comment:        curl -d \"{\"userId\":1,\"content\":\"test comment\"}\" -H \"Content-Type:application/json\" -X POST http://localhost:8080/api/blogposts/1/comment\n"
 			+ "POST ViewAndLike:    curl -d \"{\"userId\":1,\"view\":true,\"like\":true}\" -H \"Content-Type:application/json\" -X POST http://localhost:8080/api/blogposts/4/viewAndLike\n"
