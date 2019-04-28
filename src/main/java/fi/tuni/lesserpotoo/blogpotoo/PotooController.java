@@ -6,6 +6,7 @@ import fi.tuni.lesserpotoo.blogpotoo.entities.*;
 import fi.tuni.lesserpotoo.blogpotoo.misc.UserType;
 import fi.tuni.lesserpotoo.blogpotoo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +22,11 @@ import java.util.*;
  */
 @RestController
 public class PotooController {
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public class BlogPostNotFoundException extends RuntimeException {
+
+    }
 
     /**
      * Repository of Users
