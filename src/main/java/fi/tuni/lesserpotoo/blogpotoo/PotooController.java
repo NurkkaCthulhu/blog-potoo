@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fi.tuni.lesserpotoo.blogpotoo.entities.*;
 import fi.tuni.lesserpotoo.blogpotoo.misc.UserType;
 import fi.tuni.lesserpotoo.blogpotoo.repositories.*;
+import fi.tuni.lesserpotoo.blogpotoo.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,27 +23,6 @@ import java.util.*;
  */
 @RestController
 public class PotooController {
-
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public class BlogPostNotFoundException extends RuntimeException {
-        public BlogPostNotFoundException(int id) {
-            super("BlogPost with id " + id + " not found.");
-        }
-    }
-
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public class UserNotFoundException extends RuntimeException {
-        public UserNotFoundException(int id) {
-            super("User with id " + id + " not found.");
-        }
-    }
-
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public class NoSuchCommentUnderThisBlogPostException extends RuntimeException {
-        public NoSuchCommentUnderThisBlogPostException(int blogPostId, int commentId) {
-            super("BlogPost with id " + blogPostId + " does not have comment with id " + commentId);
-        }
-    }
 
     /**
      * Repository of Users
