@@ -11,6 +11,17 @@ class AdminPage extends Component {
         }
     }
 
+    componentDidMount() {
+        if(localStorage.getItem('userType') === 'ADMIN') {
+            fetch('/api/users')
+                .then((httpResp) => httpResp.json())
+                .then((users) => this.setState({users: users}));
+        } else {
+            console.log('not admin')
+            this.setState({adminAccess: false});
+        }
+    }
+
     render() {
         return (
             <div>
