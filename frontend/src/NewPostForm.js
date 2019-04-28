@@ -218,7 +218,7 @@ class NewPostForm extends Component {
                         <div className="newpostheader">
                             <h1 className={"newpostTitle"}>{this.state.formTitle}</h1>
                         </div>
-                        <form onSubmit={this.handleSubmit}>
+
                             <div className="required">
                                 <label>
                                     Title
@@ -254,13 +254,13 @@ class NewPostForm extends Component {
                                 </label>
                             </p>
                             <div className={"row"}>
-                                <input type="submit" value="Submit" className="submit-button app-button" />
+                                <button className="submit-button app-button" onClick={this.handleSubmit}>Submit</button>
                                 <button className="cancel-button app-button" onClick={() => this.props.history.push('/')}>Cancel</button>
                                 {this.state.modifying &&
                                     <button className="delete-button app-button" onClick={this.deletePost}>Delete post</button>
                                 }
                             </div>
-                        </form>
+
                     </div>
                     :
                     <ErrorPage message={this.state.errorMessage}/>

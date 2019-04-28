@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { Link} from "react-router-dom";
 import BlogPost from './BlogPost';
 import nopostimg from './img/noposts.png';
 import ErrorPage from "./ErrorPage";
@@ -22,6 +23,8 @@ class PostLoader extends Component {
                     , arrayOfBlogPosts: []
                     , fetchedBlogPosts: []
                     , isFetching: false
+                    , postsFrom: 0
+                    , postsTo: 5
                     };
     }
 
@@ -53,6 +56,20 @@ class PostLoader extends Component {
 
     }
 
+    loadOlderPosts = () => {
+        let newPostsFrom = this.state.postsFrom + 5;
+        let newPostsTo = this.state.postsTo + 5;
+        this.setState({postsFrom: newPostsFrom
+                        , postsTo: newPostsTo});
+    }
+
+    loadNewerPosts = () => {
+        let newPostsFrom = this.state.postsFrom - 5;
+        let newPostsTo = this.state.postsTo - 5;
+        this.setState({postsFrom: newPostsFrom
+            , postsTo: newPostsTo});
+    }
+
     render() {
         return (
             <div>
@@ -65,7 +82,19 @@ class PostLoader extends Component {
                         <img className={"nopostsimg"} src={nopostimg} alt={"Crying potoo"}></img>
                     </div>
                     :
-                    this.state.arrayOfBlogPosts
+                        this.state.arrayOfBlogPosts.length > 5 ?
+                            <div>
+                                {this.state.arrayOfBlogPosts.slice(this.state.postsFrom, this.state.postsTo)}
+                                {(this.state.postsFrom + 5) < this.state.arrayOfBlogPosts.length &&
+                                    <button className={"postsSpan"} onClick={this.loadOlderPosts}><i className='fas fa-arrow-alt-circle-left'></i>Older posts &nbsp;</button>
+
+                                }
+                                {(this.state.postsFrom-5) >= 0 &&
+                                    <button className={"postsSpan"} onClick={this.loadNewerPosts}><i className='fas fa-arrow-alt-circle-right'></i>Newer posts &nbsp;</button>
+                                }
+                            </div>
+                            :
+                            this.state.arrayOfBlogPosts
                 }
             </div>
         );
