@@ -7,6 +7,8 @@ import fi.tuni.lesserpotoo.blogpotoo.misc.UserType;
 import fi.tuni.lesserpotoo.blogpotoo.repositories.*;
 import fi.tuni.lesserpotoo.blogpotoo.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -119,7 +121,7 @@ public class PotooController {
      * @return id of created blogPost
      */
     @PostMapping(value = "/api/blogposts")
-    public int saveBlogPost(@RequestBody ObjectNode blogPostInfo) throws UserNotFoundException, NoNeededValuesInBodyException {
+    public ResponseEntity<Integer> saveBlogPost(@RequestBody ObjectNode blogPostInfo) throws UserNotFoundException, NoNeededValuesInBodyException {
         try {
             int authorId = blogPostInfo.get("authorId").asInt();
             String title = blogPostInfo.get("title").asText();
@@ -129,7 +131,8 @@ public class PotooController {
             if (authorOptional.isPresent()) {
                 BlogPost blogPost = new BlogPost(authorOptional.get(), title, content);
                 blogPostRepository.save(blogPost);
-                return blogPost.getId();
+
+                return new ResponseEntity<>(blogPost.getId(), HttpStatus.CREATED);
             } else {
                 throw new UserNotFoundException(authorId);
             }
@@ -169,7 +172,7 @@ public class PotooController {
      * @param tagNames
      */
     @PostMapping("/api/blogposts/{blogPostId}/tag")
-    public void addTagsToBlogPost(@PathVariable int blogPostId, @RequestBody List<String> tagNames) throws BlogPostNotFoundException {
+    public ResponseEntity<Void> addTagsToBlogPost(@PathVariable int blogPostId, @RequestBody List<String> tagNames) throws BlogPostNotFoundException {
         Optional<BlogPost> blogPostO = blogPostRepository.findById(blogPostId);
 
         if (blogPostO.isPresent()) {
@@ -188,6 +191,7 @@ public class PotooController {
             }
 
             blogPostRepository.save(blogPost);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
             throw new BlogPostNotFoundException(blogPostId);
         }
@@ -202,7 +206,7 @@ public class PotooController {
      * @param commentInfo needs to have properties userId and content
      */
     @PostMapping("/api/blogposts/{blogPostId}/comments")
-    public void addCommentToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode commentInfo)
+    public ResponseEntity<Void> addCommentToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode commentInfo)
             throws BlogPostNotFoundException, UserNotFoundException, NoNeededValuesInBodyException {
         try {
             int userId = commentInfo.get("userId").asInt();
@@ -220,6 +224,8 @@ public class PotooController {
 
                 Comment newComment = new Comment(user, blogPost, content);
                 commentRepository.save(newComment);
+
+                return new ResponseEntity<>(HttpStatus.CREATED);
             }
         } catch (Exception e) {
             throw NoNeededValuesInBodyException.parseException("userId", "content");
@@ -235,7 +241,7 @@ public class PotooController {
      * @param viewAndLikeInfo needs to have userId, view and like
      */
     @PostMapping("/api/blogposts/{blogPostId}/viewAndLike")
-    public void addViewAndLikeToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode viewAndLikeInfo)
+    public ResponseEntity<Void> addViewAndLikeToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode viewAndLikeInfo)
             throws BlogPostNotFoundException, UserNotFoundException, NoNeededValuesInBodyException {
         try {
             int userId = viewAndLikeInfo.get("userId").asInt();
@@ -256,6 +262,8 @@ public class PotooController {
                     blogPostRepository.save(blogPost);
                 }
                 viewAndLikeRepository.save(new ViewAndLike(userId, blogPostId, view, like));
+
+                return new ResponseEntity<>(HttpStatus.CREATED);
             }
         } catch (Exception e) {
             throw NoNeededValuesInBodyException.parseException("userId", "view", "like");
