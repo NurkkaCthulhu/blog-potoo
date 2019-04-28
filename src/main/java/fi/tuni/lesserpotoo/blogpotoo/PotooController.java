@@ -210,7 +210,7 @@ public class PotooController {
      * @param commentInfo needs to have properties userId and content
      */
     @PostMapping("/api/blogposts/{blogPostId}/comments")
-    public void addCommentToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode commentInfo) throws BlogPostNotFoundException {
+    public void addCommentToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode commentInfo) throws BlogPostNotFoundException, UserNotFoundException {
         int userId = commentInfo.get("userId").asInt();
         String content = commentInfo.get("content").asText();
         Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
@@ -218,7 +218,9 @@ public class PotooController {
 
         if (!blogPostOptional.isPresent()) {
             throw new BlogPostNotFoundException(blogPostId);
-        } else if (blogPostOptional.isPresent() && userOptional.isPresent()) {
+        } else if (!userOptional.isPresent()) {
+            throw new UserNotFoundException(userId);
+        } else {
             BlogPost blogPost = blogPostOptional.get();
             User user = userOptional.get();
 
