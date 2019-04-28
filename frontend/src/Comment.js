@@ -3,10 +3,6 @@ import './css/Comment_style.css';
 import {Link} from "react-router-dom";
 
 class Comment extends Component {
-    constructor(props) {
-        super(props);
-        //console.log('props in comment ', props);
-    }
 
     deleteComment = (event) => {
         fetch('/api/blogposts/' + this.props.comment.blogPost.id + '/comments/' + this.props.comment.id,{
