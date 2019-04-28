@@ -533,7 +533,11 @@ public class PotooController {
      * @return ViewAndLike (Optional)
      */
     @GetMapping("/api/blogposts/{blogPostId}/viewAndLike/{userId}")
-    public Optional<ViewAndLike> getViewAndLikeByBlogPostIdAndUserId(@PathVariable int blogPostId, @PathVariable int userId) {
+    public Optional<ViewAndLike> getViewAndLikeByBlogPostIdAndUserId(@PathVariable int blogPostId, @PathVariable int userId) throws BlogPostNotFoundException {
+        if (!blogPostRepository.findById(blogPostId).isPresent()) {
+            throw new BlogPostNotFoundException(blogPostId);
+        }
+
         return viewAndLikeRepository.findByUserIdAndBlogPostId(userId, blogPostId);
     }
 
