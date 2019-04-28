@@ -30,6 +30,13 @@ public class PotooController {
         }
     }
 
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public class UserNotFoundException extends RuntimeException {
+        public UserNotFoundException(int id) {
+            super("User with id " + id + " not found.");
+        }
+    }
+
     /**
      * Repository of Users
      */
