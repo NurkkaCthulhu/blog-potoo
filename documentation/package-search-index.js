@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"fi.tuni.lesserpotoo.blogpotoo"},{"l":"fi.tuni.lesserpotoo.blogpotoo.entities"},{"l":"fi.tuni.lesserpotoo.blogpotoo.exceptions"},{"l":"fi.tuni.lesserpotoo.blogpotoo.misc"},{"l":"fi.tuni.lesserpotoo.blogpotoo.repositories"}]
