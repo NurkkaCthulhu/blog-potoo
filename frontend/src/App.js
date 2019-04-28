@@ -8,6 +8,7 @@ import Login from './Login';
 import Register from './Register';
 import Header from './Header';
 import SearchPage from './SearchPage';
+import AdminPage from "./AdminPage";
 
 function Index() {
     return <PostLoader />;
@@ -64,6 +65,7 @@ class App extends Component {
                             <Route exact path={"/blogposts/:id"} component={PostLoader}/>
                             <Route exact path="/login" component={LoginUser}/>
                             <Route exact path="/register" component={RegisterUser}/>
+                            <Route exact path="/adminpanel" component={AdminPage}/>
                             <Route component={Error}/>
                         </Switch>
                     </div>
