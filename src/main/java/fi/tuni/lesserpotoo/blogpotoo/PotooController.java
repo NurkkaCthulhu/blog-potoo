@@ -59,50 +59,6 @@ public class PotooController {
     @PostConstruct
     public void init() {
 
-        Tag potooTag = new Tag("potoo");
-        Tag firstTag = new Tag("first");
-        Tag lastTag = new Tag("last");
-
-        tagRepository.save(potooTag);
-        tagRepository.save(firstTag);
-        tagRepository.save(lastTag);
-
-        User user1 = new User("General Potoo", "password", UserType.ADMIN);
-        User user2 = new User("Some owl", "pain", UserType.DELETED);
-        User user3 = new User("Potoo Mom", "pain", UserType.VISITOR);
-        User admin = new User("admin", "admin", UserType.ADMIN);
-
-        userRepository.save(user1);
-        userRepository.save(user2);
-        userRepository.save(user3);
-        userRepository.save(admin);
-
-        BlogPost post1= new BlogPost(user1, "What is potoo?", "The great potoo (Nyctibius grandis) is a near passerine bird, both the largest potoo species and the largest member of the order Caprimulgiformes (nightjars and allies). They are also one of seven species in one genus, Nyctibius, located in tropical America.\n" +
-                "Much like owls, this species is nocturnal. They prey on large insects and small vertebrates, which they capture in sallies from high perches.\n" +
-                "Possibly its most well known characteristic is its unique moaning growl that the Great Potoo vocalizes throughout the night, creating an unsettling atmosphere in the Neotropics with its nocturnal sounds.");
-        BlogPost post2 = new BlogPost(user1, "Potoo > Owl", "its just true");
-        BlogPost post3 = new BlogPost(user3, "Father feed me", "I'm hungry");
-        BlogPost post4 = new BlogPost(user3, "Days of Potooing", "It is good to be a potoo. I recommend. I feel despair but it is completely ok.");
-
-        post1.getTags().add(potooTag);
-        post1.getTags().add(firstTag);
-        post2.getTags().add(potooTag);
-        post3.getTags().add(potooTag);
-        post4.getTags().add(potooTag);
-        post4.getTags().add(lastTag);
-
-        blogPostRepository.save(post1);
-        blogPostRepository.save(post2);
-        blogPostRepository.save(post3);
-        blogPostRepository.save(post4);
-
-        Comment comment1 = new Comment(user1, post2, "This is a great post, POTOO");
-        Comment comment2 = new Comment(user2, post2, "certainly so!");
-        Comment comment3 = new Comment(user3, post4, "my life");
-
-        commentRepository.save(comment1);
-        commentRepository.save(comment2);
-        commentRepository.save(comment3);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
