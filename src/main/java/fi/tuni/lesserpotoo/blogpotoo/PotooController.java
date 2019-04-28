@@ -26,7 +26,7 @@ public class PotooController {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public class BlogPostNotFoundException extends RuntimeException {
         public BlogPostNotFoundException(int id) {
-            super("BlogPost of id " + id + " not found.");
+            super("BlogPost with id " + id + " not found.");
         }
     }
 
@@ -411,13 +411,13 @@ public class PotooController {
      * @return Comments (iterable)
      */
     @GetMapping("/api/blogposts/{blogPostId}/comments")
-    public Iterable<Comment> getCommentsByPostId(@PathVariable int blogPostId) {
+    public Iterable<Comment> getCommentsByPostId(@PathVariable int blogPostId) throws BlogPostNotFoundException {
         Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
 
         if (blogPostOptional.isPresent()) {
             return blogPostOptional.get().getComments();
         } else {
-            return new HashSet<Comment>();
+            throw new BlogPostNotFoundException(blogPostId);
         }
     }
 
