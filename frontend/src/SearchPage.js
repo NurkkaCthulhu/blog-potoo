@@ -1,9 +1,8 @@
 import React, {Component} from "react";
 import './css/search_style.css';
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import PostLoader from "./PostLoader";
 import BlogPost from "./BlogPost";
-import ErrorPage from "./ErrorPage";
 import nopostimg from './img/noposts.png';
 
 class SearchPage extends Component {
