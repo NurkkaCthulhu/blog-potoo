@@ -36,7 +36,7 @@ class Login extends Component {
             },
             body: JSON.stringify(userInformation)
         }).then((response) => response.json()).then((user) => {
-            if (user === null) {
+            if (user.status === 400) {
                 this.setState({errorMessage: <div className="loginErrorMessage">Username or password is incorrect.</div>});
             } else if (user.userType === 'DELETED') {
                 this.setState({errorMessage: <div className="loginErrorMessage">This user has been deleted. Site access denied.</div>});
