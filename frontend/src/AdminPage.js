@@ -42,7 +42,6 @@ class AdminPage extends Component {
     deleteUserPermanently = (event) => {
         if(window.confirm('Are you sure you want to delete this user and all their activity? This cannot be reversed!')) {
             let user = event.target;
-
             fetch('/api/users/finaldelete/' + user.id, {
                 method: 'DELETE',
                 headers: {
@@ -87,7 +86,7 @@ class AdminPage extends Component {
                                             user.username === localStorage.getItem('username') ?
                                                 <td><span>Can't delete own account</span></td>
                                                 :
-                                                <td className="deleteUser" id={user.id} onClick={this.deleteUserPermanently}><span>Delete user</span></td>
+                                                <td className="deleteUser"><span id={user.id} onClick={this.deleteUserPermanently}>Delete user</span></td>
                                         }
 
                                     </tr>
