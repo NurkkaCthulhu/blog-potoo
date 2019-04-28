@@ -18,25 +18,24 @@ class AdminPage extends Component {
         if(localStorage.getItem('userType') === 'ADMIN') {
             this.updateUserList();
         } else {
-            console.log('not admin')
             this.setState({adminAccess: false});
         }
     }
 
     deleteUser = (event) => {
-        let user = event.target;
+        if(window.confirm('Are you sure you want to delete this user?')) {
+            let user = event.target;
 
-        fetch('/api/users/' + user.id,{
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(() => {
-            console.log('done');
-            this.updateUserList();
-        });
-
+            fetch('/api/users/' + user.id, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then(() => {
+                this.updateUserList();
+            });
+        }
         event.preventDefault();
     };
 
@@ -63,7 +62,6 @@ class AdminPage extends Component {
                             <tbody>
                                 {this.state.users.map((user) =>
                                     <tr key={user.id}>
-                                        {console.log('checking usertype: ',user.userType)}
                                         <td className="username">{user.username}</td>
                                         <td className="usertype">{user.userType}</td>
                                         {user.username !== localStorage.getItem('username') && user.userType !== 'DELETED'  ?
