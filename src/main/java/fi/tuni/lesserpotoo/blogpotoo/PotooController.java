@@ -591,12 +591,17 @@ public class PotooController {
      * @return User (optional)
      */
     @PutMapping("/api/users/login")
-    public Optional<User> userExists(@RequestBody ObjectNode loginInformation) throws NoNeededValuesInBodyException {
+    public User userExists(@RequestBody ObjectNode loginInformation) throws NoNeededValuesInBodyException, LoginFailedException {
         try {
             String username = loginInformation.get("username").asText();
             String password = loginInformation.get("password").asText();
+            Optional<User> userOptional = userRepository.findByUsernameIgnoreCaseAndPasswordIn(username, password);
 
-            return userRepository.findByUsernameIgnoreCaseAndPasswordIn(username, password);
+            if (userOptional.isPresent()) {
+                return userOptional.get();
+            } else {
+                throw new LoginFailedException();
+            }
         } catch (Exception e) {
             throw NoNeededValuesInBodyException.parseException("username", "password");
         }
