@@ -453,13 +453,13 @@ public class PotooController {
      * @return BlogPosts (iterable)
      */
     @GetMapping("/api/blogposts/author/{authorId}")
-    public Iterable<BlogPost> getBlogPostsById(@PathVariable int authorId) {
+    public Iterable<BlogPost> getBlogPostsByAuthorId(@PathVariable int authorId) throws UserNotFoundException {
         Optional<User> userOptional = userRepository.findById(authorId);
 
         if (userOptional.isPresent()) {
             return userOptional.get().getBlogPosts();
         } else {
-            return new HashSet<BlogPost>();
+            throw new UserNotFoundException(authorId);
         }
     }
 
