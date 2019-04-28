@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class UsernameAlreadyUsedException extends RuntimeException {
     public UsernameAlreadyUsedException(String username) {
-        super("Username " + username + " already in use.");
+        super("Username \"" + username + "\" already in use.");
     }
 }
