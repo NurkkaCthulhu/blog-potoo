@@ -38,12 +38,13 @@ class Login extends Component {
         }).then((response) => response.json()).then((user) => {
             if (user === null) {
                 this.setState({errorMessage: <div className="loginErrorMessage">Username or password is incorrect.</div>});
+            } else if (user.userType === 'DELETED') {
+                this.setState({errorMessage: <div className="loginErrorMessage">This user has been deleted. Site access denied.</div>});
             } else {
                 localStorage.setItem('loggedin', 'true');
                 localStorage.setItem('userId', user.id);
                 localStorage.setItem('userType', user.userType);
                 localStorage.setItem('username', user.username);
-                console.log(localStorage);
                 this.props.history.push('/');
             }
         })
