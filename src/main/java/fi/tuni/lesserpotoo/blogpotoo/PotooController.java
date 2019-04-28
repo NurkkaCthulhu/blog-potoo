@@ -7,7 +7,6 @@ import fi.tuni.lesserpotoo.blogpotoo.misc.UserType;
 import fi.tuni.lesserpotoo.blogpotoo.repositories.*;
 import fi.tuni.lesserpotoo.blogpotoo.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -118,18 +117,22 @@ public class PotooController {
      * @return id of created blogPost
      */
     @PostMapping(value = "/api/blogposts")
-    public int saveBlogPost(@RequestBody ObjectNode blogPostInfo) throws UserNotFoundException {
-        int authorId = blogPostInfo.get("authorId").asInt();
-        String title = blogPostInfo.get("title").asText();
-        String content = blogPostInfo.get("content").asText();
-        Optional<User> authorOptional = userRepository.findById(authorId);
+    public int saveBlogPost(@RequestBody ObjectNode blogPostInfo) throws UserNotFoundException, NoNeededValuesInBodyException {
+        try {
+            int authorId = blogPostInfo.get("authorId").asInt();
+            String title = blogPostInfo.get("title").asText();
+            String content = blogPostInfo.get("content").asText();
+            Optional<User> authorOptional = userRepository.findById(authorId);
 
-        if (authorOptional.isPresent()) {
-            BlogPost blogPost = new BlogPost(authorOptional.get(), title, content);
-            blogPostRepository.save(blogPost);
-            return blogPost.getId();
-        } else {
-            throw new UserNotFoundException(authorId);
+            if (authorOptional.isPresent()) {
+                BlogPost blogPost = new BlogPost(authorOptional.get(), title, content);
+                blogPostRepository.save(blogPost);
+                return blogPost.getId();
+            } else {
+                throw new UserNotFoundException(authorId);
+            }
+        } catch (Exception e) {
+            throw NoNeededValuesInBodyException.parseException("authorId", "title", "content");
         }
     }
 
