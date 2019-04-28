@@ -156,7 +156,7 @@ class BlogPost extends Component {
                     <p className={"likeCounter"}>{this.state.likes}</p>
                 </div>
                 <h3>{this.state.author}</h3>
-                <p>Posted: {this.state.postDate} at {this.state.postTime.substring(0, 5)}</p>
+                <small>Posted: {this.state.postDate} at {this.state.postTime.substring(0, 5)}</small>
                 <div dangerouslySetInnerHTML={{__html: this.state.content}}></div>
                 {this.state.cutContent &&
                     <Link to={this.state.postUrl}><p className="readmore">Read more</p></Link>
