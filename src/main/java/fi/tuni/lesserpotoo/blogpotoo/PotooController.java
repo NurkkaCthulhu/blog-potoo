@@ -298,7 +298,9 @@ public class PotooController {
      * If BlogPoist exists, goes trough all the Tags. If Tag is only on the BlogPost, removes it. If not, removes it
      * only from BlogPost's tags. Also removes all ViewAndLikes associated with this BlogPost.
      *
-     * @param blogPostId
+     * @param blogPostId    id of BlogPost
+     *
+     * @throws BlogPostNotFoundException    there is no BlogPost with given blogPostId
      */
     @DeleteMapping("/api/blogposts/{blogPostId}")
     public void deleteBlogPost(@PathVariable int blogPostId) throws BlogPostNotFoundException {
@@ -340,8 +342,11 @@ public class PotooController {
      *
      * Checks if BlogPost and Comment exist. Checks if BlogPost has the said Comment. If it is, deletes the comment.
      *
-     * @param blogPostId
-     * @param commentId
+     * @param blogPostId    id of BlogPost
+     * @param commentId     id of Comment
+     *
+     * @throws BlogPostNotFoundException                    there is no BlogPost with given blogPostId
+     * @throws NoSuchCommentUnderThisBlogPostException      there is no comment with commentId in this BlogPost
      */
     @DeleteMapping("/api/blogposts/{blogPostId}/comments/{commentId}")
     public void deleteCommentFromABlogPost(@PathVariable int blogPostId, @PathVariable int commentId)
@@ -364,7 +369,9 @@ public class PotooController {
     /**
      * Changes Users UserType to DELETED, does not delete user from the database.
      *
-     * @param userId
+     * @param userId    id of User
+     *
+     * @throws UserNotFoundException    there is no User with given userId
      */
     @DeleteMapping("/api/users/{userId}")
     public void makeUserTypeDeletedById(@PathVariable int userId) throws UserNotFoundException {
@@ -383,7 +390,9 @@ public class PotooController {
      *
      * If User exists, deletes it.
      *
-     * @param userId
+     * @param userId    id of User
+     *
+     * @throws UserNotFoundException    there is no User with given userId
      */
     @DeleteMapping("/api/users/finaldelete/{userId}")
     public void removeUserById(@PathVariable int userId) throws UserNotFoundException {
