@@ -229,7 +229,7 @@ public class PotooController {
      * @param viewAndLikeInfo needs to have userId, view and like
      */
     @PostMapping("/api/blogposts/{blogPostId}/viewAndLike")
-    public void addViewAndLikeToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode viewAndLikeInfo) {
+    public void addViewAndLikeToBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode viewAndLikeInfo) throws BlogPostNotFoundException {
         int userId = viewAndLikeInfo.get("userId").asInt();
         boolean view = viewAndLikeInfo.get("view").asBoolean();
         boolean like = viewAndLikeInfo.get("like").asBoolean();
@@ -237,7 +237,9 @@ public class PotooController {
         Optional<BlogPost> blogPostOptional = blogPostRepository.findById(blogPostId);
         Optional<User> userOptional = userRepository.findById(userId);
 
-        if (blogPostOptional.isPresent() && userOptional.isPresent()) {
+        if (!blogPostOptional.isPresent()) {
+            throw new BlogPostNotFoundException(blogPostId);
+        } else if (blogPostOptional.isPresent() && userOptional.isPresent()) {
             if (like) {
                 BlogPost blogPost = blogPostOptional.get();
                 blogPost.setLikes(blogPost.getLikes() + 1);
