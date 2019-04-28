@@ -151,14 +151,14 @@ public class PotooController {
      * @return User or null
      */
     @PostMapping(value = "/api/users")
-    public Optional<User> saveUser(@RequestBody User user) {
+    public ResponseEntity<User> saveUser(@RequestBody User user) {
         Optional<User> userOptional = userRepository.findByUsernameIgnoreCase(user.getUsername());
 
         if (userOptional.isPresent()) {
-            return Optional.empty();
+            throw new UsernameAlreadyUsedException(user.getUsername());
         } else {
             userRepository.save(user);
-            return Optional.of(user);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
 
@@ -172,7 +172,8 @@ public class PotooController {
      * @param tagNames
      */
     @PostMapping("/api/blogposts/{blogPostId}/tag")
-    public ResponseEntity<Void> addTagsToBlogPost(@PathVariable int blogPostId, @RequestBody List<String> tagNames) throws BlogPostNotFoundException {
+    public ResponseEntity<Void> addTagsToBlogPost(@PathVariable int blogPostId, @RequestBody List<String> tagNames)
+            throws BlogPostNotFoundException, UsernameAlreadyUsedException {
         Optional<BlogPost> blogPostO = blogPostRepository.findById(blogPostId);
 
         if (blogPostO.isPresent()) {
