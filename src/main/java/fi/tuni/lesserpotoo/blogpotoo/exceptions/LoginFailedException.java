@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class LoginFailedException extends RuntimeException {
+
+    /**
+     * Creates instance of LoginFailedException with an error message.
+     *
+     * Error message is always "Username or password is incorrect."
+     */
     public LoginFailedException() {
         super("Username or password is incorrect.");
     }
