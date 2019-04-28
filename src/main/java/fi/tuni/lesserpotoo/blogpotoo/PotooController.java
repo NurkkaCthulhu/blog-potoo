@@ -601,21 +601,26 @@ public class PotooController {
      * @param updateJson needs to have title, content and tags
      */
     @PutMapping("/api/blogposts/{blogPostId}")
-    public void updateBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode updateJson) throws BlogPostNotFoundException {
-        if (blogPostRepository.findById(blogPostId).isPresent()) {
-            updateBlogPostTitle(blogPostId, updateJson.get("title").asText());
-            updateBlogPostContent(blogPostId, updateJson.get("content").asText());
+    public void updateBlogPost(@PathVariable int blogPostId, @RequestBody ObjectNode updateJson)
+            throws BlogPostNotFoundException, NoNeededValuesInBodyException {
+        try {
+            if (blogPostRepository.findById(blogPostId).isPresent()) {
+                updateBlogPostTitle(blogPostId, updateJson.get("title").asText());
+                updateBlogPostContent(blogPostId, updateJson.get("content").asText());
 
-            ArrayNode tagArray = (ArrayNode) updateJson.get("tags");
-            LinkedList<String> tags = new LinkedList<>();
+                ArrayNode tagArray = (ArrayNode) updateJson.get("tags");
+                LinkedList<String> tags = new LinkedList<>();
 
-            for (int i = 0; i < tagArray.size(); i++) {
-                tags.add(tagArray.get(i).asText());
+                for (int i = 0; i < tagArray.size(); i++) {
+                    tags.add(tagArray.get(i).asText());
+                }
+
+                updateBlogPostTags(blogPostId, tags);
+            } else {
+                throw new BlogPostNotFoundException(blogPostId);
             }
-
-            updateBlogPostTags(blogPostId, tags);
-        } else {
-            throw new BlogPostNotFoundException(blogPostId);
+        } catch (Exception e) {
+            throw NoNeededValuesInBodyException.parseException("title", "content", "tags");
         }
     }
 
