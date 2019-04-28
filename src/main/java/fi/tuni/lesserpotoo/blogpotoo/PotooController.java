@@ -390,8 +390,14 @@ public class PotooController {
      * @return User (optional)
      */
     @GetMapping("/api/users/{userId}")
-    public Optional<User> getAllUserById(@PathVariable int userId) {
-        return userRepository.findById(userId);
+    public User getUserById(@PathVariable int userId) throws UserNotFoundException {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            throw new UserNotFoundException(userId);
+        }
     }
 
     /**
