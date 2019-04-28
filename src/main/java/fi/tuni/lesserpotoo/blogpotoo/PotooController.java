@@ -17,7 +17,7 @@ import java.util.*;
 
 /**
  * @author Essi Supponen [essi.supponen@tuni.fi]
- * @version 2019-0424
+ * @version 2019-0428
  * @since 1.0
  */
 @RestController
@@ -34,6 +34,13 @@ public class PotooController {
     public class UserNotFoundException extends RuntimeException {
         public UserNotFoundException(int id) {
             super("User with id " + id + " not found.");
+        }
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public class NoSuchCommentUnderThisBlogPostException extends RuntimeException {
+        public NoSuchCommentUnderThisBlogPostException(int blogPostId, int commentId) {
+            super("BlogPost with id " + blogPostId + " does not have comment with id " + commentId);
         }
     }
 
