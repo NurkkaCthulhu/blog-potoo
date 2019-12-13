@@ -10,7 +10,7 @@ This project has a H2 database engine back end, so everything is restarted after
 * Admin can delete users, make posts and modify posts
 * Posts can be searched by tags, titles or authors
 
-# Technologies
+## Technologies
 * Java/Spring Boot
 * JavaScript/React
 * H2 Database Engine
